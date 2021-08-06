@@ -1,8 +1,12 @@
 # Base TFOD API Environment
 # Author: @edurso
 
-# Use base UBUNTU 18.04 image
+# Use base UBUNTU BIONIC image
 FROM "ubuntu:bionic"
+
+# Setup environment
+ENV TERM=xterm
+ENV DEBIAN_FRONTEND=noninteractive
 
 # Update apt repos
 RUN apt-get update && yes | apt-get upgrade
@@ -21,8 +25,15 @@ RUN pip3 install --upgrade pip
 RUN pip3 install tensorflow==2.*
 
 # Install protobuf and other libraries
-RUN apt-get install -y protobuf-compiler python3-pil python3-lxml wget curl
-RUN pip3 install jupyter
+RUN apt-get install -y protobuf-compiler
+RUN apt-get install -y python3-pil
+RUN apt-get install -y python3-lxml
+RUN apt-get install -y wget
+RUN apt-get install -y curl
+RUN apt-get install -y libgtk2.0-dev
+RUN apt-get install -y pkg-config
+RUN apt-get install -y libopencv-dev
+RUN apt-get install -y python3-opencv
 RUN pip3 install matplotlib
 RUN pip3 install tf_slim
 RUN pip3 install pycocotools
