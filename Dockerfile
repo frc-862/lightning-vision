@@ -35,6 +35,8 @@ RUN apt-get install -y pkg-config
 RUN apt-get install -y libopencv-dev
 RUN apt-get install -y python3-opencv
 RUN pip3 install matplotlib
+RUN pip3 install jupyter
+RUN pip3 install jupyterlab
 RUN pip3 install tf_slim
 RUN pip3 install pycocotools
 RUN pip3 install labelImg
@@ -56,4 +58,9 @@ RUN python3 -m pip install .
 
 # Test tfod installation
 RUN python3 object_detection/builders/model_builder_tf2_test.py
+
+# Open port 8888
+EXPOSE 8888
+
+CMD ["jupyter", "lab", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
 
