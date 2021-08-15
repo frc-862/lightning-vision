@@ -4,4 +4,4 @@
 [![Python 3.8](https://img.shields.io/badge/Python-3.8-3776AB)](https://www.python.org/downloads/release/python-380/)
 [Docker Hub](https://hub.docker.com/r/edurs0/tfod-wkspc)
 
-Extension of [ml-workspace](https://github.com/ml-tooling/ml-workspace) that integrates the [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md)
+Extension of the TensorFlow docker image that integrates the [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md)

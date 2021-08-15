@@ -1,12 +1,12 @@
 #!/bin/zsh
 
-sudo systemctl unmask docker
-sudo service docker start
-sudo service docker status
-docker run -d \
-    --rm \
-    -p 8080:8080 \
-    --name "tfod-test" \
-    --env AUTHENTICATE_VIA_JUPYTER="root" \
-    edurs0/tfod-wkspc
+image="edurs0/tfod-wkspc"
+
+echo "Run gpu container (y/n)?"
+read gpu
+if [[ $gpu == "y" ]]; then
+    image="edurs0/tfod-wkspc-gpu"
+fi
+
+docker run --rm --name tfod -it -p 8888:8888 $image
 
