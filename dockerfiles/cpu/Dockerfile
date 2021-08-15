@@ -2,7 +2,7 @@
 # Author: @edurso
 
 # Use https://github.com/ml-tooling/ml-workspace image
-FROM mltooling/ml-workspace:latest
+FROM tensorflow/tensorflow:latest
 
 # Update apt repos
 RUN apt-get update && yes | apt-get upgrade
@@ -33,15 +33,14 @@ RUN pip3 install pycocotools
 RUN pip3 install labelImg
 RUN pip3 install opencv-python
 RUN pip3 install opencv-contrib-python
+RUN pip3 install jupyter -U
+RUN pip3 install jupyterlab
 
 # Clone tfod api
-RUN git clone https://github.com/tensorflow/models.git /root/Desktop/workspace/tensorflow/models
+RUN git clone https://github.com/tensorflow/models.git /tensorflow/models
 
 # Set working directory
-WORKDIR /root/Desktop/workspace/tensorflow/models/research
-
-# Get rid of unused tutorials
-RUN rm -rf /root/Desktop/workspace/tutorials
+WORKDIR /tensorflow/models/research
 
 # Compile protos
 RUN protoc object_detection/protos/*.proto --python_out=.
@@ -52,4 +51,10 @@ RUN python3 -m pip install .
 
 # Test tfod installation
 RUN python3 object_detection/builders/model_builder_tf2_test.py
+
+# Open port 8888 for jupyter lab
+EXPOSE 8888
+
+# Jupyter lab
+ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root"]
 
