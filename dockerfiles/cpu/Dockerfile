@@ -43,13 +43,13 @@ RUN pip3 install matplotlib \
 RUN git clone https://github.com/tensorflow/models.git /tensorflow/models
 
 # Set working directory
-WORKDIR /tensorflow
+WORKDIR /tensorflow/models/research
 
 # Compile protos
-RUN protoc models/research/object_detection/protos/*.proto --python_out=.
+RUN protoc object_detection/protos/*.proto --python_out=.
 
 # Copy and install tfod api
-RUN cp models/research/object_detection/packages/tf2/setup.py .
+RUN cp object_detection/packages/tf2/setup.py .
 RUN python3 -m pip install .
 
 # Test tfod installation
@@ -61,10 +61,13 @@ RUN cd &&\
 	mkdir git-lfs-install &&\
 	cd git-lfs-install &&\
 	tar -xzf ../git-lfs-linux-amd64-v2.13.3.tar.gz &&\
-	sudo ./install.sh &&\
+	./install.sh &&\
 	cd &&\
 	rm -rf git-lfs-linux-amd64-v2.13.3.tar.gz git-lfs-install &&\
 	git lfs install
+
+# Make tf directory
+RUN mkdir -p /tensorflow/workspace
 
 # Clone tfod-wkspc
 RUN git clone https://github.com/edurso/tfod-wkspc.git /tensorflow/workspace
