@@ -62,10 +62,11 @@ RUN mkdir -p /tensorflow/workspace
 RUN git clone https://github.com/edurso/tfod-wkspc.git /tensorflow/workspace
 
 # Set working directory
-WORKDIR /tensorflow/workspace
+WORKDIR /tensorflow
 
 # Open port 8888 for jupyter lab
 EXPOSE 8888
 
 # Jupyter lab
 ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root"]
+

@@ -2,6 +2,5 @@
 
 TFOD-API playground.
 
-Dockerfiles run jupyterlab on both cpu and gpus.
+Nothing here really works yet.
 
-Notebooks are also setup to run on google colab.
