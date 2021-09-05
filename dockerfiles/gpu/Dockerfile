@@ -37,7 +37,7 @@ RUN pip3 install matplotlib \
     opencv-python \
     opencv-contrib-python \
     jupyter -U \
-    jupyterlab 
+    jupyterlab
 
 # Clone tfod api
 RUN git clone https://github.com/tensorflow/models.git /tensorflow/models
@@ -55,17 +55,6 @@ RUN python3 -m pip install .
 # Test tfod installation
 RUN python3 object_detection/builders/model_builder_tf2_test.py
 
-# Install git lfs
-RUN cd &&\
-    wget https://github.com/git-lfs/git-lfs/releases/download/v2.13.3/git-lfs-linux-amd64-v2.13.3.tar.gz &&\
-	mkdir git-lfs-install &&\
-	cd git-lfs-install &&\
-	tar -xzf ../git-lfs-linux-amd64-v2.13.3.tar.gz &&\
-	./install.sh &&\
-	cd &&\
-	rm -rf git-lfs-linux-amd64-v2.13.3.tar.gz git-lfs-install &&\
-	git lfs install
-
 # Make tf directory
 RUN mkdir -p /tensorflow/workspace
 
@@ -80,4 +69,3 @@ EXPOSE 8888
 
 # Jupyter lab
 ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root"]
-
