@@ -5,3 +5,7 @@ tmp
 *_val.record*
 *.pyc
 compile_commands.json
+*.mp4
+*.jpg
+*.png
+*.xml
