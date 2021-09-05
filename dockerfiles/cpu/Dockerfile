@@ -55,11 +55,8 @@ RUN python3 -m pip install .
 # Test tfod installation
 RUN python3 object_detection/builders/model_builder_tf2_test.py
 
-# Make tf directory
+# Make tf directory, will mount dataset here when contanier is run
 RUN mkdir -p /tensorflow/workspace
-
-# Clone tfod-wkspc
-RUN git clone https://github.com/edurso/tfod-wkspc.git /tensorflow/workspace
 
 # Set working directory
 WORKDIR /tensorflow

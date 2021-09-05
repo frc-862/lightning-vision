@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-""" usage: partition_dataset.py [-h] [-i IMAGEDIR] [-o OUTPUTDIR] [-r RATIO] [-x]
+""" Partition dataset of images into training and testing sets
 
-Partition dataset of images into training and testing sets
+usage: partition-dataset.py [-h] [-i IMAGEDIR] [-o OUTPUTDIR] [-r RATIO] [-x]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -14,6 +14,7 @@ optional arguments:
                         The ratio of the number of test images over the total number of images. The default is 0.1.
   -x, --xml             Set this flag if you want the xml annotation files to be processed and copied over.
 """
+
 import os
 import re
 from shutil import copyfile
