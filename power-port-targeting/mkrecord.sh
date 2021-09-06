@@ -1,11 +1,15 @@
-python generate-tfrecord.py \
-    -x /tensorflow/workspace/power-port-targeting/images/train \
-    -l /tensorflow/workspace/power-port-targeting/annotations/label-map.pbtxt \
-    -o /tensorflow/workspace/power-port-targeting/annotations/train.record
+# Define Variables
+WORKSPACE="/tensorflow/workspace/power-port-targeting"
+SCRIPTS="/tensorflow/workspace/scripts"
 
-python generate-tfrecord.py \
-    -x /tensorflow/workspace/power-port-targeting/images/test \
-    -l /tensorflow/workspace/power-port-targeting/annotations/label-map.pbtxt \
-    -o /tensorflow/workspace/power-port-targeting/annotations/test.record
+# Generate TFRecord for Training Data
+python $SCRIPTS/preprocessing/generate-tfrecord.py \
+    -x $WORKSPACE/images/train \
+    -l $WORKSPACE/annotations/label-map.pbtxt \
+    -o $WORKSPACE/annotations/train.record
 
-    
+# Generate TFRecord for Validation Data
+python $SCRIPTS/preprocessing/generate-tfrecord.py \
+    -x $WORKSPACE/images/test \
+    -l $WORKSPACE/annotations/label-map.pbtxt \
+    -o $WORKSPACE/annotations/test.record
