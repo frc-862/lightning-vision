@@ -1,21 +1,16 @@
 #!/bin/zsh
 
+# Define Variables
+FILEPATH="//d/workspace/tfod-wkspc"
 IMAGE="edurs0/tfod-wkspc"
 
-PATH="//d/workspace/tfod-wkspc"
-
-echo "enter absolute path to workspace"
-read WORKSPACE
-
-if [ -d "$WORKSPACE" ]; then
-    PATH=WORKSPACE
-fi
-
+# Determine if we Need to Run the GPU Container
 echo "run gpu container (y/n)?"
 read GPU
 if [[ $GPU == "y" ]]; then
     IMAGE="edurs0/tfod-wkspc-gpu"
 fi
 
-docker run --rm --name tfod -it -p 8888:8888 -v $PATH:/tensorflow/workspace $IMAGE
+# Start Docker
+docker run --rm --name tfod -it -p 8888:8888 -v $FILEPATH:/tensorflow/workspace $IMAGE
 

@@ -13,3 +13,4 @@ python $SCRIPTS/preprocessing/generate-tfrecord.py \
     -x $WORKSPACE/images/test \
     -l $WORKSPACE/annotations/label-map.pbtxt \
     -o $WORKSPACE/annotations/test.record
+
