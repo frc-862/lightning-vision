@@ -2,8 +2,8 @@
 
 [![TensorFlow 2.5](https://img.shields.io/badge/TensorFlow-2.5-FF6F00?logo=tensorflow)](https://github.com/tensorflow/tensorflow/releases/tag/v2.5.0)
 [![Python 3.6](https://img.shields.io/badge/Python-3.6-3776AB)](https://www.python.org/downloads/release/python-360/)
-[Docker CPU Image](http://hub.docker.com/r/edurs0/tfod-wkspc)
-[Docker GPU Image](http://hub.docker.com/r/edurs0/tfod-wkspc-gpu)
+[![Docker CPU Image](https://badges.fyi/static/Docker/CPU/blue)](http://hub.docker.com/r/edurs0/tfod-wkspc)
+[![Docker CPU Image](https://badges.fyi/static/Docker/GPU/blue)](http://hub.docker.com/r/edurs0/tfod-wkspc-gpu)
 
 Nothing here really works yet.
 
@@ -31,7 +31,7 @@ Below is an adapted version of [this](https://tensorflow-object-detection-api-tu
 Create a directory structure like the one shown below in the root directory of this repository.
 This will be the project directory.
 
-```
+```sh
 training-demo/
 ├─ annotations/
 ├─ exported-models/
@@ -64,7 +64,7 @@ It is important to start the GPU container if you have a [compatable GPU](https:
 
 The filesystem of the docker container is set up as follows:
 
-```
+```sh
 /tensorflow/
 ├─ models/
 │  ├─ community/
@@ -110,7 +110,7 @@ Create a `label-map.pbtxt` file in the `annotations/` directory of the project.
 Fill it with labels in the following format.
 It is important to note that the `name` of each label much correspond to a value set in the `*.xml` file of an image.
 
-```
+```pbtxt
 item {
     id: 1
     name: 'something'
@@ -140,7 +140,7 @@ Pick one, download, and extract it into the `pre-trained-models/` subdirectory i
 
 If we were to use the [SSD ResNet 50 V1 FPN 640x640](http://download.tensorflow.org/models/object_detection/tf2/20200711/ssd_resnet50_v1_fpn_640x640_coco17_tpu-8.tar.gz) model, our project directory would look something like this:
 
-```
+```sh
 training-demo/
 ├─ ...
 ├─ pre-trained-models/
@@ -155,7 +155,7 @@ training-demo/
 
 Make a new directory under `models/` such as follows:
 
-```
+```sh
 training-demo/
 ├─ ...
 ├─ models/
@@ -185,4 +185,3 @@ Before running `train.sh`, be sure to set `$WORKSPACE` to the project directory 
 After the model is trained and exported, you should see a new directory in `exported-models/` that houses the trained model.
 
 The `*.pb` file for this model can be found in the `saved_model/` subdirectory. This model is ready to be depolyed to ... wherever.
-
