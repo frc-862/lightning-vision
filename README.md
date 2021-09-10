@@ -182,6 +182,12 @@ Edit the following in the `pipeline.config` file:
 To train the model, you can use the `train.sh` script in `/tensorflow/workspace/scripts/`.
 Before running `train.sh`, be sure to set `$WORKSPACE` to the project directory and `$MODEL_TYPE` to the model type, or the name of the directory housing the config in `models/` (idealy this will be the same as `model.feature_extractor.type` in the `pipeline.config`).
 
+While the model is training, you can view its progress with [tensorboard](https://www.tensorflow.org/tensorboard) by running the finction below where `$WORKSPACE` and `$MODEL_TYPE` are the same as defined above.
+
+```bash
+tensorboard --logdir=$WORKSPACE/models/$MODEL_TYPE
+```
+
 After the model is trained and exported, you should see a new directory in `exported-models/` that houses the trained model.
 
 The `*.pb` file for this model can be found in the `saved_model/` subdirectory. This model is ready to be depolyed to ... wherever.
