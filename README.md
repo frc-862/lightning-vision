@@ -191,3 +191,7 @@ tensorboard --logdir=$WORKSPACE/models/$MODEL_TYPE
 After the model is trained and exported, you should see a new directory in `exported-models/` that houses the trained model.
 
 The `*.pb` file for this model can be found in the `saved_model/` subdirectory. This model is ready to be depolyed to ... wherever.
+
+## Inference
+
+For inference with OpenCV, see [this sample implementation (python)](https://github.com/opencv/opencv/wiki/TensorFlow-Object-Detection-API).
