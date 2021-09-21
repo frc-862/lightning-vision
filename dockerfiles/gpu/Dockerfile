@@ -64,6 +64,9 @@ WORKDIR /tensorflow
 # Open port 8888 for jupyter lab
 EXPOSE 8888
 
+# Open port 6006 for TensorBoard
+EXPOSE 6006
+
 # Jupyter lab
 ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root"]
 
