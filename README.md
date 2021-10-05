@@ -26,29 +26,6 @@ There is a separate [Docker Image](http://hub.docker.com/r/edurs0/tfod-wkspc-gpu
 
 Below is an adapted version of [this](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/index.html) tutorial on how to train custom models.
 
-### Setting Up Workspace
-
-Create a directory structure like the one shown below in the root directory of this repository.
-This will be the project directory.
-
-```sh
-training-demo/
-├─ annotations/
-├─ exported-models/
-├─ images/
-│  ├─ test/
-│  └─ train/
-├─ models/
-└─ pre-trained-models/
-```
-
-All `*.csv`, `*.pbtxt`, `*.record` and other similar files will be kept in `annotations/`.
-These files describe the dataset. `exported-models` will house exported versions of trained models.
-`images/` will store raw data files and their respective `*.xml` files.
-Training data will be kept in `images/train/` and testing data will be kept in `images/test/`.
-`models/` will contain a subdirectory for each training job, with the `pipeline.config` file and all of the files generated during training.
-Raw, out-of-the-box, pre-trained models will be housed in `pre-trained-models/` and will be used as a starting checkpoint in each training job.
-
 ### Creating the Dataset
 
 After putting the images in `images/`, run `labelImg images/` (from the project directory) and label the images.
@@ -95,6 +72,35 @@ The filesystem of the docker container is set up as follows:
 Once the container starts, you will see that jupyter lab has started.
 Go to one of the links the container has spat out (they all go to the same place) to see the jupyter environment.
 Open a terminal from the launcher to continue.
+
+### Setting Up Workspace
+
+Create a directory structure like the one shown below in the root directory of this repository.
+This will be the project directory.
+
+```sh
+training-demo/
+├─ annotations/
+├─ exported-models/
+├─ images/
+│  ├─ test/
+│  └─ train/
+├─ models/
+└─ pre-trained-models/
+```
+
+Alternatively, you can simply run the `new.sh` script in the `scripts` directory to create a new workspace.
+
+```sh
+./scripts/new.sh -n training-demo
+```
+
+All `*.csv`, `*.pbtxt`, `*.record` and other similar files will be kept in `annotations/`.
+These files describe the dataset. `exported-models` will house exported versions of trained models.
+`images/` will store raw data files and their respective `*.xml` files.
+Training data will be kept in `images/train/` and testing data will be kept in `images/test/`.
+`models/` will contain a subdirectory for each training job, with the `pipeline.config` file and all of the files generated during training.
+Raw, out-of-the-box, pre-trained models will be housed in `pre-trained-models/` and will be used as a starting checkpoint in each training job.
 
 ### Partitioning the Dataset
 

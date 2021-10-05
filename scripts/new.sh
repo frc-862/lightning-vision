@@ -15,6 +15,7 @@ usage() {
 # Help Function - Directcts To `usage`
 help() {
     echo "use '-h' for more information"
+    exit 1
 }
 
 # Get Input From Flags With Script
@@ -33,9 +34,8 @@ shift `expr $OPTIND - 1`
 # Check NAME Flag Input Valid
 if [ -z "$NAME" ]; then
     echo "fatal: missing path to workspace"
-    echo "try running again with '-f FILEPATH'"
+    echo "try running again with '-n NAME'"
     help
-    exit 1
 fi
 
 # Make Directory Structure
