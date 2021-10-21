@@ -25,6 +25,9 @@ help() {
     exit 1
 }
 
+# Set Default Image to CPU Image
+IMAGE=$CPU_IMAGE
+
 # Get Input From Flags With Script
 while getopts "gcf:hn:" flag; do
     case $flag in
