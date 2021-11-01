@@ -3,7 +3,7 @@
 [![TensorFlow 2.5](https://img.shields.io/badge/TensorFlow-2.5-FF6F00?logo=tensorflow)](https://github.com/tensorflow/tensorflow/releases/tag/v2.5.0)
 [![Python 3.6](https://img.shields.io/badge/Python-3.6-3776AB)](https://www.python.org/downloads/release/python-360/)
 [![Docker CPU Image](https://badges.fyi/static/Docker/CPU/blue)](http://hub.docker.com/r/edurs0/tfod-wkspc)
-[![Docker CPU Image](https://badges.fyi/static/Docker/GPU/blue)](http://hub.docker.com/r/edurs0/tfod-wkspc-gpu)
+[![Docker GPU Image](https://badges.fyi/static/Docker/GPU/blue)](http://hub.docker.com/r/edurs0/tfod-wkspc-gpu)
 
 Nothing here really works yet.
 
