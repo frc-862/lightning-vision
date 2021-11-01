@@ -1,8 +1,8 @@
 # Dockerfile for tfod-api enabled workspace
 # Author: @edurso
 
-# Use tensorflow image
-FROM tensorflow/tensorflow:latest-gpu
+# Use nvidia tensorflow image
+FROM nvcr.io/nvidia/tensorflow:21.10-tf2-py3
 
 # Update apt repos
 RUN apt-get update && yes | apt-get upgrade

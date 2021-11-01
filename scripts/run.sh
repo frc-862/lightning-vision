@@ -5,7 +5,7 @@ CPU_IMAGE="edurs0/tfod-wkspc"
 GPU_IMAGE="edurs0/tfod-wkspc-gpu"
 
 # Placeholders
-unset IMAGE
+unset GPU
 unset FILEPATH
 unset NAME
 
@@ -25,14 +25,11 @@ help() {
     exit 1
 }
 
-# Set Default Image to CPU Image
-IMAGE=$CPU_IMAGE
-
 # Get Input From Flags With Script
 while getopts "gcf:hn:" flag; do
     case $flag in
-        g)       IMAGE=$GPU_IMAGE ;;
-        c)       IMAGE=$CPU_IMAGE ;;
+        g)       GPU=true ;;
+        c)       GPU=false ;;
         f)       FILEPATH=$OPTARG ;;
         n)       NAME=$OPTARG ;;
         h)       usage
@@ -43,8 +40,8 @@ while getopts "gcf:hn:" flag; do
 done
 shift `expr $OPTIND - 1`
 
-# Check IMAGE Flag Input Valid
-if [ -z "$IMAGE" ]; then
+# Check GPU Flag Input Valid
+if [ -z "$GPU" ]; then
     echo "fatal: missing processer tag"
     echo "try running again with '-c' or '-g'"
     help
@@ -69,12 +66,23 @@ if [ -z "$NAME" ]; then
 fi
 
 # Start Docker
-sudo docker run \
-    --rm \
-    --name $NAME \
-    -it \
-    -p 8888:8888 \
-    -p 6006:6006 \
-    -v $FILEPATH:/tensorflow/workspace \
-    $IMAGE
-
+if [ "$GPU" == true ] ; then 
+    sudo docker run \
+        --rm \
+        --name $NAME \
+        --gpus all
+        -it \
+        -p 8888:8888 \
+        -p 6006:6006 \
+        -v $FILEPATH:/tensorflow/workspace \
+        $IMAGE
+else
+    sudo docker run \
+        --rm \
+        --name $NAME \
+        -it \
+        -p 8888:8888 \
+        -p 6006:6006 \
+        -v $FILEPATH:/tensorflow/workspace \
+        $IMAGE
+fi
