@@ -69,7 +69,7 @@ if [ -z "$NAME" ]; then
 fi
 
 # Start Docker
-docker run \
+sudo docker run \
     --rm \
     --name $NAME \
     -it \
