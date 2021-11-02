@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 
 # Define Variables
 CPU_IMAGE="edurs0/tfod-wkspc"

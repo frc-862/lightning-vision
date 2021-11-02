@@ -1,5 +1,5 @@
-#!/bin/zsh
+#!/bin/sh
 # Build cpu-only docker image
 
-docker build -t edurs0/tfod-wkspc .
+sudo docker build -t edurs0/tfod-wkspc .
 

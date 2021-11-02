@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 
 # Define Constants
 WORKSPACE="/tensorflow/workspace"

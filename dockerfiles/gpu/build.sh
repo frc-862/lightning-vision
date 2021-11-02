@@ -1,5 +1,5 @@
-#!/bin/zsh
+#!/bin/sh
 # Build gpu docker image
 
-docker build -t edurs0/tfod-wkspc-gpu .
+sudo docker build -t edurs0/tfod-wkspc-gpu .
 
