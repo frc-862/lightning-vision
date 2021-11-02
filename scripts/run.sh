@@ -66,16 +66,16 @@ if [ -z "$NAME" ]; then
 fi
 
 # Start Docker
-if [ "$GPU" == true ] ; then 
+if [ "$GPU" ] ; then
     sudo docker run \
+        --gpus all \
         --rm \
         --name $NAME \
-        --gpus all
         -it \
         -p 8888:8888 \
         -p 6006:6006 \
         -v $FILEPATH:/tensorflow/workspace \
-        $IMAGE
+        $GPU_IMAGE
 else
     sudo docker run \
         --rm \
@@ -84,5 +84,5 @@ else
         -p 8888:8888 \
         -p 6006:6006 \
         -v $FILEPATH:/tensorflow/workspace \
-        $IMAGE
+        $CPU_IMAGE
 fi
