@@ -3,7 +3,6 @@
 
 # Use tensorflow image
 FROM tensorflow/tensorflow:latest
-
 # Update apt repos
 RUN apt-get update && yes | apt-get upgrade
 
@@ -12,8 +11,8 @@ RUN mkdir -p /tensorflow/models
 
 # Install/update python3 & pip3
 RUN apt-get install -y python3 \
-    python3-pip \
-    git
+        python3-pip \
+        git
 RUN pip3 install --upgrade pip
 
 # Install tensorflow
@@ -21,23 +20,22 @@ RUN pip3 install tensorflow==2.*
 
 # Install protobuf and other libraries
 RUN apt-get install -y protobuf-compiler \
-    python3-pil \
-    python3-pil \
-    python3-lxml \
-    wget \
-    curl \
-    libgtk2.0-dev \
-    pkg-config
+        python3-pil \
+        python3-lxml \
+        wget \
+        curl \
+        libgtk2.0-dev \
+        pkg-config
 
 # Install python packages
 RUN pip3 install matplotlib \
-    tf_slim \
-    pycocotools \
-    labelImg \
-    opencv-python \
-    opencv-contrib-python \
-    jupyter -U \
-    jupyterlab
+        tf_slim \
+        pycocotools \
+        #labelImg \
+        opencv-python \
+        opencv-contrib-python \
+        jupyter -U \
+        jupyterlab
 
 # Clone tfod api
 RUN git clone https://github.com/tensorflow/models.git /tensorflow/models
@@ -69,4 +67,3 @@ EXPOSE 6006
 
 # Jupyter lab
 ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root"]
-

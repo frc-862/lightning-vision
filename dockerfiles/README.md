@@ -6,4 +6,3 @@
 [Docker GPU Image](http://hub.docker.com/r/edurs0/tfod-wkspc-gpu)
 
 Extension of the TensorFlow docker image that integrates the [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md).
-
