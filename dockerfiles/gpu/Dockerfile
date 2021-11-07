@@ -91,35 +91,48 @@ RUN pip3 install matplotlib \
 	jupyter -U \
 	jupyterlab
 
-RUN pip3 install --no-binary tensorflow_io
+# Build & install bazel 
+# RUN curl -sc /tmp/cookie "https://drive.google.com/uc?export=download&id=1xeUKKZeQMz_37DTzBUUXl01m-Nv97WZO" > /dev/null \
+#     && CODE="$(awk '/_warning_/ {print $NF}' /tmp/cookie)" \
+#     && curl -Lb /tmp/cookie "https://drive.google.com/uc?export=download&confirm=${CODE}&id=1xeUKKZeQMz_37DTzBUUXl01m-Nv97WZO" -o bazel \
+#     && sudo chmod +x bazel \
+#     && sudo cp ./bazel /usr/local/bin \
+#     && rm ./bazel
+
+RUN pip3 install --extra-index-url https://snapshots.linaro.org/ldcg/python-cache/ tensorflow-io
+
+RUN wget https://files.pythonhosted.org/packages/ec/45/be407a60068204dd5248dae5a4d325370d9b1b3c2cb2a1adb0d673a0d3ae/dm-tree-0.1.6.tar.gz \
+    && tar -xvzf dm-tree-0.1.6.tar.gz && rm dm-tree-0.1.6.tar.gz \
+    && cd dm-tree-0.1.6/ \
+    && pip3 install .
 
 # Clone tfod api
-# RUN git clone https://github.com/tensorflow/models.git /tensorflow/models
+RUN git clone https://github.com/tensorflow/models.git /tensorflow/models
 
 # Set working directory
-# WORKDIR /tensorflow/models/research
+WORKDIR /tensorflow/models/research
 
 # Compile protos
-# RUN protoc object_detection/protos/*.proto --python_out=.
+RUN protoc object_detection/protos/*.proto --python_out=.
 
 # Copy and install tfod api
-# RUN cp object_detection/packages/tf2/setup.py .
-# RUN python3 -m pip install . 
+RUN cp object_detection/packages/tf2/setup.py .
+RUN python3 -m pip install . 
 
 # Test tfod installation
-# RUN python3 object_detection/builders/model_builder_tf2_test.py
+RUN python3 object_detection/builders/model_builder_tf2_test.py
 
 # Make tf directory, will mount dataset here when contanier is run
-# RUN mkdir -p /tensorflow/workspace
+RUN mkdir -p /tensorflow/workspace
 
 # Set working directory
-# WORKDIR /tensorflow
+WORKDIR /tensorflow
 
 # Open port 8888 for jupyter lab
-# EXPOSE 8888
+EXPOSE 8888
 
 # Open port 6006 for TensorBoard
-# EXPOSE 6006
+EXPOSE 6006
 
 # Jupyter lab
-# ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root"]
+ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root"]

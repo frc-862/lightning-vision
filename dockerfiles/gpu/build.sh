@@ -19,7 +19,7 @@ help() {
 # Get Input From Flags With Script
 while getopts "n:h" flag; do
     case $flag in
-        n)       NEW_BUILDER=$OPTARGS ;;
+        n)       NEW_BUILDER=$OPTARG ;;
         h)       help
                  exit 1 ;;
         \?)      usage
