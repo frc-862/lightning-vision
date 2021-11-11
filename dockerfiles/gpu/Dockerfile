@@ -82,30 +82,6 @@ RUN pip install tensorflow==2.*
 # Test tensorflow installation
 RUN python3 -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
 
-# Install python packages
-RUN pip3 install matplotlib \
-	tf_slim \
-	pycocotools \
-	opencv-python \
-	opencv-contrib-python \
-	jupyter -U \
-	jupyterlab
-
-# Build & install bazel 
-# RUN curl -sc /tmp/cookie "https://drive.google.com/uc?export=download&id=1xeUKKZeQMz_37DTzBUUXl01m-Nv97WZO" > /dev/null \
-#     && CODE="$(awk '/_warning_/ {print $NF}' /tmp/cookie)" \
-#     && curl -Lb /tmp/cookie "https://drive.google.com/uc?export=download&confirm=${CODE}&id=1xeUKKZeQMz_37DTzBUUXl01m-Nv97WZO" -o bazel \
-#     && sudo chmod +x bazel \
-#     && sudo cp ./bazel /usr/local/bin \
-#     && rm ./bazel
-
-RUN pip3 install --extra-index-url https://snapshots.linaro.org/ldcg/python-cache/ tensorflow-io
-
-RUN wget https://files.pythonhosted.org/packages/ec/45/be407a60068204dd5248dae5a4d325370d9b1b3c2cb2a1adb0d673a0d3ae/dm-tree-0.1.6.tar.gz \
-    && tar -xvzf dm-tree-0.1.6.tar.gz && rm dm-tree-0.1.6.tar.gz \
-    && cd dm-tree-0.1.6/ \
-    && pip3 install .
-
 # Clone tfod api
 RUN git clone https://github.com/tensorflow/models.git /tensorflow/models
 
@@ -114,6 +90,19 @@ WORKDIR /tensorflow/models/research
 
 # Compile protos
 RUN protoc object_detection/protos/*.proto --python_out=.
+
+# Install python packages
+RUN pip3 install matplotlib \
+	tf_slim \
+	pycocotools \
+	opencv-python \
+	opencv-contrib-python \
+	jupyter -U \
+	jupyterlab
+RUN pip3 install --extra-index-url https://snapshots.linaro.org/ldcg/python-cache/ tensorflow-io
+RUN wget https://github.com/deepmind/tree/archive/refs/tags/0.1.6.tar.gz \
+    && tar -xvzf 0.1.6.tar.gz \ 
+    && cd 0.1.6/ && python3 setup.py install
 
 # Copy and install tfod api
 RUN cp object_detection/packages/tf2/setup.py .
