@@ -18,7 +18,7 @@ Both the CPU and GPU docker images are* compatable with amd64 or arm64 processor
 
 When it fails due to a [bazel](https://bazel.build/) related error on a python package installation step, such as below:
 
-```
+```sh
 #17 0.467 Opening zip "/proc/self/exe": lseek(): Bad file descriptor
 #17 0.473 [FATAL 22:55:57.506 src/main/cpp/archive_utils.cc:51] Failed to open '/proc/self/exe' as a zip file: (error: 9): Bad file descriptor
 ```

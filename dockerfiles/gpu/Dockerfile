@@ -1,5 +1,4 @@
 # Dockerfile for tfod-api enabled workspace
-# Author: @edurso
 
 # Use nvidia tensorflow image
 FROM nvcr.io/nvidia/tensorflow:21.10-tf2-py3
