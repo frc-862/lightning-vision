@@ -32,7 +32,9 @@ Run this container to fix the docker environment:
 docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 ```
 
-docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+### GitHub Actions
+
+GitHub Actions is configured to build and push both containers when pushed to the `build` branch.
 
 ## Installation
 
