@@ -100,9 +100,10 @@ RUN pip3 install matplotlib \
 	jupyter -U \
 	jupyterlab
 RUN pip3 install --extra-index-url https://snapshots.linaro.org/ldcg/python-cache/ tensorflow-io
-RUN wget https://github.com/deepmind/tree/archive/refs/tags/0.1.6.tar.gz \
-    && tar -xvzf 0.1.6.tar.gz \ 
-    && cd 0.1.6/ && python3 setup.py install
+RUN wget https://github.com/deepmind/tree/archive/refs/tags/0.1.6.tar.gz
+RUN tar -xvzf 0.1.6.tar.gz
+RUN bazel version
+RUN cd tree-0.1.6/ && python3 setup.py install
 
 # Copy and install tfod api
 RUN cp object_detection/packages/tf2/setup.py .

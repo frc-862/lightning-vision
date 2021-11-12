@@ -7,6 +7,30 @@
 
 Nothing here really works yet.
 
+For instructions on how to get started, see [Installation](#installation), [Training](#training), and [Inference](#inference). See [Building](#building) for instructions on how to build the docker images.
+
+## Building
+
+Use the respective `build.sh` scripts in the `cpu/` or `gpu/` subdirectories.\
+Both the CPU and GPU docker images are* compatable with amd64 or arm64 processor architectures.
+
+*kinda but not yet really . . .
+
+When it fails due to a [bazel](https://bazel.build/) related error on a python package installation step, such as below:
+
+```
+#17 0.467 Opening zip "/proc/self/exe": lseek(): Bad file descriptor
+#17 0.473 [FATAL 22:55:57.506 src/main/cpp/archive_utils.cc:51] Failed to open '/proc/self/exe' as a zip file: (error: 9): Bad file descriptor
+```
+
+Run this container to fix the docker environment:
+
+```bash
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+```
+
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+
 ## Installation
 
 Install [Docker](https://docs.docker.com/get-docker/) on your respective os.
