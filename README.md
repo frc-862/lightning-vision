@@ -5,6 +5,9 @@
 [![Docker CPU Image](https://badges.fyi/static/Docker/CPU/blue)](http://hub.docker.com/r/edurs0/tfod-wkspc)
 [![Docker GPU Image](https://badges.fyi/static/Docker/GPU/blue)](http://hub.docker.com/r/edurs0/tfod-wkspc-gpu)
 
+[![Build CPU Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-cpu.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
+[![Build GPU Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-gpu.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc-gpu)
+
 Nothing here really works yet.
 
 For instructions on how to get started, see [Installation](#installation), [Training](#training), and [Inference](#inference). See [Building](#building) for instructions on how to build the docker images.
