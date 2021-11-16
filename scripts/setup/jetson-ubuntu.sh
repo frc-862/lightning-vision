@@ -43,3 +43,8 @@ sudo systemctl restart docker
 
 # Test With CUDA Base Container
 sudo docker run --rm --gpus all nvidia/cuda:11.0-base nvidia-smi
+
+# Make /etc/rc.d/rc.local Executable
+sudo chmod +x /etc/rc.d/rc.local
+
+# TODO Add Scripts To rc.local To Be Run Automatically On Startup

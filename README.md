@@ -51,7 +51,8 @@ There is a separate [Docker Image](http://hub.docker.com/r/edurs0/tfod-wkspc-gpu
 Use the respective `build.sh` scripts in the `cpu/` or `gpu/` subdirectories.\
 Both the CPU and GPU docker images are* compatable with amd64 or arm64 processor architectures.
 
-*CPU image is, but the [GitHub Actions](#github-actions) gpu build keeps failing for an unknown reason, so it is only arm64 compatible now.
+*CPU image is, but the [GitHub Actions](#github-actions) gpu build keeps failing due to limited drive space, so it is only arm64 compatible now.\
+You will have to build for amd64 systems.
 
 When it fails due to a [bazel](https://bazel.build/) related error on a python package installation step, such as below:
 

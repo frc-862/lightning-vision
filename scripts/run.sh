@@ -1,5 +1,3 @@
-#!/bin/sh
-
 # Define Variables
 CPU_IMAGE="edurs0/tfod-wkspc"
 GPU_IMAGE="edurs0/tfod-wkspc-gpu"

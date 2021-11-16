@@ -1,5 +1,3 @@
-#!/bin/sh
-
 # Define Constants
 WORKSPACE="/tensorflow/workspace"
 
@@ -22,9 +20,9 @@ help() {
 while getopts "n:h" flag; do
     case $flag in
         n)       NAME=$OPTARG ;;
-        h)       help
+        h)       usage
                  exit 1 ;;
-        \?)      usage
+        \?)      help
                  exit 2 ;;
     esac
 done
