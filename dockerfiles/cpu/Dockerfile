@@ -1,7 +1,7 @@
 # Dockerfile for tfod-api enabled workspace
 
 # Use tensorflow image
-FROM tensorflow/tensorflow:latest-devel
+FROM tensorflow/tensorflow:latest-devel-py3
 
 # Make tf directory
 RUN mkdir -p /tensorflow/models

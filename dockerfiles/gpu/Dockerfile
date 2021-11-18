@@ -1,7 +1,8 @@
 # Dockerfile for tfod-api enabled workspace
 
 # Use nvidia tensorflow image
-FROM nvcr.io/nvidia/tensorflow:21.10-tf2-py3
+#FROM nvcr.io/nvidia/tensorflow:21.10-tf2-py3
+FROM tensorflow/tensorflow:latest-devel-gpu-py3
 
 # Make tf directory
 RUN mkdir -p /tensorflow/models
@@ -9,8 +10,8 @@ RUN mkdir -p /tensorflow/models
 # Setup capabilties for cuda
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
-ENV NVIDIA_REQUIRE_CUDA "cuda>=10.0"
-ENV CUDA_VERSION 10.2
+# ENV NVIDIA_REQUIRE_CUDA "cuda>=11.0"
+# ENV CUDA_VERSION 11.0
 
 # Install common packages
 RUN apt-get update && \
