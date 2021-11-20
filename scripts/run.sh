@@ -1,6 +1,6 @@
 # Define Variables
-CPU_IMAGE="edurs0/tfod-wkspc"
-GPU_IMAGE="edurs0/tfod-wkspc-gpu"
+CPU_IMAGE="edurs0/tfod-wkspc:latest"
+GPU_IMAGE="edurs0/tfod-wkspc:latest-gpu"
 
 # Placeholders
 unset GPU
