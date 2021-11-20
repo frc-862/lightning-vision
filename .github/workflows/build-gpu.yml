@@ -1,9 +1,5 @@
 name: Build GPU Image
 
-# Issue:
-# This build runs out of space as it requires >14GB
-# It will always fail.
-
 on:
   push:
     branches: build
@@ -24,4 +20,4 @@ jobs:
       - name: before image build
         run: docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
       - name: build the image
-        run: docker buildx build --platform linux/amd64,linux/arm64 -t "${{ secrets.DOCKER_USERNAME }}"/tfod-wkspc-gpu:latest --push ./dockerfiles/gpu/
+        run: docker buildx build --platform linux/amd64,linux/arm64 -t "${{ secrets.DOCKER_USERNAME }}"/tfod-wkspc:latest-gpu --push ./dockerfiles/gpu/
