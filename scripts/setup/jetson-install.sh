@@ -23,7 +23,6 @@ sudo apt install -y \
     zip
 
 sudo pip3 install \
-    tensorflow==2.5.0 \
     matplotlib \
 	tf_slim \
 	pycocotools \
@@ -32,7 +31,7 @@ sudo pip3 install \
 	jupyter -U \
 	jupyterlab
 
-sudo pip3 install --extra-index-url https://snapshots.linaro.org/ldcg/python-cache/ tensorflow-io
+sudo pip3 install --extra-index-url https://snapshots.linaro.org/ldcg/python-cache/ tensorflow-io tensorflow
 sudo wget https://github.com/deepmind/tree/archive/refs/tags/0.1.6.tar.gz
 sudo tar -xvzf 0.1.6.tar.gz
 cd tree-0.1.6/ && python3 setup.py install
