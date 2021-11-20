@@ -75,7 +75,7 @@ RUN apt-get update && \
 RUN python3 -m pip install --upgrade pip
 
 # Install tensorflow
-RUN pip install tensorflow==2.*
+RUN pip3 install tensorflow==2.*
 
 # Test tensorflow installation
 RUN python3 -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
