@@ -7,7 +7,11 @@ FROM tensorflow/tensorflow:latest-devel-gpu-py3
 # Make tf directory
 RUN mkdir -p /tensorflow/models
 
-# Setup capabilties for cuda
+# Environment vars and args
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=America/Detroit
+
+# Setup for cuda
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
 # ENV NVIDIA_REQUIRE_CUDA "cuda>=11.0"

@@ -1,10 +1,14 @@
 # Dockerfile for tfod-api enabled workspace
 
-# Use tensorflow image
+# Use nvidia tensorflow image
 FROM tensorflow/tensorflow:latest-devel-py3
 
 # Make tf directory
 RUN mkdir -p /tensorflow/models
+
+# Environment vars and args
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=America/Detroit
 
 # Install common packages
 RUN apt-get update && \
