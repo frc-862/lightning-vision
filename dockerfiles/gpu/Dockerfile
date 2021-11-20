@@ -2,7 +2,8 @@
 
 # Use nvidia tensorflow image
 #FROM nvcr.io/nvidia/tensorflow:21.10-tf2-py3
-FROM tensorflow/tensorflow:latest-devel-gpu-py3
+#FROM tensorflow/tensorflow:latest-devel-gpu-py3
+FROM ubuntu:latest
 
 # Make tf directory
 RUN mkdir -p /tensorflow/models

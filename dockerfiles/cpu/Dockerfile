@@ -1,7 +1,8 @@
 # Dockerfile for tfod-api enabled workspace
 
 # Use nvidia tensorflow image
-FROM tensorflow/tensorflow:latest-devel-py3
+#FROM tensorflow/tensorflow:latest-devel-py3
+FROM ubuntu:latest
 
 # Make tf directory
 RUN mkdir -p /tensorflow/models
