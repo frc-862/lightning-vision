@@ -36,9 +36,7 @@ WORKDIR /tensorflow/models/research
 RUN protoc object_detection/protos/*.proto --python_out=.
 
 # Install python packages
-RUN pip3 install matplotlib \
-	#tf_slim \
-	pycocotools \
+RUN pip3 install pycocotools \
 	opencv-python \
 	opencv-contrib-python \
 	jupyter -U \
