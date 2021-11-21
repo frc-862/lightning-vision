@@ -2,12 +2,10 @@
 
 [![TensorFlow 2.5](https://img.shields.io/badge/TensorFlow-2.5-FF6F00?logo=tensorflow)](https://github.com/tensorflow/tensorflow/releases/tag/v2.5.0)
 [![Python 3.6](https://img.shields.io/badge/Python-3.6-3776AB)](https://www.python.org/downloads/release/python-360/)
-[![Docker CPU Image](https://badges.fyi/static/Docker/CPU/blue)](http://hub.docker.com/r/edurs0/tfod-wkspc)
-[![Docker GPU Image](https://badges.fyi/static/Docker/GPU/blue)](http://hub.docker.com/r/edurs0/tfod-wkspc)
+[![Docker Image](https://badges.fyi/static/Docker/Jetson/blue)](http://hub.docker.com/r/edurs0/tfod-wkspc)
 [![Docs](https://readthedocs.org/projects/pip/badge/)](https://github.com/edurso/tfod-wkspc/blob/master/docs)
 
-[![Build CPU Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-cpu.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
-[![Build GPU Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-gpu.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
+[![Build Jetson Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-jetson.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
 
 Disclaimer: Nothing here really works yet.
 
