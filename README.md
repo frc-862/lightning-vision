@@ -9,11 +9,11 @@
 
 Disclaimer: Nothing here really works yet.
 
-This project is intended to provide an easy-to-use environment where object detection models can be trained using the [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md).\
-The [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md) comes installed in the two provided docker images.
+This project is intended to provide an easy-to-use environment where object detection models can be trained using the [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md) on a NVIDIA Jetson module.\
+The [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md) comes installed in the provided [docker image](http://hub.docker.com/r/edurs0/tfod-wkspc).
 
 [Here](#installation) are instructions for installing tools needed to work with this project.\
-[Here](#building) are instructions for manually building the docker images.\
+[Here](#building) are instructions for manually building the docker image.\
 [Here](https://github.com/edurso/tfod-wkspc/blob/master/docs/TRAINING.md) are instructions for training a custom object detection model.\
 [Here](https://github.com/edurso/tfod-wkspc/blob/master/docs/INFERENCE.md) are instructions for running inference on a trained model with OpenCV & TensorFlow.\
 [Here](https://github.com/edurso/tfod-wkspc/blob/master/docs/JETSON-NANO.md) are instructions for setting up a NVIDIA Jetson Nano (2GB) as a developmen environment for this project.

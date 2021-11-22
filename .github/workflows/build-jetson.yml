@@ -2,7 +2,7 @@ name: Build Jetson Image
 
 on:
   push:
-    branches: master
+    branches: build
 
 jobs:
   build:
