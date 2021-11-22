@@ -36,12 +36,7 @@ WORKDIR /tensorflow/models/research
 RUN protoc object_detection/protos/*.proto --python_out=.
 
 # Install bazel & python packages
-RUN pip3 install pycocotools \
-	opencv-python \
-	opencv-contrib-python \
-	jupyter -U \
-	jupyterlab \
-    tf-models-official 
+
 RUN pip3 install --extra-index-url https://snapshots.linaro.org/ldcg/python-cache/ tensorflow-io
 RUN wget -O /usr/bin/bazel https://github.com/bazelbuild/bazel/releases/download/3.7.2/bazel-3.7.2-linux-arm64 \
     && chmod +x /usr/bin/bazel \
@@ -50,7 +45,18 @@ RUN wget https://github.com/deepmind/tree/archive/refs/tags/0.1.6.tar.gz \
     && tar -xvzf 0.1.6.tar.gz \
     && cd tree-0.1.6/ \
     && python3 setup.py install \
-    && cd .. && rm -rf tree-0.1.6/
+    && cd .. && rm -rf tree-0.1.6/ 0.1.6.tar.gz
+RUN wget https://github.com/tensorflow/addons/archive/refs/tags/v0.15.0.tar.gz \
+    && tar -xvzf addons-0.15.0.tar.gz \
+    && cd addons-0.15.0/ \
+    && python3 setup.py install \
+    && cd .. && rm -rf addons-0.15.0/ addons-0.15.0.tar.gz
+RUN pip3 install pycocotools \
+    opencv-python \
+    opencv-contrib-python \
+    jupyter -U \
+    jupyterlab \
+    tf-models-official 
 
 # Test tensorflow installation
 RUN python3 -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
