@@ -44,11 +44,12 @@ RUN wget https://github.com/deepmind/tree/archive/refs/tags/0.1.6.tar.gz \
     && cd tree-0.1.6/ \
     && python3 setup.py install \
     && cd .. && rm -rf tree-0.1.6/ 0.1.6.tar.gz \
-    && wget https://github.com/tensorflow/io/archive/refs/tags/v0.18.0.tar.gz \
-    && tar -xvzf v0.18.0.tar.gz \
-    && cd io-0.18.0/ \
-    && python3 setup.py install \
-    && cd .. && rm -rf io-0.18.0/ v0.18.0.tar.gz \
+    && pip3 install https://snapshots.linaro.org/ldcg/python-cache/tensorflow-io-gcs-filesystem/tensorflow_io_gcs_filesystem-0.20.0-cp36-cp36m-linux_aarch64.whl \
+    # && wget https://github.com/tensorflow/io/archive/refs/tags/v0.18.0.tar.gz \
+    # && tar -xvzf v0.18.0.tar.gz \
+    # && cd io-0.18.0/ \
+    # && python3 setup.py install \
+    # && cd .. && rm -rf io-0.18.0/ v0.18.0.tar.gz \
     && wget https://github.com/tensorflow/addons/archive/refs/tags/v0.15.0.tar.gz \
     && tar -xvzf v0.15.0.tar.gz \
     && cd addons-0.15.0/ \
