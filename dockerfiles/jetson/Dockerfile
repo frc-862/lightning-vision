@@ -54,7 +54,7 @@ RUN wget https://github.com/deepmind/tree/archive/refs/tags/0.1.6.tar.gz \
     && cd addons-0.15.0/ \
     && python3 setup.py install \
     && cd .. && rm -rf addons-0.15.0/ v0.15.0.tar.gz \
-    pip3 install pycocotools \
+    && pip3 install pycocotools \
     opencv-python \
     opencv-contrib-python \
     jupyter -U \
