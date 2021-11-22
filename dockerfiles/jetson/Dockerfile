@@ -44,11 +44,11 @@ RUN wget https://github.com/deepmind/tree/archive/refs/tags/0.1.6.tar.gz \
     && cd tree-0.1.6/ \
     && python3 setup.py install \
     && cd .. && rm -rf tree-0.1.6/ 0.1.6.tar.gz \
-    && wget https://github.com/tensorflow/io/archive/refs/tags/v0.22.0.tar.gz \
-    && tar -xvzf v0.22.0.tar.gz \
-    && cd io-0.22.0/ \
+    && wget https://github.com/tensorflow/io/archive/refs/tags/v0.18.0.tar.gz \
+    && tar -xvzf v0.2218.0.tar.gz \
+    && cd io-0.18.0/ \
     && python3 setup.py install \
-    && cd .. && rm -rf io-0.22.0/ v0.22.0.tar.gz \
+    && cd .. && rm -rf io-0.18.0/ v0.18.0.tar.gz \
     && wget https://github.com/tensorflow/addons/archive/refs/tags/v0.15.0.tar.gz \
     && tar -xvzf v0.15.0.tar.gz \
     && cd addons-0.15.0/ \
