@@ -45,7 +45,7 @@ RUN wget https://github.com/deepmind/tree/archive/refs/tags/0.1.6.tar.gz \
     && python3 setup.py install \
     && cd .. && rm -rf tree-0.1.6/ 0.1.6.tar.gz \
     && wget https://github.com/tensorflow/io/archive/refs/tags/v0.18.0.tar.gz \
-    && tar -xvzf v0.2218.0.tar.gz \
+    && tar -xvzf v0.18.0.tar.gz \
     && cd io-0.18.0/ \
     && python3 setup.py install \
     && cd .. && rm -rf io-0.18.0/ v0.18.0.tar.gz \
