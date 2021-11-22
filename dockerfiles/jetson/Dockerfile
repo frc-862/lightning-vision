@@ -40,7 +40,8 @@ RUN pip3 install pycocotools \
 	opencv-python \
 	opencv-contrib-python \
 	jupyter -U \
-	jupyterlab
+	jupyterlab \
+    tf-models-official 
 RUN pip3 install --extra-index-url https://snapshots.linaro.org/ldcg/python-cache/ tensorflow-io
 RUN wget -O /usr/bin/bazel https://github.com/bazelbuild/bazel/releases/download/3.7.2/bazel-3.7.2-linux-arm64 \
     && chmod +x /usr/bin/bazel \
