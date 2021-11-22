@@ -35,13 +35,13 @@ WORKDIR /tensorflow/models/research
 # Compile protos
 RUN protoc object_detection/protos/*.proto --python_out=.
 
-# Install python packages
+# Install bazel & python packages
 RUN pip3 install pycocotools \
 	opencv-python \
 	opencv-contrib-python \
 	jupyter -U \
 	jupyterlab
-# RUN pip3 install --extra-index-url https://snapshots.linaro.org/ldcg/python-cache/ tensorflow-io
+RUN pip3 install --extra-index-url https://snapshots.linaro.org/ldcg/python-cache/ tensorflow-io
 RUN wget -O /usr/bin/bazel https://github.com/bazelbuild/bazel/releases/download/3.7.2/bazel-3.7.2-linux-arm64 \
     && chmod +x /usr/bin/bazel \
     && alias bazel="/usr/bin/bazel"
