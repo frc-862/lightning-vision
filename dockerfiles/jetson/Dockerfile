@@ -45,15 +45,15 @@ RUN wget https://github.com/deepmind/tree/archive/refs/tags/0.1.6.tar.gz \
     && python3 setup.py install \
     && cd .. && rm -rf tree-0.1.6/ 0.1.6.tar.gz \
     && wget https://github.com/tensorflow/io/archive/refs/tags/v0.22.0.tar.gz \
-    && tar -xvzf io-0.22.0.tar.gz \
+    && tar -xvzf v0.22.0.tar.gz \
     && cd io-0.22.0/ \
     && python3 setup.py install \
-    && cd .. && rm -rf io-0.22.0/ io-0.22.0.tar.gz \
+    && cd .. && rm -rf io-0.22.0/ v0.22.0.tar.gz \
     && wget https://github.com/tensorflow/addons/archive/refs/tags/v0.15.0.tar.gz \
-    && tar -xvzf addons-0.15.0.tar.gz \
+    && tar -xvzf v0.15.0.tar.gz \
     && cd addons-0.15.0/ \
     && python3 setup.py install \
-    && cd .. && rm -rf addons-0.15.0/ addons-0.15.0.tar.gz \
+    && cd .. && rm -rf addons-0.15.0/ v0.15.0.tar.gz \
     pip3 install pycocotools \
     opencv-python \
     opencv-contrib-python \
