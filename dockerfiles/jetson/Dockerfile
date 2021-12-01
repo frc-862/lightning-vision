@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/l4t-base:r32.2.1
+FROM nvcr.io/nvidia/l4t-ml:r32.6.1-py3
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -50,8 +50,8 @@ RUN pip3 --no-cache-dir install -U -v \
     wrapt \
 	google-pasta
 
-RUN pip3 --no-cache-dir install --pre -v --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v45 \
-	tensorflow==2.5.0+nv21.6
+RUN pip3 --no-cache-dir install --pre -v --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v46 \
+	tensorflow==2.5.0+nv21.7
 
 EXPOSE 8888 6006
 
