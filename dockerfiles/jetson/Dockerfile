@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/l4t-tensorflow:r32.4.3-tf2.2-py3 
+FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf2.5-py3
 
 ARG DEBIAN_FRONTEND=noninteractive
 
