@@ -1,28 +1,60 @@
-FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf2.5-py3
+FROM nvcr.io/nvidia/l4t-base:r32.2.1
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update \
-    && apt-get install -y \
-    protobuf-compiler \
-    libxml2-dev \
-    libxslt-dev \
-    git \
-    && python3 -m pip install --upgrade pip
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    libfreetype6-dev \
+    libhdf5-dev \
+    libpng-dev \
+    libzmq3-dev \
+    pkg-config \
+    python3-dev \
+    python3-numpy \
+    python3-scipy \
+    python3-sklearn \
+    python3-matplotlib \
+    python3-pandas \
+    rsync \
+    unzip \
+    zlib1g-dev \
+    zip \
+    libjpeg8-dev \
+    hdf5-tools \
+    libhdf5-serial-dev \
+    python3-pip \
+    python3-setuptools \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && pip3 install -U pip -v
 
-RUN mkdir -p /tensorflow/models \
-    && git clone https://github.com/tensorflow/models.git /tensorflow/models
-WORKDIR /tensorflow/models/research
+RUN pip3 --no-cache-dir install -U -v \
+	jupyter \
+    jupyterlab \
+    grpcio \
+    absl-py \
+    py-cpuinfo \
+    psutil \
+    portpicker \
+    six mock \
+    requests \
+    gast \
+    h5py \
+    astor \
+    termcolor \
+    protobuf \
+    keras \
+    keras-applications \
+    keras-preprocessing \
+    wrapt \
+	google-pasta
 
-RUN protoc object_detection/protos/*.proto --python_out=. \
-    && cp object_detection/packages/tf2/setup.py . \
-    && pip3 install --no-deps . \
-    && pip3 install jupyter jupyterlab
+RUN pip3 --no-cache-dir install --pre -v --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v45 \
+	tensorflow==2.5.0+nv21.6
 
-# RUN python3 object_detection/builders/model_builder_tf2_test.py
+EXPOSE 8888 6006
 
 RUN mkdir -p /tensorflow/workspace
-WORKDIR /tensorflow/workspace
-EXPOSE 8888
-EXPOSE 6006
-ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root"]
+
+CMD ["jupyter", "lab", "--no-browser", "--ip=0.0.0.0", "--allow-root", "--notebook-dir='/tensorflow/workspace'"]
