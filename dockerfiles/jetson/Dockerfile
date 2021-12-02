@@ -29,26 +29,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && pip3 install -U pip -v \ 
     && pip3 install --no-cache-dir install -U -v \
     numpy==1.19.5 \
-    numba==0.53.1 \
     pandas==1.1.5 \
     scipy==1.5.4 \
     jupyterlab==2.2.9 \
-    matplotlib==3.3.4 \
-    grpcio \
-    absl-py \
-    py-cpuinfo \
-    psutil \
-    portpicker \
     six mock \
     requests \
-    gast \
-    astor \
     termcolor \
     protobuf \
     keras \
     keras-applications \
     keras-preprocessing \
-    wrapt \
     google-pasta
 
 RUN wget -O /usr/bin/bazel https://github.com/bazelbuild/bazel/releases/download/3.7.2/bazel-3.7.2-linux-arm64 \
@@ -65,8 +55,6 @@ RUN wget -O /usr/bin/bazel https://github.com/bazelbuild/bazel/releases/download
     && python3 setup.py install \
     && cd .. && rm -rf tree-0.1.6/ 0.1.6.tar.gz \
     && pip3 install tf-models-official==2.6.0
-
-RUN pip3 
 
 RUN mkdir -p /tensorflow/models \
     && git clone https://github.com/tensorflow/models.git /tensorflow/models
