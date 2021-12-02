@@ -33,7 +33,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && pip3 install -U pip -v
 
-RUN wget https://github.com/tensorflow/addons/archive/refs/tags/v0.13.0.tar.gz \
+RUN wget -O /usr/bin/bazel https://github.com/bazelbuild/bazel/releases/download/3.7.2/bazel-3.7.2-linux-arm64 \
+    && chmod +x /usr/bin/bazel \
+    && alias bazel="/usr/bin/bazel" \
+    && wget https://github.com/tensorflow/addons/archive/refs/tags/v0.13.0.tar.gz \
     && tar -xvzf v0.13.0.tar.gz \
     && cd addons-0.13.0/ \
     && python3 setup.py install \
