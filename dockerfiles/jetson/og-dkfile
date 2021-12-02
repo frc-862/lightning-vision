@@ -23,6 +23,5 @@ RUN protoc object_detection/protos/*.proto --python_out=. \
 
 RUN mkdir -p /tensorflow/workspace
 WORKDIR /tensorflow/workspace
-EXPOSE 8888
-EXPOSE 6006
+EXPOSE 8888 6006
 ENTRYPOINT ["jupyter", "lab", "--ip=0.0.0.0", "--allow-root"]
