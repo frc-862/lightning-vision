@@ -33,10 +33,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && pip3 install -U pip -v
 
+RUN wget https://github.com/tensorflow/addons/archive/refs/tags/v0.13.0.tar.gz \
+    && tar -xvzf v0.13.0.tar.gz \
+    && cd addons-0.13.0/ \
+    && python3 setup.py install \
+    && cd .. && rm -rf addons-0.13.0/ v0.13.0.tar.gz \
+    && wget https://github.com/deepmind/tree/archive/refs/tags/0.1.6.tar.gz \
+    && tar -xvzf 0.1.6.tar.gz \
+    && cd tree-0.1.6/ \
+    && python3 setup.py install \
+    && cd .. && rm -rf tree-0.1.6/ 0.1.6.tar.gz
+
 RUN pip3 --no-cache-dir install --pre -v --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v46 \
-	tensorflow==2.5.0+nv21.7 \
+    tensorflow==2.5.0+nv21.7 \
     && pip3 --no-cache-dir install -U -v \
-	jupyter \
+    jupyter \
     jupyterlab \
     grpcio \
     absl-py \
@@ -54,7 +65,7 @@ RUN pip3 --no-cache-dir install --pre -v --extra-index-url https://developer.dow
     keras-applications \
     keras-preprocessing \
     wrapt \
-	google-pasta \
+    google-pasta \
     tf-models-official==2.6.0
 
 
