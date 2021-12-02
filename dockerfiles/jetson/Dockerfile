@@ -42,7 +42,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     six mock \
     requests \
     gast \
-    h5py \
     astor \
     termcolor \
     protobuf \
@@ -50,8 +49,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     keras-applications \
     keras-preprocessing \
     wrapt \
-    google-pasta \
-    tf-models-official==2.6.0
+    google-pasta
 
 RUN wget -O /usr/bin/bazel https://github.com/bazelbuild/bazel/releases/download/3.7.2/bazel-3.7.2-linux-arm64 \
     && chmod +x /usr/bin/bazel \
@@ -65,7 +63,8 @@ RUN wget -O /usr/bin/bazel https://github.com/bazelbuild/bazel/releases/download
     && tar -xvzf 0.1.6.tar.gz \
     && cd tree-0.1.6/ \
     && python3 setup.py install \
-    && cd .. && rm -rf tree-0.1.6/ 0.1.6.tar.gz
+    && cd .. && rm -rf tree-0.1.6/ 0.1.6.tar.gz \
+    && pip3 install tf-models-official==2.6.0
 
 RUN pip3 
 
