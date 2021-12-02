@@ -33,7 +33,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && pip3 install -U pip -v
 
-RUN pip3 --no-cache-dir install -U -v \
+RUN pip3 --no-cache-dir install --pre -v --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v46 \
+	tensorflow==2.5.0+nv21.7 \
+    && pip3 --no-cache-dir install -U -v \
 	jupyter \
     jupyterlab \
     grpcio \
@@ -52,10 +54,9 @@ RUN pip3 --no-cache-dir install -U -v \
     keras-applications \
     keras-preprocessing \
     wrapt \
-	google-pasta
+	google-pasta \
+    tf-models-official==2.6.0
 
-RUN pip3 --no-cache-dir install --pre -v --extra-index-url https://developer.download.nvidia.com/compute/redist/jp/v46 \
-	tensorflow==2.5.0+nv21.7
 
 RUN mkdir -p /tensorflow/models \
     && git clone https://github.com/tensorflow/models.git /tensorflow/models
@@ -72,8 +73,7 @@ RUN wget https://github.com/tensorflow/io/archive/refs/tags/v0.19.1.tar.gz \
 
 RUN protoc object_detection/protos/*.proto --python_out=. \
     && cp object_detection/packages/tf2/setup.py . \
-    && pip3 install . \
-    && pip3 install jupyter jupyterlab
+    && pip3 install .
 
 RUN python3 object_detection/builders/model_builder_tf2_test.py
 
