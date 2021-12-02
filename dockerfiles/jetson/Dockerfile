@@ -53,9 +53,14 @@ RUN wget -O /usr/bin/bazel https://github.com/bazelbuild/bazel/releases/download
     && tar -xvzf 0.1.6.tar.gz \
     && cd tree-0.1.6/ \
     && python3 setup.py install \
-    && cd .. && rm -rf tree-0.1.6/ 0.1.6.tar.gz \
+    && cd .. && rm -rf tree-0.1.6/ 0.1.6.tar.gz \ 
+    && wget https://github.com/tensorflow/text/archive/refs/tags/v2.6.0.tar.gz \
+    && tar -xvzf v2.6.0.tar.gz \
+    && cd text-2.6.0/oss_scripts/ \
+    && ./run_build.sh \
+    && cd ../.. && rm -rf text-2.6.0/ v2.6.0.tar.gz \
     && pip3 install tf-models-official==2.6.0
-
+    
 RUN mkdir -p /tensorflow/models \
     && git clone https://github.com/tensorflow/models.git /tensorflow/models
 WORKDIR /tensorflow/models/research
