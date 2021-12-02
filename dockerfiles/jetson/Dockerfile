@@ -28,13 +28,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && pip3 install -U pip -v \ 
     && pip3 install --no-cache-dir install -U -v \
-    cupy-cuda102==9.2.0 \
     numpy==1.19.5 \
     numba==0.53.1 \
     pandas==1.1.5 \
     scipy==1.5.4 \
     scikit-learn==0.23.2 \
     jupyterlab==2.2.9 \
+    matplotlib==3.3.4 \
     grpcio \
     absl-py \
     py-cpuinfo \

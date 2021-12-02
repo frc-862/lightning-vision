@@ -19,3 +19,12 @@ RUN wget https://github.com/tensorflow/io/archive/refs/tags/v0.19.1.tar.gz \
     && cd dist && pip3 install $(ls | grep *.whl) \
     && cd .. && pip3 install . \
     && cd .. && rm -rf io-0.19.1.tar.gz io-0.19.1/
+
+RUN pip3 install \
+    numpy==1.19.5 \
+    numba==0.53.1 \
+    pandas==1.1.5 \
+    scipy==1.5.4 \
+    scikit-learn==0.23.2 \
+    jupyterlab==2.2.9 \
+    matplotlib==3.3.4 
