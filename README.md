@@ -71,6 +71,7 @@ Use this command directly on the jetson.
 - `shell` will shell into an active container/
 - `purge` will remove the image from the local docker registry.
 - `build` will create the docker image.
+- `deploy` will build the image and push it to the hub.
 - `push` will push the image to the hub.
 - `pull` will pull the image from the hub.
 

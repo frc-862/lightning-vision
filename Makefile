@@ -32,9 +32,13 @@ clean:
 purge:
 	docker rmi $(IMAGE)
 
-# Build image & push to hub
+# Build image
 build:
 	docker buildx build --platform linux/arm64 -t $(IMAGE) ./dockerfiles/jetson-dev
+
+# Build image & push to hub
+deploy:
+	docker buildx build --platform linux/arm64 --push -t $(IMAGE) ./dockerfiles/jetson-dev
 
 # Push image to hub
 push:

@@ -20,6 +20,4 @@ jobs:
       - name: before image build
         run: make qemu
       - name: build the image
-        run: make build
-      - name: push to hub
-        run: make push
+        run: make deploy
