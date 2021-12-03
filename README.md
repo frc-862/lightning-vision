@@ -4,7 +4,7 @@
 [![Python 3.6](https://img.shields.io/badge/Python-3.6-3776AB)](https://www.python.org/downloads/release/python-360/)
 [![JetPack Version](https://badges.fyi/static/JetPack/4.6/blue)](https://developer.nvidia.com/embedded/jetpack)\
 [![Docs](https://readthedocs.org/projects/pip/badge/)](https://github.com/edurso/tfod-wkspc/blob/master/docs)
-[![Build Jetson Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-jetson.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
+[![Build Jetson Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-jetson-dev.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
 
 This project is intended to provide an easy-to-use environment where object detection models can be trained using the [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md) on a NVIDIA Jetson module.\
 The [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md) comes installed in the provided [docker image](http://hub.docker.com/r/edurs0/tfod-wkspc) which is based on the [NVIDIA l4t-tensorflow image](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/l4t-tensorflow).
