@@ -1,4 +1,5 @@
-# Docker Container
+# Docker Container for NVIDIA Jetson
+# JetPack 4.6
 
 # Use NVIDIA Base Container for TensorFlow
 # https://ngc.nvidia.com/catalog/containers/nvidia:l4t-tensorflow
@@ -54,14 +55,14 @@ RUN wget -O /usr/bin/bazel https://github.com/bazelbuild/bazel/releases/download
     && chmod +x /usr/bin/bazel \
     && alias bazel="/usr/bin/bazel"
 
-# Install `tensorflow-addons` (build from source - no aarch64 wheel)
+# Install `tensorflow-addons` (build from source)
 RUN wget https://github.com/tensorflow/addons/archive/refs/tags/v0.13.0.tar.gz \
     && tar -xvzf v0.13.0.tar.gz \
     && cd addons-0.13.0/ \
     && python3 setup.py install \
     && cd .. && rm -rf addons-0.13.0/ v0.13.0.tar.gz
 
-# Install `tensorflow-io` & `tensorflow-io-gcs-filesystem` (build from source - no aarch64 wheel)
+# Install `tensorflow-io` & `tensorflow-io-gcs-filesystem` (build from source)
 RUN wget https://github.com/tensorflow/io/archive/refs/tags/v0.19.1.tar.gz \
     && tar -xvzf v0.19.1.tar.gz && cd io-0.19.1/ \
     && chmod +x ./configure.sh \
