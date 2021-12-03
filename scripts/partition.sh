@@ -8,4 +8,3 @@ python $SCRIPTS/preprocessing/partition-dataset.py \
     -i $IMAGE_DIRECTORY \
     -r $RATIO \
     -x
-
