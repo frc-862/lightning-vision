@@ -47,4 +47,8 @@ push:
 # Pull image from hub
 pull:
 	docker pull $(IMAGE)
+
+# Stops the container
+stop:
+	docker stop $(CONTAINER)
 	
