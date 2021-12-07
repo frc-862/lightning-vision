@@ -5,8 +5,8 @@ IMAGE=edurs0/tfod-wkspc:latest-jetson
 CONTAINER=tfod-trainer
 NETWORK=host
 RUNTIME=nvidia
-LOCAL_JUPYTER_PORT=8888
-LOCAL_TENSORBOARD_PORT=6006
+JUPYTER=8888
+TENSORBOARD=6006
 
 # Setup local runner to build for arm64
 # may need to run before `build`
@@ -18,7 +18,7 @@ resume:
 	docker start -ai $(CONTAINER)
 
 run:
-	docker run -it -p $(LOCAL_JUPYTER_PORT):8888 -p $(LOCAL_TENSORBOARD_PORT):6006 -v $(shell pwd):/tensorflow/workspace --runtime $(RUNTIME) --network $(NETWORK) --name $(CONTAINER) $(IMAGE)
+	docker run -it -p $(JUPYTER):8888 -p $(TENSORBOARD):6006 -v $(shell pwd):/tensorflow/workspace --runtime $(RUNTIME) --network $(NETWORK) --name $(CONTAINER) $(IMAGE)
 
 # Shell into container
 shell:
@@ -34,16 +34,16 @@ purge:
 
 # Build image
 build:
-	docker buildx build --platform linux/arm64 -t $(IMAGE) ./dockerfiles/jetson-dev
+	docker buildx build --platform linux/arm64 -t $(IMAGE) ./dockerfiles/
 
 # Build image & push to hub
 deploy:
-	docker buildx build --platform linux/arm64 --push -t $(IMAGE) ./dockerfiles/jetson-dev
+	docker buildx build --platform linux/arm64 --push -t $(IMAGE) ./dockerfiles/
 
 # Push image to hub
 push:
 	docker push $(IMAGE)
-        
+
 # Pull image from hub
 pull:
 	docker pull $(IMAGE)
@@ -51,4 +51,4 @@ pull:
 # Stops the container
 stop:
 	docker stop $(CONTAINER)
-	
+

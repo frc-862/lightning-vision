@@ -135,11 +135,13 @@ training-demo/
 ├─ ...
 ├─ models/
 │  └─ my_ssd_resnet50_v1_fpn/
+│     ├─ checkpoint/
 │     └─ pipeline.config
 └─ ...
 ```
 
-where `pipeline.config` is copied form the pre-trained model you downloaded.
+where `pipeline.config` is copied form the pre-trained model you downloaded.\
+Also be sure to copy the `checkpoint/` directory or the training process will be unable to start.
 
 Edit the following in the `pipeline.config` file:
 
@@ -157,7 +159,7 @@ Edit the following in the `pipeline.config` file:
 To train the model, you can use the `train.sh` script in `/tensorflow/workspace/scripts/`.
 Before running `train.sh`, be sure to set `$WORKSPACE` to the project directory and `$MODEL_TYPE` to the model type, or the name of the directory housing the config in `models/` (idealy this will be the same as `model.feature_extractor.type` in the `pipeline.config`).
 
-While the model is training, you can view its progress with [tensorboard](https://www.tensorflow.org/tensorboard) by running the finction below where `$WORKSPACE` and `$MODEL_TYPE` are the same as defined above.
+While the model is training, you can view its progress with [tensorboard](https://www.tensorflow.org/tensorboard) by running the function below where `$WORKSPACE` and `$MODEL_TYPE` are the same as defined above.
 
 ```bash
 tensorboard --logdir=$WORKSPACE/models/$MODEL_TYPE
