@@ -95,3 +95,7 @@ and try again.
 #### Automated Builds on GitHub Actions
 
 GitHub Actions is configured to build and push the image when released to the [`build`](https://github.com/edurso/tfod-wkspc/tree/build) branch.
+
+### Other Known Issues
+
+[This issue with tensor shape during training](https://github.com/tensorflow/models/issues/9133).
