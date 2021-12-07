@@ -4,7 +4,7 @@ RATIO=0.1
 SCRIPTS="/tensorflow/workspace/scripts"
 
 # Run Partition Script
-python $SCRIPTS/preprocessing/partition-dataset.py \
+python3 $SCRIPTS/preprocessing/partition-dataset.py \
     -i $IMAGE_DIRECTORY \
     -r $RATIO \
     -x
