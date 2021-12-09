@@ -2,7 +2,7 @@
 
 [![TensorFlow 2.5](https://img.shields.io/badge/TensorFlow-2.5-FF6F00?logo=tensorflow)](https://github.com/tensorflow/tensorflow/releases/tag/v2.5.0)
 [![Python 3.6](https://img.shields.io/badge/Python-3.6-3776AB)](https://www.python.org/downloads/release/python-360/)
-[![JetPack Version](https://badges.fyi/static/JetPack/4.6/blue)](https://developer.nvidia.com/embedded/jetpack)\
+[![JetPack Version](https://badges.fyi/static/JetPack/4.6/green)](https://developer.nvidia.com/embedded/jetpack)\
 [![Docs](https://readthedocs.org/projects/pip/badge/)](https://github.com/edurso/tfod-wkspc/blob/master/docs)
 [![Build Jetson Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-jetson-dev.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
 
