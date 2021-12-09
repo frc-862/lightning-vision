@@ -1,4 +1,4 @@
-name: Build Jetson Image
+name: Build Test Image
 
 on:
   push:
