@@ -1,9 +1,8 @@
-# Docker Container for NVIDIA Jetson
-# JetPack 4.6
+# Docker Container for General Use
 
-# Use NVIDIA Base Container for TensorFlow
-# https://ngc.nvidia.com/catalog/containers/nvidia:l4t-tensorflow
-FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf2.5-py3
+# Use TensorFlow 2.5.0 Base Container
+# https://hub.docker.com/r/tensorflow/tensorflow
+FROM tensorflow/tensorflow:2.5.0
 
 # Build Environment Configuration
 ARG DEBIAN_FRONTEND=noninteractive
@@ -52,7 +51,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     google-pasta
 
 # Install Bazel (a little sketchy, but it works ¯\_(ツ)_/¯)
-RUN wget -O /usr/bin/bazel https://github.com/bazelbuild/bazel/releases/download/3.7.2/bazel-3.7.2-linux-arm64 \
+RUN wget -O /usr/bin/bazel https://github.com/bazelbuild/bazel/releases/download/3.7.2/bazel-3.7.2-linux-x86_64 \
     && chmod +x /usr/bin/bazel \
     && alias bazel="/usr/bin/bazel"
 
