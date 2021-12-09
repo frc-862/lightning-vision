@@ -7,7 +7,7 @@ DETECTOR_HOME="/tensorflow/models/research/object_detection"
 python3 $DETECTOR_HOME/model_main_tf2.py \
     --model_dir=models/$MODEL_TYPE \
     --pipeline_config_path=models/$MODEL_TYPE/pipeline.config \
-    --checkpoint_dir=models/$MODEL_TYPE/ \
+    --checkpoint_dir=models/$MODEL_TYPE/checkpoint \
     --eval_dir=models/$MODEL_TYPE/
 
 # To View Training Progress run
