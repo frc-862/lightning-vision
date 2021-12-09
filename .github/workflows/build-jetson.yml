@@ -1,4 +1,4 @@
-name: Build Test Image
+name: Build Jetson Image
 
 on:
   push:
@@ -20,4 +20,4 @@ jobs:
       - name: before image build
         run: make qemu
       - name: build the image
-        run: make deploy-test
+        run: make deploy device=jetson

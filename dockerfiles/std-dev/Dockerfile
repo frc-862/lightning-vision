@@ -12,7 +12,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     make \
     curl \
-    wget \
     libfreetype6-dev \
     libhdf5-dev \
     libpng-dev \

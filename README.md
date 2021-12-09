@@ -2,12 +2,16 @@
 
 [![TensorFlow 2.5](https://img.shields.io/badge/TensorFlow-2.5-FF6F00?logo=tensorflow)](https://github.com/tensorflow/tensorflow/releases/tag/v2.5.0)
 [![Python 3.6](https://img.shields.io/badge/Python-3.6-3776AB)](https://www.python.org/downloads/release/python-360/)
-[![JetPack Version](https://badges.fyi/static/JetPack/4.6/green)](https://developer.nvidia.com/embedded/jetpack)\
-[![Docs](https://readthedocs.org/projects/pip/badge/)](https://github.com/edurso/tfod-wkspc/blob/master/docs)
-[![Build Jetson Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-jetson-dev.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
+[![JetPack Version](https://badges.fyi/static/JetPack/4.6/green)](https://developer.nvidia.com/embedded/jetpack)
+[![Docs](https://readthedocs.org/projects/pip/badge/)](https://github.com/edurso/tfod-wkspc/blob/master/docs)\
+[![Build Jetson Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-jetson.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
+[![Build CPU Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-std-cpu.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
+[![Build GPU Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-std-gpu.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
 
-This project is intended to provide an easy-to-use environment where object detection models can be trained using the [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md) on a NVIDIA Jetson module.\
-The [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md) comes installed in the provided [docker image](http://hub.docker.com/r/edurs0/tfod-wkspc) which is based on the [NVIDIA l4t-tensorflow image](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/l4t-tensorflow).
+This project is intended to provide an easy-to-use environment where object detection models can be trained using the [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md).\
+The [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md) comes installed in the provided [docker images](http://hub.docker.com/r/edurs0/tfod-wkspc).\
+The Jetson image is based on the [NVIDIA l4t-tensorflow image](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/l4t-tensorflow)
+and the other images are based on the [base tensorflow image](https://hub.docker.com/r/tensorflow/tensorflow).
 
 **Contents:**\
 [Here](#installation) are instructions for installing tools needed to work with this project.\
@@ -16,6 +20,8 @@ The [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/
 [Here](https://github.com/edurso/tfod-wkspc/blob/master/docs/INFERENCE.md) are instructions for running inference on a trained model with OpenCV & TensorFlow.
 
 ## Installation
+
+### Jetson Nano 2gb
 
 To setup a [NVIDIA Jetson Nano 2gb](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-nano/education-projects/), follow [this setup guide](https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-2gb-devkit#intro) to image an SD card, and boot up the Jetson.\
 Note that [this user guide](https://developer.nvidia.com/embedded/learn/jetson-nano-2gb-devkit-user-guide) is also a great resource.
@@ -36,6 +42,8 @@ sudo nmcli con modify <connect name> wifi-sec.key-mgmt wpa-psk
 sudo nmcli con modify <connect name> wifi-sec.psk <password>
 sudo nmcli con up <connect name>
 ```
+
+### All Devices
 
 Now you are ready to fork & clone (or just clone, or just download) this repository.
 
@@ -60,7 +68,15 @@ Now, you can begin [training](https://github.com/edurso/tfod-wkspc/blob/master/d
 ## Usage
 
 The `Makefile` is the quickest way to work with the docker container.\
-On your machine, simply run `sudo make <command>`, where `<command>` is any of the following:
+On your machine, simply run `sudo make <command> device=<device>`, where
+
+`<device>` is either
+
+- `jetson` (default if `device=` not specified)
+- `cpu`
+- `gpu`
+
+and `<command>` is any of the following:
 
 - `qemu` sets up the local docker environment to be able to build for arm64 processors.\
 This should be used when you are building the image on a machine of a different arch.
@@ -98,4 +114,5 @@ GitHub Actions is configured to build and push the image when released to the [`
 
 ### Other Known Issues
 
-[This issue with tensor shape during training](https://github.com/tensorflow/models/issues/9133).
+- [This issue with tensor shape during training](https://github.com/tensorflow/models/issues/9133).
+- CPU & GPU images can only run on amd64 processors (tensorflow base image not available for arm64).

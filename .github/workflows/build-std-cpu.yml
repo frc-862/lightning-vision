@@ -1,4 +1,4 @@
-name: Build Jetson Image
+name: Build Standard CPU Image
 
 on:
   push:
@@ -20,4 +20,4 @@ jobs:
       - name: before image build
         run: make qemu
       - name: build the image
-        run: make deploy
+        run: make deploy device=cpu

@@ -1,13 +1,51 @@
 # Functions to work with docker containers
 
+# Placeholders
+IMAGE=
+ARCH=
+DOCKERFILE=
+RUNTIME=
+
 # Config
-IMAGE=edurs0/tfod-wkspc:latest-jetson
-TEST_IMAGE=edurs0/tfod-wkspc:latest-test
 CONTAINER=tfod-trainer
 NETWORK=host
-RUNTIME=nvidia
 JUPYTER=8888
 TENSORBOARD=6006
+
+# Determine image to run
+whichimage:
+ifeq "$(device)" ""
+	$(eval IMAGE=edurs0/tfod-wkspc:latest-jetson)
+	$(eval DOCKERFILE=./dockerfiles/jetson-dev/)
+	$(eval ARCH=linux/arm64)
+	$(eval RUNTIME=nvidia)
+	@echo jetson
+endif
+ifeq "$(device)" "gpu"
+	$(eval IMAGE=edurs0/tfod-wkspc:latest-gpu)
+	$(eval ARCH=linux/amd64)
+	$(eval DOCKERFILE=./dockerfiles/std-dev-gpu/)
+	$(eval RUNTIME=runc)
+	@echo gpu
+endif
+ifeq "$(device)" "cpu"
+	$(eval IMAGE=edurs0/tfod-wkspc:latest)
+	$(eval ARCH=linux/amd64)
+	$(eval DOCKERFILE=./dockerfiles/std-dev/)
+	$(eval RUNTIME=runc)
+	@echo cpu
+endif
+ifeq "$(device)" "jetson"
+	$(eval IMAGE=edurs0/tfod-wkspc:latest-jetson)
+	$(eval DOCKERFILE=./dockerfiles/jetson-dev/)
+	$(eval ARCH=linux/arm64)
+	$(eval RUNTIME=nvidia)
+	@echo jetson
+endif
+	@echo $(IMAGE)
+	@echo $(DOCKERFILE)
+	@echo $(ARCH)
+	@echo $(RUNTIME)
 
 # Setup local runner to build for arm64
 # may need to run before `build`
@@ -19,12 +57,8 @@ resume:
 	docker start -ai $(CONTAINER)
 
 # Start a new container
-run:
+run: whichimage
 	docker run -it -p $(JUPYTER):8888 -p $(TENSORBOARD):6006 -v $(shell pwd):/tensorflow/workspace --runtime $(RUNTIME) --network $(NETWORK) --name $(CONTAINER) $(IMAGE)
-
-# Start a new test container
-run-test:
-	docker run -it -p $(JUPYTER):8888 -p $(TENSORBOARD):6006 -v $(shell pwd):/tensorflow/workspace --runtime $(RUNTIME) --network $(NETWORK) --name $(CONTAINER) $(TEST_IMAGE)
 
 # Shell into container
 shell:
@@ -35,43 +69,25 @@ clean:
 	docker rm $(CONTAINER)
 
 # Remone images
-purge:
+purge: whichimage
 	docker rmi $(IMAGE)
-	docker rmi $(TEST_IMAGE)
 
 # Build image
-build:
-	docker buildx build --platform linux/arm64 -t $(IMAGE) ./dockerfiles/
-
-# Build testing image
-build-test:
-	docker buildx build --platform linux/amd64 -t $(TEST_IMAGE) ./dockerfiles/test/
+build: whichimage
+	docker buildx build --platform $(ARCH) -t $(IMAGE) $(DOCKERFILE)
 
 # Build image & push to hub
-deploy:
-	docker buildx build --platform linux/arm64 --push -t $(IMAGE) ./dockerfiles/
-
-# Build image & push to hub
-deploy-test:
-	docker buildx build --platform linux/amd64 --push -t $(TEST_IMAGE) ./dockerfiles/test/
+deploy: whichimage
+	docker buildx build --platform $(ARCH) --push -t $(IMAGE) $(DOCKERFILE)
 
 # Push image to hub
-push:
+push: whichimage
 	docker push $(IMAGE)
 
 # Pull image from hub
-pull:
+pull: whichimage
 	docker pull $(IMAGE)
-
-# Push test image to hub
-push-test:
-	docker push $(TEST_IMAGE)
-
-# Pull test image from hub
-pull-test:
-	docker pull $(TEST_IMAGE)
 
 # Stops the container
 stop:
 	docker stop $(CONTAINER)
-
