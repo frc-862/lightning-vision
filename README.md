@@ -114,5 +114,6 @@ GitHub Actions is configured to build and push the image when released to the [`
 
 ### Other Known Issues
 
-- [This issue with tensor shape during training](https://github.com/tensorflow/models/issues/9133).
+- [This issue with tensor shape during training on Jetson/Other Devices](https://github.com/tensorflow/models/issues/9133).
+  - Training works fine in notebooks on [colab](https://colab.research.google.com/).
 - CPU & GPU images can only run on amd64 processors (tensorflow base image not available for arm64).
