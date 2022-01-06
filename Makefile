@@ -15,11 +15,11 @@ TENSORBOARD=6006
 # Determine image to run
 whichimage:
 ifeq "$(device)" ""
-	$(eval IMAGE=edurs0/tfod-wkspc:latest-jetson)
-	$(eval DOCKERFILE=./dockerfiles/jetson-dev/)
+	$(eval IMAGE=edurs0/tfod-wkspc:latest-frc)
+	$(eval DOCKERFILE=./dockerfiles/jetson-frc-image/)
 	$(eval ARCH=linux/arm64)
 	$(eval RUNTIME=nvidia)
-	@echo jetson
+	@echo frc-config
 endif
 ifeq "$(device)" "gpu"
 	$(eval IMAGE=edurs0/tfod-wkspc:latest-gpu)

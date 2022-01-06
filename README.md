@@ -72,9 +72,10 @@ On your machine, simply run `sudo make <command> device=<device>`, where
 
 `<device>` is either
 
-- `jetson` (default if `device=` not specified)
+- `jetson`
 - `cpu`
 - `gpu`
+- if no flag is specified, the deployment jetson container will be implied
 
 and `<command>` is any of the following:
 
