@@ -10,7 +10,7 @@ At this point, we are ready to start our Docker container and finish set up ther
 
 ## Starting Docker Container
 
-Use the `Makefile` to launch the docker environment (see the [README](https://github.com/edurso/tfod-wkspc/blob/master/README.md) if you do not konw how to do this).\
+Use the `Makefile` to launch the docker environment (see the [README](https://github.com/frc-862/tfod-wkspc/blob/master/README.md) if you do not konw how to do this).\
 It is important to start the GPU container if you have a [compatable GPU](https://www.tensorflow.org/install/gpu).
 
 The filesystem of the docker container is set up as follows:

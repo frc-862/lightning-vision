@@ -3,10 +3,10 @@
 [![TensorFlow 2.5](https://img.shields.io/badge/TensorFlow-2.5-FF6F00?logo=tensorflow)](https://github.com/tensorflow/tensorflow/releases/tag/v2.5.0)
 [![Python 3.6](https://img.shields.io/badge/Python-3.6-3776AB)](https://www.python.org/downloads/release/python-360/)
 [![JetPack Version](https://badges.fyi/static/JetPack/4.6/green)](https://developer.nvidia.com/embedded/jetpack)
-[![Docs](https://readthedocs.org/projects/pip/badge/)](https://github.com/edurso/tfod-wkspc/blob/master/docs)\
-[![Build Jetson Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-jetson.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
-[![Build CPU Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-std-cpu.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
-[![Build GPU Image](https://github.com/edurso/tfod-wkspc/actions/workflows/build-std-gpu.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
+[![Docs](https://readthedocs.org/projects/pip/badge/)](https://github.com/frc-862/tfod-wkspc/blob/master/docs)\
+[![Build Jetson Image](https://github.com/frc-862/tfod-wkspc/actions/workflows/build-jetson.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
+[![Build CPU Image](https://github.com/frc-862/tfod-wkspc/actions/workflows/build-std-cpu.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
+[![Build GPU Image](https://github.com/frc-862/tfod-wkspc/actions/workflows/build-std-gpu.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
 
 This project is intended to provide an easy-to-use environment where object detection models can be trained using the [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md).\
 The [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md) comes installed in the provided [docker images](http://hub.docker.com/r/edurs0/tfod-wkspc).\
@@ -16,8 +16,8 @@ and the other images are based on the [base tensorflow image](https://hub.docker
 **Contents:**\
 [Here](#installation) are instructions for installing tools needed to work with this project.\
 [Here](#usage) are instructions for working with the docker image.\
-[Here](https://github.com/edurso/tfod-wkspc/blob/master/docs/TRAINING.md) are instructions for training a custom object detection model.\
-[Here](https://github.com/edurso/tfod-wkspc/blob/master/docs/INFERENCE.md) are instructions for running inference on a trained model with OpenCV & TensorFlow.
+[Here](https://github.com/frc-862/tfod-wkspc/blob/master/docs/TRAINING.md) are instructions for training a custom object detection model.\
+[Here](https://github.com/frc-862/tfod-wkspc/blob/master/docs/INFERENCE.md) are instructions for running inference on a trained model with OpenCV & TensorFlow.
 
 ## Installation
 
@@ -49,11 +49,11 @@ Now you are ready to fork & clone (or just clone, or just download) this reposit
 
 ```bash
 # ssh
-git clone git@github.com:edurso/tfod-wkspc.git /tensorflow/workspace
+git clone git@github.com:frc-862/tfod-wkspc.git /tensorflow/workspace
 # or https
-git clone https://github.com/edurso/tfod-wkspc.git /tensorflow/workspace
+git clone https://github.com/frc-862/tfod-wkspc.git /tensorflow/workspace
 # or gh cli
-gh repo clone edurso/tfod-wkspc /tensorflow/workspace
+gh repo clone frc-862/tfod-wkspc /tensorflow/workspace
 ```
 
 Also install `labelImg` to label datasets.
@@ -63,7 +63,7 @@ pip3 install labelImg
 ```
 
 Thats it!\
-Now, you can begin [training](https://github.com/edurso/tfod-wkspc/blob/master/docs/TRAINING.md) object detection models with tensorflow.
+Now, you can begin [training](https://github.com/frc-862/tfod-wkspc/blob/master/docs/TRAINING.md) object detection models with tensorflow.
 
 ## Usage
 
@@ -111,7 +111,7 @@ and try again.
 
 #### Automated Builds on GitHub Actions
 
-GitHub Actions is configured to build and push the image when released to the [`build`](https://github.com/edurso/tfod-wkspc/tree/build) branch.
+GitHub Actions is configured to build and push the image when released to the [`build`](https://github.com/frc-862/tfod-wkspc/tree/build) branch.
 
 ### Other Known Issues
 
