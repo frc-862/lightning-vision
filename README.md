@@ -1,14 +1,18 @@
-# TensorFlow Object Detection Workspace
+# Lightning Vision Codebase
 
 [![TensorFlow 2.5](https://img.shields.io/badge/TensorFlow-2.5-FF6F00?logo=tensorflow)](https://github.com/tensorflow/tensorflow/releases/tag/v2.5.0)
 [![Python 3.6](https://img.shields.io/badge/Python-3.6-3776AB)](https://www.python.org/downloads/release/python-360/)
 [![JetPack Version](https://badges.fyi/static/JetPack/4.6/green)](https://developer.nvidia.com/embedded/jetpack)
 [![Docs](https://readthedocs.org/projects/pip/badge/)](https://github.com/frc-862/tfod-wkspc/blob/master/docs)\
 [![Build Jetson Image](https://github.com/frc-862/tfod-wkspc/actions/workflows/build-jetson.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
+[![Build Onboard Image](https://github.com/frc-862/tfod-wkspc/actions/workflows/build-onboard.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
 [![Build CPU Image](https://github.com/frc-862/tfod-wkspc/actions/workflows/build-std-cpu.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
 [![Build GPU Image](https://github.com/frc-862/tfod-wkspc/actions/workflows/build-std-gpu.yml/badge.svg)](http://hub.docker.com/r/edurs0/tfod-wkspc)
 
-This project is intended to provide an easy-to-use environment where object detection models can be trained using the [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md).\
+Base computer vision program for team 862's robots.\
+Configured to run on a [NVIDIA Jetson Nano 2gb](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-nano/education-projects/).
+
+This project is also intended to provide an easy-to-use environment where object detection models can be trained using the [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md).\
 The [TensorFlow Object Detection API](https://github.com/tensorflow/models/blob/master/research/object_detection/README.md) comes installed in the provided [docker images](http://hub.docker.com/r/edurs0/tfod-wkspc).\
 The Jetson image is based on the [NVIDIA l4t-tensorflow image](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/l4t-tensorflow)
 and the other images are based on the [base tensorflow image](https://hub.docker.com/r/tensorflow/tensorflow).
@@ -73,12 +77,15 @@ On your machine, simply run `sudo make <command> device=<device>`, where
 `<device>` is either
 
 - `jetson`
+- `onboard`
 - `cpu`
 - `gpu`
 - if no flag is specified, the deployment jetson container will be implied
 
 and `<command>` is any of the following:
 
+- `onboard` runs the container on a robot.\
+This should only be used on a robot.
 - `qemu` sets up the local docker environment to be able to build for arm64 processors.\
 This should be used when you are building the image on a machine of a different arch.
 - `run` will run the docker container on the machine.\
