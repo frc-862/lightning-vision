@@ -1,8 +1,8 @@
-name: Build Standard CPU Image
+name: Build Standard GPU Image
 
 on:
-  push:
-    branches: build
+  pull-request:
+    branches: master
 
 jobs:
   build:
@@ -20,4 +20,4 @@ jobs:
       - name: before image build
         run: make qemu
       - name: build the image
-        run: make deploy device=cpu
+        run: make deploy device=gpu
