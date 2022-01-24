@@ -7,19 +7,27 @@ DOCKERFILE=
 RUNTIME=
 
 # Config
-CONTAINER=tfod-trainer
+CONTAINER=jetson-vision
 NETWORK=host
 JUPYTER=8888
 TENSORBOARD=6006
+NETWORKTABLE=862 # not a coincidence at all
 
 # Determine image to run
 whichimage:
 ifeq "$(device)" ""
-	$(eval IMAGE=edurs0/tfod-wkspc:latest-frc)
-	$(eval DOCKERFILE=./dockerfiles/jetson-frc-image/)
+	$(eval IMAGE=edurs0/tfod-wkspc:latest-onboard)
+	$(eval DOCKERFILE=./dockerfiles/jetson-onboard/)
 	$(eval ARCH=linux/arm64)
 	$(eval RUNTIME=nvidia)
-	@echo frc-config
+	@echo onboard
+endif
+ifeq "$(device)" "onboard"
+	$(eval IMAGE=edurs0/tfod-wkspc:latest-onboard)
+	$(eval DOCKERFILE=./dockerfiles/jetson-onboard/)
+	$(eval ARCH=linux/arm64)
+	$(eval RUNTIME=nvidia)
+	@echo onboard
 endif
 ifeq "$(device)" "gpu"
 	$(eval IMAGE=edurs0/tfod-wkspc:latest-gpu)
@@ -47,8 +55,11 @@ endif
 	@echo $(ARCH)
 	@echo $(RUNTIME)
 
-# Setup local runner to build for arm64
-# may need to run before `build`
+# Run onboard container for robot application
+onboard:
+	docker run --rm -it -p $(JUPYTER):8888 -p $(TENSORBOARD):6006 -v $(shell pwd):/tensorflow/workspace --runtime $(RUNTIME) --network $(NETWORK) --name $(CONTAINER) $(IMAGE)
+
+# Setup local runner to build for arm64, may need to run before `build`
 qemu:
 	docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
 

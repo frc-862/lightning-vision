@@ -2,4 +2,4 @@
 echo "Waiting 5 seconds..."
 sleep 5
 export PYTHONUNBUFFERED=1
-exec ./multiCameraServer.py
+exec ./cameraserver.py
