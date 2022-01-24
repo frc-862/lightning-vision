@@ -54,11 +54,10 @@ RUN pip3 install -U pip -v \
     opencv-python \
     pynetworktables
 
-# Install robotpy-cscore Package
-RUN wget -O cscore.deb \
-    https://download.opensuse.org/repositories/home:/auscompgeek:/robotpy/Ubuntu_18.04_Ports/arm64/python3-cscore_2021.0.0-1_arm64.deb \
-    && apt-get install -y cscore.deb
 
+# Install robotpy-cscore Package
+# RUN wget -O /opt/cscore.deb https://download.opensuse.org/repositories/home:/auscompgeek:/robotpy/Ubuntu_18.04_Ports/arm64/python3-cscore_2021.0.0-1_arm64.deb
+# RUN dpkg -i /opt/cscore.deb
 # Copy Script To Run Camera App (App Itself to be Pushed into Container when Ran)
 RUN mkdir -p /app/
 COPY ./runCamera /app/
