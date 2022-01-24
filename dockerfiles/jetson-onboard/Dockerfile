@@ -34,8 +34,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip \
     python3-setuptools \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && pip3 install -U pip -v \ 
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python Packages
+RUN pip3 install -U pip -v \ 
     && pip3 install --no-cache-dir install -U -v \
     numpy==1.19.5 \
     pandas==1.1.5 \
@@ -48,68 +50,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     keras \
     keras-applications \
     keras-preprocessing \
-    google-pasta
+    google-pasta \
+    opencv-python \
+    pynetworktables
 
-# Install OpenCV
-# From: https://github.com/JulianAssmann/opencv-cuda-docker/blob/master/ubuntu-20.04/opencv-4.5.3/cuda-11.4.1/Dockerfile
-# If this does not work, use the `build_opencv` from wpilibpi but with `-DMAKE_CUDA=ON`
-ARG OPENCV_VERSION=3.4.7
-ARG DOWNLOAD_DIR=/temp
-RUN mkdir -p ${DOWNLOAD_DIR}
-RUN cd /opt/ &&\
-    # Download and unzip OpenCV and opencv_contrib and delte zip files
-    wget https://github.com/opencv/opencv/archive/$OPENCV_VERSION.zip &&\
-    unzip $OPENCV_VERSION.zip &&\
-    rm $OPENCV_VERSION.zip &&\
-    wget https://github.com/opencv/opencv_contrib/archive/$OPENCV_VERSION.zip &&\
-    unzip ${OPENCV_VERSION}.zip &&\
-    rm ${OPENCV_VERSION}.zip &&\
-    # Create build folder and switch to it
-    mkdir /opt/opencv-${OPENCV_VERSION}/build && cd /opt/opencv-${OPENCV_VERSION}/build &&\
-    # Cmake configure
-    cmake \
-        -DOPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib-${OPENCV_VERSION}/modules \
-        -DWITH_CUDA=ON \
-        -DCMAKE_BUILD_TYPE=RELEASE \
-        # Install path will be /usr/local/lib (lib is implicit)
-        -DCMAKE_INSTALL_PREFIX=/usr/local \
-        .. &&\
-    # Make
-    make -j"$(nproc)" && \
-    # Install to /usr/local/lib
-    make install && \
-    ldconfig &&\
-    # Remove OpenCV sources and build folder
-    rm -rf /opt/opencv-${OPENCV_VERSION} && rm -rf /opt/opencv_contrib-${OPENCV_VERSION}
-
-# Download: pynetworktable, robotpy-cscore, & pybind11
-RUN cd ${DOWNLOAD_DIR} \
-    && wget -nc -nv -O ${DOWNLOAD_DIR}/pynetworktables.tar.gz https://github.com/robotpy/pynetworktables/archive/2021.0.0.tar.gz \
-    && wget -nc -nv -O ${DOWNLOAD_DIR}/robotpy-cscore.tar.gz https://github.com/robotpy/robotpy-cscore/archive/2021.0.0.tar.gz \
-    && wget -nc -nv -O ${DOWNLOAD_DIR}/robotpy-cscore/pybind11.tar.gz https://github.com/pybind/pybind11/archive/v2.6.1.tar.gz \
-    && tar xzf "${DOWNLOAD_DIR}/pynetworktables.tar.gz" \
-    && mv ${DOWNLOAD_DIR}/pynetworktables-* ${DOWNLOAD_DIR}/pynetworktables \
-    && echo "__version__ = '2021.0.0'" > ${DOWNLOAD_DIR}/pynetworktables/_pynetworktables/_impl/version.py \
-    && tar xzf "${DOWNLOAD_DIR}/robotpy-cscore.tar.gz" \
-    && mv ${DOWNLOAD_DIR}/robotpy-cscore-* ${DOWNLOAD_DIR}/robotpy-cscore \
-    && echo "__version__ = '2021.0.0'" > ${DOWNLOAD_DIR}/robotpy-cscore/cscore/version.py \
-    && rm -rf ${DOWNLOAD_DIR}/robotpy-cscore/pybind11 \
-    && tar xzf "${DOWNLOAD_DIR}/robotpy-cscore/pybind11.tar.gz" \
-    && mv ${DOWNLOAD_DIR}/robotpy-cscore/pybind11-* ${DOWNLOAD_DIR}/robotpy-cscore/pybind11
-
-# Install: pynetworktable, robotpy-cscore, & pybind11
-RUN cd ${DOWNLOAD_DIR}/pynetworktables \
-    && python3 setup.py build \
-    && python3 setup.py install \
-    && python3 setup.py clean
-RUN cd ${DOWNLOAD_DIR}/robotpy-cscore/pybind11 \
-    && python3 setup.py build \
-    && python3 setup.py install \
-    && python3 setup.py clean
-RUN cd ${DOWNLOAD_DIR}/robotpy-cscore \
-    && python3 setup.py build \
-    && python3 setup.py install \
-    && python3 setup.py clean
+# Install robotpy-cscore Package
+RUN wget -O cscore.deb \
+    https://download.opensuse.org/repositories/home:/auscompgeek:/robotpy/Ubuntu_18.04_Ports/arm64/python3-cscore_2021.0.0-1_arm64.deb \
+    && apt-get install -y cscore.deb
 
 # Copy Script To Run Camera App (App Itself to be Pushed into Container when Ran)
 RUN mkdir -p /app/
