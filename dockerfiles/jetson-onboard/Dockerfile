@@ -60,4 +60,4 @@ COPY ./runCamera /app/
 RUN chmod +x /app/runCamera
 
 # TODO Run Application On Entry
-ENTRYPOINT [ "exec" "/app/runCamera" ]
+ENTRYPOINT ["exec", "/app/runCamera"]
