@@ -57,7 +57,7 @@ endif
 
 # Run onboard container for robot application
 onboard:
-	docker run --rm -it -p $(JUPYTER):8888 -p $(TENSORBOARD):6006 -v $(shell pwd):/tensorflow/workspace --runtime $(RUNTIME) --network $(NETWORK) --name $(CONTAINER) $(IMAGE)
+	docker run --rm -it -p $(NETWORK):862 -v /lightning-vision/voidvision:/app/voidvision --runtime $(RUNTIME) --network $(NETWORK) --name $(CONTAINER) $(IMAGE)
 
 # Setup local runner to build for arm64, may need to run before `build`
 qemu:
