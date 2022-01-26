@@ -56,8 +56,8 @@ RUN pip3 install -U pip -v \
 
 # Copy Script To Run Camera App (App Itself to be Pushed into Container when Ran)
 RUN mkdir -p /app/
-COPY ./runCamera /app/
-RUN chmod +x /app/runCamera
+COPY ./runCamera.sh /app/
+RUN chmod +x /app/runCamera.sh
 
 # TODO Run Application On Entry
-ENTRYPOINT ["exec", "/app/runCamera"]
+ENTRYPOINT ["/app/runCamera.sh"]
