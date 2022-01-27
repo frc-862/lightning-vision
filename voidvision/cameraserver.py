@@ -16,7 +16,7 @@ if __name__ == "__main__":
     ntinst = NetworkTablesInstance.getDefault()
     if server:
         print("Setting up NetworkTables server")
-        ntinst.startServer()
+        ntinst.startServer(port=862) # TODO: test if you can assign port based on var, ie port=team
     else:
         print("Setting up NetworkTables client for team {}".format(team))
         ntinst.startClientTeam(team)
@@ -25,21 +25,14 @@ if __name__ == "__main__":
     # Push test values
     ntinst.getTable("SmartDashboard").putNumber("test", 0)
     
-    # Start camera
-    cap = cv2.VideoCapture(0)
-
     # Loop
     t_init = time.time()
     t = t_init
-    
-    while(t < (t_init + 10)):
+    p = 6
+
+    while(True):
 
         t = time.time()
         
-        ret, frame = cap.read()
-        
         ntinst.getTable("SmartDashboard").putNumber("time", t)
-        ntinst.getTable("SmartDashboard").putNumber("an-img-shape-thing", frame.shape[0])
-        
-        if cv2.waitKey(1):
-            break
+        ntinst.getTable("SmartDashboard").putNumber("6", p)

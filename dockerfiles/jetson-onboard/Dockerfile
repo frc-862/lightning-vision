@@ -59,5 +59,4 @@ RUN mkdir -p /app/
 COPY ./runCamera.sh /app/
 RUN chmod +x /app/runCamera.sh
 
-# TODO Run Application On Entry
-ENTRYPOINT ["/app/runCamera.sh"]
+ENTRYPOINT ["sh", "-c",  "./app/runCamera"]
