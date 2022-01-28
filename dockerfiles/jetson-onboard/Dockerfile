@@ -39,18 +39,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p ${DOWNLOAD_DIR}
-RUN cd /opt/ &&\
+RUN cd /opt/
     # Download and unzip OpenCV and opencv_contrib and delte zip files
-    wget https://github.com/opencv/opencv/archive/$OPENCV_VERSION.zip &&\
-    unzip $OPENCV_VERSION.zip &&\
-    rm $OPENCV_VERSION.zip &&\
-    wget https://github.com/opencv/opencv_contrib/archive/$OPENCV_VERSION.zip &&\
-    unzip ${OPENCV_VERSION}.zip &&\
-    rm ${OPENCV_VERSION}.zip &&\
+RUN wget https://github.com/opencv/opencv/archive/$OPENCV_VERSION.zip 
+RUN unzip $OPENCV_VERSION.zip 
+RUN rm $OPENCV_VERSION.zip 
+RUN wget https://github.com/opencv/opencv_contrib/archive/$OPENCV_VERSION.zip 
+RUN unzip ${OPENCV_VERSION}.zip 
+RUN rm ${OPENCV_VERSION}.zip
     # Create build folder and switch to it
-    mkdir /opt/opencv-${OPENCV_VERSION}/build && cd /opt/opencv-${OPENCV_VERSION}/build &&\
+RUN mkdir /opt/opencv-${OPENCV_VERSION}/build && cd /opt/opencv-${OPENCV_VERSION}/build
     # Cmake configure
-    cmake \
+RUN cmake \
         -D CMAKE_BUILD_TYPE=RELEASE \
         -D CMAKE_INSTALL_PREFIX=/usr \
         -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \
@@ -87,14 +87,14 @@ RUN cd /opt/ &&\
         # -DCMAKE_BUILD_TYPE=RELEASE \
         # # Install path will be /usr/local/lib (lib is implicit)
         # -DCMAKE_INSTALL_PREFIX=/usr/local \
-        .. &&\
+        ..
     # Make
-    make -j"$(nproc)" && \
+RUN make -j"$(nproc)" 
     # Install to /usr/local/lib
-    make install && \
-    ldconfig &&\
+RUN make install
+RUN ldconfig 
     # Remove OpenCV sources and build folder
-    rm -rf /opt/opencv-${OPENCV_VERSION} && rm -rf /opt/opencv_contrib-${OPENCV_VERSION}
+RUN rm -rf /opt/opencv-${OPENCV_VERSION} && rm -rf /opt/opencv_contrib-${OPENCV_VERSION}
 
 # Install Python Packages
 RUN pip3 install -U pip -v \ 
