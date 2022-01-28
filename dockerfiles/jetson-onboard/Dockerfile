@@ -49,8 +49,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget http://dragon.studio/2021/02/opencv_2021-02-27-1_all.deb &&\
-    sudo apt remove libopencv opencv-licenses libopencv-python libtbb-dev libopencv-dev &&\
-    sudo apt install ./opencv_2021-02-27-1_all.deb
+    apt remove libopencv opencv-licenses libopencv-python libtbb-dev libopencv-dev &&\
+    apt install ./opencv_2021-02-27-1_all.deb
+
+RUN echo 'deb http://download.opensuse.org/repositories/home:/auscompgeek:/robotpy/Ubuntu_18.04_Ports/ /' | sudo tee /etc/apt/sources.list.d/home:auscompgeek:robotpy.list &&\
+    curl -fsSL https://download.opensuse.org/repositories/home:auscompgeek:robotpy/Ubuntu_18.04_Ports/Release.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/home_auscompgeek_robotpy.gpg > /dev/null &&\
+    apt update &&\
+    apt install python3-cscore
 
 # COPY ./build-opencv.sh /opt
 # RUN chmod +x /opt/build-opencv.sh &&\
