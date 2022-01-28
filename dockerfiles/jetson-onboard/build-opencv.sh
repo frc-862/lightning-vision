@@ -15,7 +15,7 @@ cd /opt/opencv-3.4.7/build
 cmake \
     -DCMAKE_BUILD_TYPE=RELEASE \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DOPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \
+    -DOPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib/modules \
     -DEIGEN_INCLUDE_PATH=/usr/include/eigen3 \
     -DWITH_OPENCL=OFF \
     -DWITH_CUDA=ON \
@@ -47,9 +47,11 @@ cmake \
 
 # Make
 make -j"$(nproc)" 
+
 # Install to /usr/local/lib
 make install
 ldconfig 
+
 # Remove OpenCV sources and build folder
 rm -rf /opt/opencv-3.4.7
 rm -rf /opt/opencv_contrib-3.4.7

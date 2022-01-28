@@ -48,10 +48,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-COPY ./build-opencv.sh /opt
-RUN chmod +x /opt/build-opencv.sh &&\
-    sh -c "/opt/build-opencv.sh" &&\
-    rm -f /opt/build-opencv.sh
+RUN wget http://dragon.studio/2021/02/opencv_2021-02-27-1_all.deb &&\
+    sudo apt remove libopencv opencv-licenses libopencv-python libtbb-dev libopencv-dev &&\
+    sudo apt install ./opencv_2021-02-27-1_all.deb
+
+# COPY ./build-opencv.sh /opt
+# RUN chmod +x /opt/build-opencv.sh &&\
+#     sh -c "/opt/build-opencv.sh" &&\
+#     rm -f /opt/build-opencv.sh
 
 # Install Python Packages
 RUN pip3 install -U pip -v \ 
