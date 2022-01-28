@@ -12,28 +12,38 @@ ARG DOWNLOAD_DIR=/temp
 
 # Install System & Python Dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
+    build-essential cmake git unzip pkg-config zlib1g-dev \
+    libjpeg-dev libjpeg8-dev libjpeg-turbo8-dev \
+    libpng-dev libtiff-dev libglew-dev \
+    libavcodec-dev libavformat-dev libswscale-dev \
+    libgtk2.0-dev libgtk-3-dev libcanberra-gtk* \
+    python-dev python-numpy python-pip \
+    python3-dev python3-numpy python3-pip \
+    libxvidcore-dev libx264-dev libgtk-3-dev \
+    libtbb2 libtbb-dev libdc1394-22-dev libxine2-dev \
+    gstreamer1.0-tools libgstreamer-plugins-base1.0-dev \
+    libgstreamer-plugins-good1.0-dev \
+    libv4l-dev v4l-utils v4l2ucp qv4l2 \
+    libtesseract-dev libxine2-dev libpostproc-dev \
+    libavresample-dev libvorbis-dev \
+    libfaac-dev libmp3lame-dev libtheora-dev \
+    libopencore-amrnb-dev libopencore-amrwb-dev \
+    libopenblas-dev libatlas-base-dev libblas-dev \
+    liblapack-dev liblapacke-dev libeigen3-dev gfortran \
+    libhdf5-dev libprotobuf-dev protobuf-compiler \
+    libgoogle-glog-dev libgflags-dev \
     make \
     curl \
     wget \
     libfreetype6-dev \
-    libhdf5-dev \
-    libpng-dev \
     libzmq3-dev \
-    pkg-config \
-    python3-dev \
     rsync \
     vim \
-    unzip \
-    zlib1g-dev \
     zip \
-    libjpeg8-dev \
     hdf5-tools \
     libhdf5-serial-dev \
-    protobuf-compiler \
     libxml2-dev \
     libxslt-dev \
-    python3-pip \
     python3-setuptools \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
