@@ -13,42 +13,36 @@ mkdir -p /opt/opencv-3.4.7/build
 cd /opt/opencv-3.4.7/build
 # Cmake configure
 cmake \
-    -D CMAKE_BUILD_TYPE=RELEASE \
-    -D CMAKE_INSTALL_PREFIX=/usr \
-    -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \
-    -D EIGEN_INCLUDE_PATH=/usr/include/eigen3 \
-    -D WITH_OPENCL=OFF \
-    -D WITH_CUDA=ON \
-    #-D CUDA_ARCH_BIN=5.3 \
-    -D CUDA_ARCH_PTX="" \
-    -D WITH_CUDNN=ON \
-    -D WITH_CUBLAS=ON \
-    -D ENABLE_FAST_MATH=ON \
-    -D CUDA_FAST_MATH=ON \
-    -D OPENCV_DNN_CUDA=ON \
-    -D ENABLE_NEON=ON \
-    -D WITH_QT=OFF \
-    -D WITH_OPENMP=ON \
-    -D BUILD_TIFF=ON \
-    -D WITH_FFMPEG=ON \
-    -D WITH_GSTREAMER=ON \
-    -D WITH_TBB=ON \
-    -D BUILD_TBB=ON \
-    -D BUILD_TESTS=OFF \
-    -D WITH_EIGEN=ON \
-    -D WITH_V4L=ON \
-    -D WITH_LIBV4L=ON \
-    -D OPENCV_ENABLE_NONFREE=ON \
-    -D INSTALL_C_EXAMPLES=OFF \
-    -D INSTALL_PYTHON_EXAMPLES=OFF \
-    -D PYTHON3_PACKAGES_PATH=/usr/lib/python3/dist-packages \
-    -D OPENCV_GENERATE_PKGCONFIG=ON \
-    -D BUILD_EXAMPLES=OFF \
-    # -DOPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib-${OPENCV_VERSION}/modules \
-    # -DWITH_CUDA=ON \
-    # -DCMAKE_BUILD_TYPE=RELEASE \
-    # # Install path will be /usr/local/lib (lib is implicit)
-    # -DCMAKE_INSTALL_PREFIX=/usr/local \
+    -DCMAKE_BUILD_TYPE=RELEASE \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DOPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \
+    -DEIGEN_INCLUDE_PATH=/usr/include/eigen3 \
+    -DWITH_OPENCL=OFF \
+    -DWITH_CUDA=ON \
+    -DCUDA_ARCH_PTX="" \
+    -DWITH_CUDNN=ON \
+    -DWITH_CUBLAS=ON \
+    -DENABLE_FAST_MATH=ON \
+    -DCUDA_FAST_MATH=ON \
+    -DOPENCV_DNN_CUDA=ON \
+    -DENABLE_NEON=ON \
+    -DWITH_QT=OFF \
+    -DWITH_OPENMP=ON \
+    -DBUILD_TIFF=ON \
+    -DWITH_FFMPEG=ON \
+    -DWITH_GSTREAMER=ON \
+    -DWITH_TBB=ON \
+    -DBUILD_TBB=ON \
+    -DBUILD_TESTS=OFF \
+    -DWITH_EIGEN=ON \
+    -DWITH_V4L=ON \
+    -DWITH_LIBV4L=ON \
+    -DOPENCV_ENABLE_NONFREE=ON \
+    -DINSTALL_C_EXAMPLES=OFF \
+    -DINSTALL_PYTHON_EXAMPLES=OFF \
+    -DPYTHON3_PACKAGES_PATH=/usr/lib/python3/dist-packages \
+    -DOPENCV_GENERATE_PKGCONFIG=ON \
+    -DBUILD_EXAMPLES=OFF \
     ..
 
 # Make
