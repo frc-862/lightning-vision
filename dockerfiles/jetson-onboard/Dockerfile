@@ -41,14 +41,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN mkdir -p ${DOWNLOAD_DIR}
 RUN cd /opt/
     # Download and unzip OpenCV and opencv_contrib and delte zip files
-RUN wget https://github.com/opencv/opencv/archive/$OPENCV_VERSION.zip 
-RUN unzip $OPENCV_VERSION.zip 
-RUN rm $OPENCV_VERSION.zip 
-RUN wget https://github.com/opencv/opencv_contrib/archive/$OPENCV_VERSION.zip 
-RUN unzip ${OPENCV_VERSION}.zip 
-RUN rm ${OPENCV_VERSION}.zip
+RUN wget https://github.com/opencv/opencv/archive/3.4.7.zip 
+RUN unzip 3.4.7.zip 
+RUN rm 3.4.7.zip 
+RUN wget https://github.com/opencv/opencv_contrib/archive/3.4.7.zip 
+RUN unzip 3.4.7.zip 
+RUN rm 3.4.7.zip
     # Create build folder and switch to it
-RUN mkdir /opt/opencv-${OPENCV_VERSION}/build && cd /opt/opencv-${OPENCV_VERSION}/build
+RUN mkdir /opt/opencv-3.4.7/build && cd /opt/opencv-3.4.7/build
     # Cmake configure
 RUN cmake \
         -D CMAKE_BUILD_TYPE=RELEASE \
