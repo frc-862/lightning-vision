@@ -48,7 +48,7 @@ RUN wget https://github.com/opencv/opencv_contrib/archive/3.4.7.zip
 RUN unzip 3.4.7.zip 
 RUN rm 3.4.7.zip
     # Create build folder and switch to it
-RUN mkdir /opt/opencv-3.4.7/build && cd /opt/opencv-3.4.7/build
+RUN mkdir -p /opt/opencv-3.4.7/build && cd /opt/opencv-3.4.7/build
     # Cmake configure
 RUN cmake \
         -D CMAKE_BUILD_TYPE=RELEASE \
