@@ -48,63 +48,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p ${DOWNLOAD_DIR}
-RUN cd /opt/
-    # Download and unzip OpenCV and opencv_contrib and delte zip files
-RUN wget https://github.com/opencv/opencv/archive/3.4.7.zip 
-RUN unzip 3.4.7.zip 
-RUN rm 3.4.7.zip 
-RUN wget https://github.com/opencv/opencv_contrib/archive/3.4.7.zip 
-RUN unzip 3.4.7.zip 
-RUN rm 3.4.7.zip
-    # Create build folder and switch to it
-RUN mkdir -p /opt/opencv-3.4.7/build && cd /opt/opencv-3.4.7/build
-    # Cmake configure
-RUN cmake \
-        -D CMAKE_BUILD_TYPE=RELEASE \
-        -D CMAKE_INSTALL_PREFIX=/usr \
-        -D OPENCV_EXTRA_MODULES_PATH=~/opencv_contrib/modules \
-        -D EIGEN_INCLUDE_PATH=/usr/include/eigen3 \
-        -D WITH_OPENCL=OFF \
-        -D WITH_CUDA=ON \
-        #-D CUDA_ARCH_BIN=5.3 \
-        -D CUDA_ARCH_PTX="" \
-        -D WITH_CUDNN=ON \
-        -D WITH_CUBLAS=ON \
-        -D ENABLE_FAST_MATH=ON \
-        -D CUDA_FAST_MATH=ON \
-        -D OPENCV_DNN_CUDA=ON \
-        -D ENABLE_NEON=ON \
-        -D WITH_QT=OFF \
-        -D WITH_OPENMP=ON \
-        -D BUILD_TIFF=ON \
-        -D WITH_FFMPEG=ON \
-        -D WITH_GSTREAMER=ON \
-        -D WITH_TBB=ON \
-        -D BUILD_TBB=ON \
-        -D BUILD_TESTS=OFF \
-        -D WITH_EIGEN=ON \
-        -D WITH_V4L=ON \
-        -D WITH_LIBV4L=ON \
-        -D OPENCV_ENABLE_NONFREE=ON \
-        -D INSTALL_C_EXAMPLES=OFF \
-        -D INSTALL_PYTHON_EXAMPLES=OFF \
-        -D PYTHON3_PACKAGES_PATH=/usr/lib/python3/dist-packages \
-        -D OPENCV_GENERATE_PKGCONFIG=ON \
-        -D BUILD_EXAMPLES=OFF \
-        # -DOPENCV_EXTRA_MODULES_PATH=/opt/opencv_contrib-${OPENCV_VERSION}/modules \
-        # -DWITH_CUDA=ON \
-        # -DCMAKE_BUILD_TYPE=RELEASE \
-        # # Install path will be /usr/local/lib (lib is implicit)
-        # -DCMAKE_INSTALL_PREFIX=/usr/local \
-        ..
-    # Make
-RUN make -j"$(nproc)" 
-    # Install to /usr/local/lib
-RUN make install
-RUN ldconfig 
-    # Remove OpenCV sources and build folder
-RUN rm -rf /opt/opencv-${OPENCV_VERSION} && rm -rf /opt/opencv_contrib-${OPENCV_VERSION}
+COPY ./build-opencv.sh /opt
+RUN chmod +x /opt/build-opencv.sh &&\
+    sh -c "/opt/build-opencv.sh" &&\
+    rm -f /opt/build-opencv.sh
 
 # Install Python Packages
 RUN pip3 install -U pip -v \ 
@@ -128,5 +75,5 @@ RUN mkdir -p /app/
 COPY ./runCamera.sh /app/
 RUN chmod +x /app/runCamera.sh
 
-# TODO Run Application On Entry
-ENTRYPOINT ["/app/runCamera.sh"]
+# Run Application On Entry
+ENTRYPOINT ["sh", "-c",  "./app/runCamera"]
