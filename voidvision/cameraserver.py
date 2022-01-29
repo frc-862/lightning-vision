@@ -5,7 +5,11 @@ import time
 import cv2
 from networktables import NetworkTablesInstance
 import numpy as np
+<<<<<<< Updated upstream
 
+=======
+from cscore import CameraServer
+>>>>>>> Stashed changes
 # Define variables - TODO push this to a config file later
 server = True
 team = 862
@@ -22,7 +26,7 @@ if __name__ == "__main__":
         print("Setting up NetworkTables client for team {}".format(team))
         ntinst.startClientTeam(team)
         ntinst.startDSClient()
-
+    
     # Push test values
     ntinst.getTable("SmartDashboard").putNumber("test", 0)
     cap = cv2.VideoCapture(0)  
