@@ -44,6 +44,12 @@ sudo nmcli con modify <connect name> wifi-sec.psk <password>
 sudo nmcli con up <connect name>
 ```
 
+Install cscore and other dependencies with
+
+```bash
+bash <(wget -qO- https://raw.githubusercontent.com/frc-862/lightning-vision/feature/PROG-161-camera-test/setup/setup.sh)
+```
+
 ### All Devices
 
 Now you are ready to fork & clone (or just clone, or just download) this repository.

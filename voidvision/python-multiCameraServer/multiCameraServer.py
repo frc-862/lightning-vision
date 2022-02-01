@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
 
-# Copyright (c) FIRST and other WPILib contributors.
-# Open Source Software; you can modify and/or share it under the terms of
-# the WPILib BSD license file in the root directory of this project.
-
 import json
 import time
 import sys
@@ -206,13 +202,16 @@ def startSwitchedCamera(config):
     return server
 
 if __name__ == "__main__":
+
     if len(sys.argv) >= 2:
         configFile = sys.argv[1]
     print(switchedCameraConfigs)
+
     # read configuration
     if not readConfig():
         sys.exit(1)
     print(switchedCameraConfigs) 
+
     # start NetworkTables
     ntinst = NetworkTablesInstance.getDefault()
     if server:
@@ -234,11 +233,9 @@ if __name__ == "__main__":
         i += 1
         print(i, flush=True)
         serverList.append(startSwitchedCamera(config))
+
     # loop forever
     print("Printing server list")
-    print(serverList)
-    while True:
-	i += 1
-        ntinst.getTable("SmartDashboard").putNumber("loopNum", i)
+    print(serverList)        
         
-        
+	# infinite loop?
