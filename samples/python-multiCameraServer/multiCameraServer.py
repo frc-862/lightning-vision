@@ -1,6 +1,3 @@
-#!/usr/bin/env python3
-
-import cv2
 import json
 import numpy as np
 import time
@@ -8,7 +5,7 @@ import time
 from cscore import CameraServer, VideoSource, UsbCamera, MjpegServer
 from networktables import NetworkTablesInstance
 
-configFile = "/lightning-vision/voidvision/frc.json"
+configFile = "./frc.json"
 
 class CameraConfig: pass
 
@@ -182,20 +179,13 @@ if __name__ == "__main__":
         ntinst.startClientTeam(team)
         ntinst.startDSClient()
 
-    print("start cameras")
     for config in cameraConfigs:
         cameras.append(startCamera(config))
-    i = 0
-    print(switchedCameraConfigs)
-    print("start switched cameras")
-    serverList = []
+
     for config in switchedCameraConfigs:
-        i += 1
-        print(i, flush=True)
         serverList.append(startSwitchedCamera(config))
 
     # loop forever
-    print("Printing server list")
-    print(serverList)        
-        
-	# infinite loop?
+    i = 0
+    while True:
+        pass
