@@ -176,22 +176,12 @@ if __name__ == "__main__":
         ntinst.startClientTeam(team)
         ntinst.startDSClient()
 
-    print("start cameras")
     for config in cameraConfigs:
         cameras.append(startCamera(config))
-    i = 0
-    print(switchedCameraConfigs)
-    print("start switched cameras")
-    serverList = []
+
     for config in switchedCameraConfigs:
-        i += 1
-        print(i, flush=True)
         serverList.append(startSwitchedCamera(config))
     # loop forever
-    print("Printing server list")
-    print(serverList)
+    i = 0
     while True:
-	i += 1
-        ntinst.getTable("SmartDashboard").putNumber("loopNum", i)
-        
-        
+        pass
