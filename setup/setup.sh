@@ -19,3 +19,6 @@ rm Release.key
 
 # make app environment
 mkdir -p /home/lightning/voidvision/
+
+# configure app to run on boot
+# TODO implement

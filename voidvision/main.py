@@ -8,15 +8,15 @@ import json
 import numpy as np
 import time
 
-import cameraserver
-import dashboard
+import voidvision.camera as camera
+import voidvision.dashboard as dashboard
 
 configFile = "/home/lightning/voidvision/camera-config.json"
 
 def main():
 	
 	# one camera thing
-	inp, out, width, height = cameraserver.start(configFile, 0, 'cam', 'output?')
+	inp, out, width, height = camera.start(configFile, 0, 'cam', 'output?')
 
 	# start dashboard
 	table = dashboard.load(configFile)

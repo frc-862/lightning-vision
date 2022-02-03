@@ -1,8 +1,11 @@
 #!/bin/sh
 
+# Give Jetson time to boot up
 echo "Waiting 5 seconds..."
 sleep 5
 
+# Set up environment
 export PYTHONUNBUFFERED=1
 
+# Run application
 python3 /home/lightning/voidvision/main.py

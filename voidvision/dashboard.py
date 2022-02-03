@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from networktables import NetworkTablesInstance, NetworkTables
 import json
 

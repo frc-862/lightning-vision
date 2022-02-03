@@ -47,7 +47,7 @@ sudo nmcli con up <connect name>
 Install cscore and other dependencies with
 
 ```bash
-bash <(wget -qO- https://raw.githubusercontent.com/frc-862/lightning-vision/feature/PROG-161-camera-test/setup/setup.sh)
+bash <(wget -qO- https://raw.githubusercontent.com/frc-862/lightning-vision/master/setup/setup.sh)
 ```
 
 ### All Devices
@@ -56,11 +56,11 @@ Now you are ready to fork & clone (or just clone, or just download) this reposit
 
 ```bash
 # ssh
-git clone git@github.com:frc-862/tfod-wkspc.git /tensorflow/workspace
+git clone git@github.com:frc-862/lightning-vision.git /tensorflow/workspace
 # or https
-git clone https://github.com/frc-862/tfod-wkspc.git /tensorflow/workspace
+git clone https://github.com/frc-862/lightning-vision.git /tensorflow/workspace
 # or gh cli
-gh repo clone frc-862/tfod-wkspc /tensorflow/workspace
+gh repo clone frc-862/lightning-vision /tensorflow/workspace
 ```
 
 Also install `labelImg` to label datasets.
@@ -70,7 +70,7 @@ pip3 install labelImg
 ```
 
 Thats it!\
-Now, you can begin [training](https://github.com/frc-862/tfod-wkspc/blob/master/docs/TRAINING.md) object detection models with tensorflow.
+Now, you can begin [training](https://github.com/frc-862/lightning-vision/blob/master/docs/TRAINING.md) object detection models with tensorflow.
 
 ## Usage
 
@@ -121,7 +121,7 @@ and try again.
 
 #### Automated Builds on GitHub Actions
 
-GitHub Actions is configured to build and push the image when released to the [`build`](https://github.com/frc-862/tfod-wkspc/tree/build) branch.
+GitHub Actions is configured to build the images on all PRs and release the images on all pushes to `master`.
 
 ### Other Known Issues
 
