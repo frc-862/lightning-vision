@@ -1,5 +1,7 @@
 #!/bin/sh
 # Usage: ./deploy.sh [remote username] [remote ip]
+
+# TODO: Once current testing Jetson is reimaged to have lightning be default user remove remote username arg
 if [ -z "$1" ] || [ -z "$2" ] ; then
     echo "No command line arguments given"
     echo "Defaulting connection to lightning@10.8.62.10"
