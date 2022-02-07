@@ -1,7 +1,7 @@
 {
     "team": 862,
     "ntmode": "server",
-    "debug": false,   
+    "debug": true,   
     "cameras": [
 		{
 			"name": "cam",
@@ -11,22 +11,21 @@
 			"pixel format": "yuyv",
 			"fps": 60,
 			"stream": {
-			"properties": [
-				{
-				"name": "width",
-				"value": 640
-				},
-				{
-				"name": "height",
-				"value": 360
-				},
-				{
-				"name": "fps",
-				"value": 60
-				}
-			]
+				"properties": [
+					{
+					"name": "width",
+					"value": 640
+					},
+					{
+					"name": "height",
+					"value": 360
+					},
+					{
+					"name": "fps",
+					"value": 60
+					}
+				]
 			}
 		}
-    ],
-    "switched cameras": []
+    ]
 }

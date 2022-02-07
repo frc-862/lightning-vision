@@ -8,8 +8,8 @@ import json
 import numpy as np
 import time
 
-import voidvision.camera as camera
-import voidvision.dashboard as dashboard
+import camera
+import dashboard
 
 configFile = "/home/lightning/voidvision/camera-config.json"
 
