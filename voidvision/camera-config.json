@@ -9,7 +9,7 @@
 			"width": 640,
 			"height": 360,
 			"pixel format": "yuyv",
-			"fps": 60,
+			"fps": 10,
 			"stream": {
 				"properties": [
 					{
@@ -22,7 +22,7 @@
 					},
 					{
 					"name": "fps",
-					"value": 60
+					"value": 10
 					}
 				]
 			}
