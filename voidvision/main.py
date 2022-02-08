@@ -10,37 +10,31 @@ import time
 
 import camera
 import dashboard
+import pipelineloader
 
-configFile = "/home/lightning/voidvision/camera-config.json"
+config = "/home/lightning/voidvision/vision-config.json"
 
 def main():
-	
-	# one camera thing
-	inp, out, width, height = camera.start(configFile, 0, 'cam', 'output?')
 
 	# start dashboard
-	table = dashboard.load(configFile)
+	table = dashboard.load(config)
 
-	# allocate image for whenever
-	img = np.zeros(shape=(height, width, 3), dtype=np.uint8)
+	# start pipelines
+	pipes = pipelineloader.loadall(config, table)
+
+	# push number of pipelines to dashboard
+	table.putNumber('# Pipelines', len(pipes))
 
 	i = 0
 	while True:
 		start_time = time.time()
 
-		table.putNumber('Loop Number', i)
-		i += 1
-
-		t, img = inp.grabFrame(img)
-
-		# process image
-		output_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+		for pipe in pipes:
+			pipe.process()
 
 		processing_time = time.time() - start_time
 		fps = 1 / processing_time
 		table.putNumber('FPS', fps)
-
-		out.putFrame(output_img)
 
 if __name__ == "__main__":
 	main()

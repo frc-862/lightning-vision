@@ -27,5 +27,13 @@
 				]
 			}
 		}
-    ]
+    ],
+	"pipelines": [
+		{
+			"name": "TestPipeline",
+			"fname": "test",
+			"camera": 0,
+			"cameraname": "cam"
+		}
+	]
 }
