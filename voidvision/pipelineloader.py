@@ -31,7 +31,7 @@ def load(config: str, pipe, table) -> VisionPipeline:
 	cam_name = pipe['cameraname']
 
 	# dynamically import/load pipeline
-	module = importlib.import_module(fname)
+	module = importlib.import_module('pipelines.'+fname)
 	class_ = getattr(module, name)
 	instance = class_(config, camera, cam_name, (name + '_output'))
 
