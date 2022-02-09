@@ -21,6 +21,7 @@ def main():
 
 	# start pipelines
 	pipes = pipelineloader.loadall(config, table)
+	print(pipes)
 
 	# push number of pipelines to dashboard
 	table.putNumber('# Pipelines', len(pipes))

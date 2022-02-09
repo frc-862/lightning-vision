@@ -31,7 +31,7 @@
 	"pipelines": [
 		{
 			"name": "TestPipeline",
-			"fname": "test",
+			"fname": "testpipeline",
 			"camera": 0,
 			"cameraname": "cam"
 		}

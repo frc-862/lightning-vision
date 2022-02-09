@@ -3,9 +3,9 @@
 from cscore import CameraServer
 import json
 
-def start(configFile: str, cam_num: int, cam_name: str, output_name: str):
+def start(config_file: str, cam_num: int, cam_name: str, output_name: str):
 
-	with open(configFile) as cfg:
+	with open(config_file) as cfg:
 		config = json.load(cfg)
 	camera = config['cameras'][cam_num]
 	print(camera)

@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 
-from voidvision.pipeline import VisionPipeline
+from pipeline import VisionPipeline
+import camera
 import numpy as np
 import cv2
+import sys
 
 
 class TestPipeline(VisionPipeline):
 
-	def __init__(self, config: str, camera: int, cam_name: str, output_name: str) -> None:
+	def __init__(self, config: str, cam_num: int, cam_name: str, output_name: str) -> None:
 
 		# one camera thing
-		self.inp, self.out, self.width, self.height = camera.start(config, camera, cam_name, output_name)
+		self.inp, self.out, self.width, self.height = camera.start(config, cam_num, cam_name, output_name)
 
 		# allocate image for whenever
 		self.img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
@@ -25,4 +27,3 @@ class TestPipeline(VisionPipeline):
 		self.output_img = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
 
 		self.out.putFrame(self.output_img)
-
