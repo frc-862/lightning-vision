@@ -1,0 +1,39 @@
+{
+    "team": 862,
+    "ntmode": "server",
+    "debug": true,   
+    "cameras": [
+		{
+			"name": "cam",
+			"path": "/dev/video0",
+			"width": 640,
+			"height": 360,
+			"pixel format": "yuyv",
+			"fps": 10,
+			"stream": {
+				"properties": [
+					{
+					"name": "width",
+					"value": 640
+					},
+					{
+					"name": "height",
+					"value": 360
+					},
+					{
+					"name": "fps",
+					"value": 10
+					}
+				]
+			}
+		}
+    ],
+	"pipelines": [
+		{
+			"name": "TestPipeline",
+			"fname": "testpipeline",
+			"camera": 0,
+			"cameraname": "cam"
+		}
+	]
+}

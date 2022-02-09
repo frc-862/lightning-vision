@@ -15,10 +15,12 @@ apt install -y python3-cscore
 rm Release.key
 
 # setup /etc/hosts to connect to rio
-# TODO implement
+echo "10.8.62.10 roboRIO-862-FRC.lan" >> /etc/hosts # jetson ip on team image radio
+echo "10.8.62.10 roboRIO-862-FRC.frc-field.lan" >> /etc/hosts # jetson ip on fms image radio
 
 # make app environment
 mkdir -p /home/lightning/voidvision/
+touch /home/lightning/voidvision/runCamera # make sure this file exists - empty version will be overwritten on deploy
 
 # configure app to run on boot
-# TODO implement
+echo "@reboot sh /home/lightning/voidvision/runCamera" >> /etc/crontab

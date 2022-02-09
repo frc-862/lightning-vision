@@ -9,7 +9,6 @@ def load(configFile: str):
 		config = json.load(cfg)
 	server = True if config['ntmode'] == 'server' else False
 	team = config['team']
-	print('is server: {}\nteam #: {}'.format(server, team))
 
 	ntinst = NetworkTablesInstance.getDefault()
 	if server:

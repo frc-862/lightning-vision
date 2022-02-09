@@ -3,9 +3,9 @@
 from cscore import CameraServer
 import json
 
-def start(configFile: str, cam_num: int, cam_name: str, output_name: str):
+def start(config_file: str, cam_num: int, cam_name: str, output_name: str):
 
-	with open(configFile) as cfg:
+	with open(config_file) as cfg:
 		config = json.load(cfg)
 	camera = config['cameras'][cam_num]
 	print(camera)
@@ -14,7 +14,8 @@ def start(configFile: str, cam_num: int, cam_name: str, output_name: str):
 	height = camera['height']
 	
 	cs = CameraServer.getInstance()
-	cs.startAutomaticCapture(dev=cam_num, name=cam_name) # Returns `VideoSource`
+	cap = cs.startAutomaticCapture(dev=cam_num, name=cam_name) # Returns `VideoSource`
+	cap.setFPS(camera['fps'])
 
 	inp = cs.getVideo(name=cam_name) # Returns `CvSink`
 	out = cs.putVideo(name=output_name, width=width, height=height)

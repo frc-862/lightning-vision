@@ -2,45 +2,50 @@
 
 from cscore import CameraServer
 from networktables import NetworkTablesInstance, NetworkTables
+from threading import Thread
+from time import sleep
+from pipeline import VisionPipeline
 
 import cv2
 import json
-import numpy as np
 import time
+import numpy as np
 
-import voidvision.camera as camera
-import voidvision.dashboard as dashboard
+import camera
+import dashboard
+import pipelineloader
 
-configFile = "/home/lightning/voidvision/camera-config.json"
+config = "/home/lightning/voidvision/vision-config.json"
 
 def main():
-	
-	# one camera thing
-	inp, out, width, height = camera.start(configFile, 0, 'cam', 'output?')
 
 	# start dashboard
-	table = dashboard.load(configFile)
+	table = dashboard.load(config)
 
-	# allocate image for whenever
-	img = np.zeros(shape=(height, width, 3), dtype=np.uint8)
+	# start pipelines
+	pipes = pipelineloader.loadall(config, table)
 
-	i = 0
+	# push number of pipelines to dashboard
+	table.putNumber('# Pipelines', len(pipes))
+
+	# start threads
+	for pipe in pipes:
+		thread = Thread(target=vision_thread, args=(pipe[1],table,pipe[0],))
+		thread.start()
+
+	print('APPLICATION STARTED SUCCESSFULLY')
+	
+	while True:
+		sleep(10)
+
+def vision_thread(pipe: VisionPipeline, table, pipe_name: str) -> None:
+
 	while True:
 		start_time = time.time()
-
-		table.putNumber('Loop Number', i)
-		i += 1
-
-		t, img = inp.grabFrame(img)
-
-		# process image
-		output_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
+		pipe.process()
 		processing_time = time.time() - start_time
 		fps = 1 / processing_time
-		table.putNumber('FPS', fps)
-
-		out.putFrame(output_img)
+		table.putNumber('FPS_'+pipe_name, fps)
 
 if __name__ == "__main__":
 	main()
