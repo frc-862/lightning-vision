@@ -26,4 +26,5 @@ class TestPipeline(VisionPipeline):
 		# process image
 		self.output_img = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
 
+		# throw output image to dashboard
 		self.out.putFrame(self.output_img)

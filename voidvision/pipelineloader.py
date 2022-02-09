@@ -7,7 +7,7 @@ from pipeline import VisionPipeline
 
 def loadall(config_file: str, table):
 
-	# insert at 1, 0 is the script path (or '' in REPL)
+	# insert at pipeline dir 1, 0 is the script path (or '' in REPL)
 	sys.path.insert(1, './pipelines/')
 
 	# list of pipelines
@@ -40,4 +40,7 @@ def load(config_file: str, pipe, table) -> VisionPipeline:
 	instance = class_(config_file, camera, cam_name, (name + '_output'))
 
 	# return instance
-	return instance
+	return name, instance
+
+if __name__ == "__main__":
+	print('do not run this script\nsomething is wrong')

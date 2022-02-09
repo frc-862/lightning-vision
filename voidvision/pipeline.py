@@ -11,3 +11,6 @@ class VisionPipeline(ABC):
 	@abstractmethod
 	def process(self):
 		pass
+
+if __name__ == "__main__":
+	print('do not run this script\nsomething is wrong')

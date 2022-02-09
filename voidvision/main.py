@@ -2,11 +2,14 @@
 
 from cscore import CameraServer
 from networktables import NetworkTablesInstance, NetworkTables
+from threading import Thread
+from time import sleep
+from pipeline import VisionPipeline
 
 import cv2
 import json
-import numpy as np
 import time
+import numpy as np
 
 import camera
 import dashboard
@@ -21,21 +24,28 @@ def main():
 
 	# start pipelines
 	pipes = pipelineloader.loadall(config, table)
-	print(pipes)
 
 	# push number of pipelines to dashboard
 	table.putNumber('# Pipelines', len(pipes))
 
-	i = 0
+	# start threads
+	for pipe in pipes:
+		thread = Thread(target=vision_thread, args=(pipe[1],table,pipe[0],))
+		thread.start()
+
+	print('APPLICATION STARTED SUCCESSFULLY')
+	
+	while True:
+		sleep(10)
+
+def vision_thread(pipe: VisionPipeline, table, pipe_name: str) -> None:
+
 	while True:
 		start_time = time.time()
-
-		for pipe in pipes:
-			pipe.process()
-
+		pipe.process()
 		processing_time = time.time() - start_time
 		fps = 1 / processing_time
-		table.putNumber('FPS', fps)
+		table.putNumber('FPS_'+pipe_name, fps)
 
 if __name__ == "__main__":
 	main()
