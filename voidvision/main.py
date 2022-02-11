@@ -15,7 +15,7 @@ import camera
 import dashboard
 import pipelineloader
 
-config = "/home/lightning/voidvision/vision-config.json"
+config = "./vision-config.json"
 
 def main():
 

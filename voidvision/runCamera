@@ -8,4 +8,4 @@ sleep 5
 export PYTHONUNBUFFERED=1
 
 # Run application
-python3 /home/lightning/voidvision/main.py
+python3 ./main.py
