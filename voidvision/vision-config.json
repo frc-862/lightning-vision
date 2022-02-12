@@ -30,8 +30,8 @@
     ],
 	"pipelines": [
 		{
-			"name": "TestPipeline",
-			"fname": "testpipeline",
+			"name": "HubPipeline",
+			"fname": "hubtargeting",
 			"camera": 0,
 			"cameraname": "cam"
 		}

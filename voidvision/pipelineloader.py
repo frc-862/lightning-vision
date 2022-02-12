@@ -26,18 +26,18 @@ def loadall(config_file: str, table):
 		
 	return piperunners
 
-def load(config_file: str, pipe, table) -> VisionPipeline:
+def load(config_file: str, pipe, table):
 
 	# read json config for pipeline
 	name = pipe['name']
 	fname = pipe['fname']
-	camera = pipe['camera']
+	camera = int(pipe['camera'])
 	cam_name = pipe['cameraname']
 
 	# dynamically import/load pipeline
-	module = importlib.import_module(fname) # 'voidvision.pipelines.'+fname
+	module = importlib.import_module(fname)
 	class_ = getattr(module, name)
-	instance = class_(config_file, camera, cam_name, (name + '_output'))
+	instance = class_(config_file, camera, cam_name, (name + '_output'), table)
 
 	# return instance
 	return name, instance
