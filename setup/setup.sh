@@ -23,4 +23,5 @@ mkdir -p /home/lightning/voidvision/
 touch /home/lightning/voidvision/runCamera # make sure this file exists - empty version will be overwritten on deploy
 
 # configure app to run on boot
+# TODO: Fix, doesn't seem to work at the moment.
 echo "@reboot sh /home/lightning/voidvision/runCamera" >> /etc/crontab

@@ -38,6 +38,7 @@ def main():
 	while True:
 		sleep(10)
 
+
 def vision_thread(pipe: VisionPipeline, table, pipe_name: str) -> None:
 
 	while True:
