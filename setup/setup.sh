@@ -2,7 +2,7 @@
 
 # check admin
 if ![ "$EUID" -eq 0 ] ; then
-    echo "you need root"
+    echo "Please run as root by prefixing this command with sudo"
 	exit 1
 fi
 
