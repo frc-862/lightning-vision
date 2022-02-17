@@ -8,7 +8,7 @@ from pipeline import VisionPipeline
 def loadall(config_file: str, table):
 
 	# insert at pipeline dir 1, 0 is the script path (or '' in REPL)
-	sys.path.insert(1, './pipelines/')
+	sys.path.insert(1, '/home/lightning/voidvision/pipelines/')
 
 	# list of pipelines
 	piperunners = []
