@@ -7,7 +7,7 @@ import cv2
 import sys
 
 
-class TestPipeline(VisionPipeline):
+class HubPipeline(VisionPipeline):
 
 	def __init__(self, config: str, cam_num: int, cam_name: str, output_name: str) -> None:
 
