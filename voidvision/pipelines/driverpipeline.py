@@ -9,7 +9,7 @@ import sys
 
 class DriverPipeline(VisionPipeline):
 
-	def __init__(self, config: str, cam_num: int, cam_name: str, output_name: str) -> None:
+	def __init__(self, config: str, cam_num: int, cam_name: str, output_name: str, table) -> None:
 
 		# one camera thing
 		self.inp, self.out, self.width, self.height = camera.start(config, cam_num, cam_name, output_name)
