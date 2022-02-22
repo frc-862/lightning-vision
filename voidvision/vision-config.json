@@ -26,14 +26,44 @@
 					}
 				]
 			}
+		},
+		{
+			"name": "driver",
+			"path": "/dev/video1",
+			"width": 640,
+			"height": 360,
+			"pixel format": "yuyv",
+			"fps": 10,
+			"stream": {
+				"properties": [
+					{
+					"name": "width",
+					"value": 640
+					},
+					{
+					"name": "height",
+					"value": 360
+					},
+					{
+					"name": "fps",
+					"value": 10
+					}
+				]
+			}
 		}
     ],
 	"pipelines": [
 		{
-			"name": "TestPipeline",
-			"fname": "testpipeline",
+			"name": "HubPipeline",
+			"fname": "hubpipeline",
 			"camera": 0,
 			"cameraname": "cam"
+		},
+		{
+			"name": "DriverPipeline",
+			"fname": "driverpipeline",
+			"camera": 1,
+			"cameraname": "driver"
 		}
 	]
 }

@@ -23,7 +23,7 @@ mkdir -p /home/lightning/voidvision/
 touch /home/lightning/voidvision/runCamera # make sure this file exists - empty version will be overwritten on deploy
 
 # configure app to run on boot
-tempFile='salkdjfsljfdalksfsbelneoi' # This line is purely to make sure that we aren't overwriting a pre-existing file
+tempFile='randomtempfile' # This line is purely to make sure that we aren't overwriting a pre-existing file
 touch $tempFile && echo '@reboot /bin/bash /home/lightning/voidvision/runCamera' > $tempFile
 crontab $tempFile
 rm $tempFile

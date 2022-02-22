@@ -37,7 +37,7 @@ def load(config_file: str, pipe, table) -> VisionPipeline:
 	# dynamically import/load pipeline
 	module = importlib.import_module(fname) # 'voidvision.pipelines.'+fname
 	class_ = getattr(module, name)
-	instance = class_(config_file, camera, cam_name, (name + '_output'))
+	instance = class_(config_file, camera, cam_name, (name + '_output'), table)
 
 	# return instance
 	return name, instance
