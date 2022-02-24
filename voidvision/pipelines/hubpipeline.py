@@ -7,6 +7,8 @@ import numpy as np
 import cv2
 import sys
 from time import sleep
+import grip
+
 
 class HubPipeline(VisionPipeline):
 
@@ -14,8 +16,7 @@ class HubPipeline(VisionPipeline):
 
 		self.nttable = table
 
-		# TODO instantiate GRIP pipeline
-		self.pipeline = None
+		self.pipeline = grip.GripPipeline()
 
 		self.fov_horiz = 0 # TODO Measure horizontal fov on cameras
 		self.fov_vert = 0 # TODO Measure vertical fov on cameras
@@ -35,10 +36,13 @@ class HubPipeline(VisionPipeline):
 		# get frame from camera
 		self.t, self.img = self.inp.grabFrame(self.img)
 
-		# TODO pass self.img to grip pipeline process function
+		self.pipeline.process(self.img)
 
-		# TODO grab center of bounding box around target from grip pipeline
+		# TODO grab center of bounding box arounuuud target from grip pipeline
 		#row, col = grip.getBlahBlahBlah()
+
+		self.output_img = self.pipeline.rgb_threshold_output
+		self.out.putFrame(self.output_img)
 
 		# TODO do some math to correspond the column to an angle offset based on these vars
 		targetAngle = 0 # TODO fixme
@@ -56,9 +60,16 @@ class HubPipeline(VisionPipeline):
 		targetAngle = 15 
 		self.nttable.putNumber('Target Angle', targetAngle)
 		self.nttable.putNumber('Target Distance', distance)
+		try: 
+			numContours = len(self.pipeline.filter_contours_output)
+		except:
+			numContours = -1
+
+		# Puts number of contours detected in current image to the dashboard
+		self.nttable.putNumber('Contour Number', numContours)
 
 		# throw output image to dashboard
-		# self.out.putFrame(self.output_img)
+		self.out.putFrame(self.output_img)
 
 	def get_angle_from_target(self, target_center_col, image_width_cols):
 			return (target_center_col - (image_width_cols / 2) * (self.fov_horiz / image_width_cols))
