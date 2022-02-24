@@ -53,20 +53,20 @@ class HubPipeline(VisionPipeline):
 
 		# targetAngle = get_angle_from_target(targetCenterCol, imgWidthCols)
 		targetAngle = 15 
-		while True:
-			sleep(5)
-			# TODO: Junk targetAngle and distance values, replace with something real
-			self.nttable.putNumber('Target Angle', targetAngle)
-			self.nttable.putNumber('Target Distance', distance)
+		
+		# TODO: Junk targetAngle and distance values, replace with something real
+		self.nttable.putNumber('Target Angle', targetAngle)
+		self.nttable.putNumber('Target Distance', distance)
+		
 		# throw output image to dashboard
 		self.out.putFrame(self.output_img)
 
 	def get_angle_from_target(self, target_center_col, image_width_cols):
 			return (target_center_col - (image_width_cols / 2) * (self.fov_horiz / image_width_cols))
 		
-	def interpolated_dist_from_target():
+	def interpolated_dist_from_target(self, ):
 			pass
 
-	def checkTargetProportion(targetBoxHeight, targetCenterRow):
+	def checkTargetProportion(self, targetBoxHeight, targetCenterRow):
 			ratio = targetBoxHeight / targetCenterRow
 			return (ratio - self.targetHeightRatio) < self.targetRatioThreshold
