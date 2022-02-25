@@ -292,7 +292,7 @@ if __name__ == "__main__":
                     plt.draw()
                     plt.show(block=False)
                     
-                    plt.ginput(1,timeout=0)
+                    #plt.ginput(1,timeout=0)
                     foo = 0
                             
             
@@ -416,7 +416,7 @@ if __name__ == "__main__":
                         plt.plot(rect[0][0],rect[0][1],'rv')
                     plt.draw()
                     plt.show(block=False)
-                    plt.ginput(1,timeout=0)
+                    #plt.ginput(1,timeout=0)
                     
             
                 #========================================================
@@ -533,8 +533,11 @@ if __name__ == "__main__":
 
 
     # EXAMINE THE ACCUMULATED CONTROL AND MEASURE VALUES
+    y = np.polyfit([1,35],[467,4],3)
+
     plt.figure(101)
     plt.clf()
+    plt.plot(y)
     plt.plot(control_contour_row,measure_contour_width,'bo')
     plt.plot(control_contour_row,measure_contour_height,'kx')
  
@@ -585,9 +588,21 @@ if __name__ == "__main__":
             local_distance.append(control_distance[index])
     
     # Normal polynomial fit
+#def findDistance(row):
+    
+    
     Pxy1 = np.polyfit(local_distance,local_measure,3)
-    y = np.polyval(Pxy1,x)
-    print(y)
+    
+    pixel = 50
+    
+    Pxy1_prime = Pxy1.copy()
+    
+    Pxy1_prime[len(Pxy1_prime)-1] -=  pixel
+    
+    distSolution = np.roots(Pxy1_prime)
+    dist = distSolution.real[abs(distSolution.imag) < 1e-5][0]
+    
+    print(dist)
     x_new1 = list(range(0,np.max(local_distance)+20))
     y_new1 = np.polyval(Pxy1,x_new1)
     # fit distance given measure
@@ -615,9 +630,10 @@ if __name__ == "__main__":
     plt.clf()
     plt.plot(local_distance,local_measure,'bo')
     plt.plot(x_new1,y_new1,'k^-')
-    plt.plot(x_new2,y_new2,'r>-')
-    plt.plot(x_new3,y_new3,'bv-')
-    plt.plot(x_new4,y_new4,'g<-')
+    #plt.plot(x_new2,y_new2,'r>-')
+    #plt.plot(x_new3,y_new3,'bv-')
+    #plt.plot(x_new4,y_new4,'g<-')
+    plt.plot(y)
     plt.xlabel('(Approximate) Distance (inches from leading target edge)')
     plt.ylabel('MEASURE VALUE (Row Pixel)')
     plt.legend(['DATA','Polynomial Fit - measure given distance','Polynomial Fit - distance given measure','LOG Fit - measure given distance','LOG Fit - distance given measure'])
