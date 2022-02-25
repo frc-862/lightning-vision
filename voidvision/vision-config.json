@@ -4,8 +4,32 @@
     "debug": true,   
     "cameras": [
 		{
-			"name": "cam",
+			"name": "hubcam",
 			"path": "/dev/video0",
+			"width": 640,
+			"height": 360,
+			"pixel format": "yuyv",
+			"fps": 10,
+			"stream": {
+				"properties": [
+					{
+					"name": "width",
+					"value": 640
+					},
+					{
+					"name": "height",
+					"value": 360
+					},
+					{
+					"name": "fps",
+					"value": 10
+					}
+				]
+			}
+		},
+		{
+			"name": "driver",
+			"path": "/dev/video1",
 			"width": 640,
 			"height": 360,
 			"pixel format": "yuyv",
@@ -31,9 +55,15 @@
 	"pipelines": [
 		{
 			"name": "HubPipeline",
-			"fname": "hubtargeting",
+			"fname": "hubpipeline",
 			"camera": 0,
-			"cameraname": "cam"
+			"cameraname": "hubcam"
+		},
+		{
+			"name": "DriverPipeline",
+			"fname": "driverpipeline",
+			"camera": 1,
+			"cameraname": "driver"
 		}
 	]
 }
