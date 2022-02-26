@@ -10,7 +10,7 @@
 			"height": 360,
 			"pixel format": "yuyv",
 			"fps": 60,
-			"exposure": 5,
+			"exposure": 60,
 			"brightness": 5,
 			"white balance": 5,
 			"stream": {
@@ -37,7 +37,7 @@
 			"height": 360,
 			"pixel format": "yuyv",
 			"fps": 60,
-			"exposure": 5,
+			"exposure": 60,
 			"brightness": 5,
 			"white balance": 5,
 			"stream": {

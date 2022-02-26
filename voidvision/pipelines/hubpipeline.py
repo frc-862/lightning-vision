@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 from re import I
 from pipeline import VisionPipeline
 import camera
@@ -8,6 +9,7 @@ import cv2
 import sys
 from time import sleep
 import grip
+import time
 
 
 class HubPipeline(VisionPipeline):
@@ -17,12 +19,13 @@ class HubPipeline(VisionPipeline):
 		self.nttable = table
 
 		self.exposure_entry = table.getEntry('exposure')
-		self.bright_entry = table.getEntry('brightness')
-		self.white_entry = table.getEntry('white balance')
-		
+		self.capture_entry = table.getEntry('capture frame')
+		self.distance_entry = table.getEntry('distance input')
+
+		# Initialize entry as 7	(idk why, just 7)	
 		self.exposure_entry.setNumber(7)
-		self.bright_entry.setNumber(7)
-		self.white_entry.setNumber(7)
+		self.capture_entry.setBoolean(False)
+		self.distance_entry.setString('42-thousand-tonnes')
 
 		self.pipeline = grip.GripPipeline()
 
@@ -30,7 +33,7 @@ class HubPipeline(VisionPipeline):
 		self.fov_vert = 0 # TODO Measure vertical fov on cameras
 
 		# start camera
-		self.inp, self.out, self.width, self.height, self.cam = camera.start(config, cam_num, cam_name, output_name)
+		self.inp, self.out, self.width, self.height, self.cam, self.exposure, self.cameraPath = camera.start(config, cam_num, cam_name, output_name)
 
 		self.targetHeightRatio = 0
 		self.targetRatioThreshold = 0
@@ -41,13 +44,18 @@ class HubPipeline(VisionPipeline):
 
 	def process(self):
 
-		# set things
-		self.cam.setExposureManual(int(self.exposure_entry.getNumber(7)))
-		self.cam.setBrightness(int(self.exposure_entry.getNumber(7)))
-		self.cam.setWhiteBalanceManual(int(self.exposure_entry.getNumber(7)))
-
+		# set exposure
+		os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=exposure_absolute=" + str(self.exposure_entry.getNumber(7)))	
 		# get frame from camera
 		self.t, self.img = self.inp.grabFrame(self.img)
+
+		if self.capture_entry.getBoolean(False):
+			mills = str(int(time.time() * 1000))
+			dist = self.distance_entry.getString('42-thousand-tonnes')
+			fname = str('/home/lightning/voidvision/images/frame-distance-{}-{}.jpg'.format(dist, mills))
+			cv2.imwrite(fname, self.img)
+			print('FILE: {} WRITTEN ... Maybe'.format(fname))
+			self.capture_entry.setBoolean(False)
 
 		self.pipeline.process(self.img)
 
