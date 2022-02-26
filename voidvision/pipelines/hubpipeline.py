@@ -9,6 +9,7 @@ import cv2
 import sys
 from time import sleep
 import grip
+import time
 
 
 class HubPipeline(VisionPipeline):
@@ -18,9 +19,13 @@ class HubPipeline(VisionPipeline):
 		self.nttable = table
 
 		self.exposure_entry = table.getEntry('exposure')
+		self.capture_entry = table.getEntry('capture frame')
+		self.distance_entry = table.getEntry('distance input')
 
-		# Initialize entry as 7		
+		# Initialize entry as 7	(idk why, just 7)	
 		self.exposure_entry.setNumber(7)
+		self.capture_entry.setBoolean(False)
+		self.distance_entry.setString('42-thousand-tonnes')
 
 		self.pipeline = grip.GripPipeline()
 
@@ -43,6 +48,14 @@ class HubPipeline(VisionPipeline):
 		os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=exposure_absolute=" + str(self.exposure_entry.getNumber(7)))	
 		# get frame from camera
 		self.t, self.img = self.inp.grabFrame(self.img)
+
+		if self.capture_entry.getBoolean(False):
+			mills = str(int(time.time() * 1000))
+			dist = self.distance_entry.getString('42-thousand-tonnes')
+			fname = str('/home/lightning/voidvision/images/frame-distance-{}-{}.jpg'.format(dist, mills))
+			cv2.imwrite(fname, self.img)
+			print('FILE: {} WRITTEN ... Maybe'.format(fname))
+			self.capture_entry.setBoolean(False)
 
 		self.pipeline.process(self.img)
 
