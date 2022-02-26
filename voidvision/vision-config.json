@@ -4,7 +4,7 @@
     "debug": true,   
     "cameras": [
 		{
-			"name": "cam",
+			"name": "hubcam",
 			"path": "/dev/video0",
 			"width": 640,
 			"height": 360,
@@ -63,7 +63,7 @@
 			"name": "HubPipeline",
 			"fname": "hubpipeline",
 			"camera": 0,
-			"cameraname": "cam"
+			"cameraname": "hubcam"
 		},
 		{
 			"name": "DriverPipeline",

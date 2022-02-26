@@ -2,11 +2,13 @@
 
 import os
 from re import I
+from tkinter import W
 from pipeline import VisionPipeline
 import camera
 import numpy as np
 import cv2
 import sys
+from gripipeline import GripPipeline
 from time import sleep
 import grip
 import time
@@ -37,7 +39,6 @@ class HubPipeline(VisionPipeline):
 
 		self.targetHeightRatio = 0
 		self.targetRatioThreshold = 0
-
 		# allocate image for whenever
 		self.img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
 		self.output_img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
@@ -79,6 +80,8 @@ class HubPipeline(VisionPipeline):
 
 		# targetAngle = get_angle_from_target(targetCenterCol, imgWidthCols)
 		targetAngle = 15 
+		
+		# TODO: Junk targetAngle and distance values, replace with something real
 		self.nttable.putNumber('Target Angle', targetAngle)
 		self.nttable.putNumber('Target Distance', distance)
 		try: 
@@ -95,7 +98,7 @@ class HubPipeline(VisionPipeline):
 	def get_angle_from_target(self, target_center_col, image_width_cols):
 			return (target_center_col - (image_width_cols / 2) * (self.fov_horiz / image_width_cols))
 		
-	def interpolated_dist_from_target(self):
+	def interpolated_dist_from_target(self, ):
 			pass
 
 	def checkTargetProportion(self, targetBoxHeight, targetCenterRow):

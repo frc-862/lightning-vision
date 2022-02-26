@@ -15,7 +15,7 @@ import camera
 import dashboard
 import pipelineloader
 
-config = "/home/lightning/voidvision/vision-config.json"
+config = "./vision-config.json"
 
 def main():
 
@@ -37,6 +37,7 @@ def main():
 	
 	while True:
 		sleep(10)
+
 
 def vision_thread(pipe: VisionPipeline, table, pipe_name: str) -> None:
 
