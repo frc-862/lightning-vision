@@ -246,7 +246,7 @@ if __name__ == "__main__":
                 if not(os.path.exists(os.path.join(base_path,elements[0]))):
                     continue
                 in_image = cv2.imread(os.path.join(base_path,elements[0]))
-                
+                # CODE BEYOND THIS POINT IS TO BE CONVERTED TO HUBPIPELINE.py PROCESSING
                 #----------------------------------------------------
                 # GRIP-like OpenCV/cv2 pipeline of processing
                 
