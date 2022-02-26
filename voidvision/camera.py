@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from cscore import CameraServer
+from cscore import CameraServer, UsbCamera
 import json
 
 def start(config_file: str, cam_num: int, cam_name: str, output_name: str):
@@ -14,13 +14,22 @@ def start(config_file: str, cam_num: int, cam_name: str, output_name: str):
 	height = camera['height']
 	
 	cs = CameraServer.getInstance()
-	cap = cs.startAutomaticCapture(dev=cam_num, name=cam_name) # Returns `VideoSource`
-	cap.setFPS(camera['fps'])
 
+	# Test making camera
+	cam = UsbCamera(dev=cam_num, name=cam_name)
+	cam.setFPS(camera['fps'])
+	cam.setExposureManual(camera['exposure'])
+	cam.setBrightness(camera['brightness'])
+	cam.setWhiteBalanceManual(camera['white balance'])
+	cam.setResolution(width, height)
+
+	cs.startAutomaticCapture(camera=cam, return_server=True) # Returns `VideoSource`
+	# cap.setFPS(camera['fps'])
+	
 	inp = cs.getVideo(name=cam_name) # Returns `CvSink`
 	out = cs.putVideo(name=output_name, width=width, height=height)
 
-	return inp, out, width, height
+	return inp, out, width, height, cam
 
 if __name__ == "__main__":
 	print('do not run this script\nsomething is wrong')
