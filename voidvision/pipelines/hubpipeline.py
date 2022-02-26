@@ -21,8 +21,8 @@ class HubPipeline(VisionPipeline):
 		self.white_entry = table.getEntry('white balance')
 		
 		self.exposure_entry.setNumber(7)
-		self.bright_entry.setNumber(7)
-		self.white_entry.setNumber(7)
+		self.bright_entry.setNumber(8)
+		self.white_entry.setNumber(9)
 
 		self.pipeline = grip.GripPipeline()
 
@@ -43,8 +43,8 @@ class HubPipeline(VisionPipeline):
 
 		# set things
 		self.cam.setExposureManual(int(self.exposure_entry.getNumber(7)))
-		self.cam.setBrightness(int(self.exposure_entry.getNumber(7)))
-		self.cam.setWhiteBalanceManual(int(self.exposure_entry.getNumber(7)))
+		self.cam.setBrightness(int(self.bright_entry.getNumber(7)))
+		self.cam.setWhiteBalanceManual(int(self.white_entry.getNumber(7)))
 
 		# get frame from camera
 		self.t, self.img = self.inp.grabFrame(self.img)
