@@ -16,13 +16,21 @@ class HubPipeline(VisionPipeline):
 
 		self.nttable = table
 
+		self.exposure_entry = table.getEntry('exposure')
+		self.bright_entry = table.getEntry('brightness')
+		self.white_entry = table.getEntry('white balance')
+		
+		self.exposure_entry.setNumber(7)
+		self.bright_entry.setNumber(7)
+		self.white_entry.setNumber(7)
+
 		self.pipeline = grip.GripPipeline()
 
 		self.fov_horiz = 0 # TODO Measure horizontal fov on cameras
 		self.fov_vert = 0 # TODO Measure vertical fov on cameras
 
 		# start camera
-		self.inp, self.out, self.width, self.height = camera.start(config, cam_num, cam_name, output_name)
+		self.inp, self.out, self.width, self.height, self.cam = camera.start(config, cam_num, cam_name, output_name)
 
 		self.targetHeightRatio = 0
 		self.targetRatioThreshold = 0
@@ -32,6 +40,11 @@ class HubPipeline(VisionPipeline):
 		self.output_img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
 
 	def process(self):
+
+		# set things
+		self.cam.setExposureManual(int(self.exposure_entry.getNumber(7)))
+		self.cam.setBrightness(int(self.exposure_entry.getNumber(7)))
+		self.cam.setWhiteBalanceManual(int(self.exposure_entry.getNumber(7)))
 
 		# get frame from camera
 		self.t, self.img = self.inp.grabFrame(self.img)

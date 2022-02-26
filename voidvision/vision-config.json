@@ -9,7 +9,10 @@
 			"width": 640,
 			"height": 360,
 			"pixel format": "yuyv",
-			"fps": 10,
+			"fps": 60,
+			"exposure": 5,
+			"brightness": 5,
+			"white balance": 5,
 			"stream": {
 				"properties": [
 					{
@@ -22,7 +25,7 @@
 					},
 					{
 					"name": "fps",
-					"value": 10
+					"value": 60
 					}
 				]
 			}
@@ -33,7 +36,10 @@
 			"width": 640,
 			"height": 360,
 			"pixel format": "yuyv",
-			"fps": 10,
+			"fps": 60,
+			"exposure": 5,
+			"brightness": 5,
+			"white balance": 5,
 			"stream": {
 				"properties": [
 					{
@@ -46,7 +52,7 @@
 					},
 					{
 					"name": "fps",
-					"value": 10
+					"value": 60
 					}
 				]
 			}
