@@ -20,7 +20,7 @@ import copy
 def estimate_tape_width(row,col):
     
     estimate_width = ((6-24)/(400-80))*row+28.5
-    estimate_wtolerance = (-5.0/480.0)*row+6.0+0.6
+    estimate_wtolerance = (((-5.0/480.0)*row+6.0+0.6)*2)
 
     return estimate_width, estimate_wtolerance
 
@@ -29,7 +29,7 @@ def estimate_tape_height(row,col):
     
     estimate_height = ((2.3-5)/(400-50))*row+5.4
     #estimate_htolerance = 10*((-5.0/480.0)*row+8.0+0.8)
-    estimate_htolerance = 0.5*((-5.0/480.0)*rect[0][1]+6.0+0.6)
+    estimate_htolerance = (0.5*(((-5.0/480.0)*rect[0][1]+6.0+0.6)*2))
 
     return estimate_height, estimate_htolerance
 
@@ -160,7 +160,7 @@ if __name__ == "__main__":
     # For some functions the version matters for return arguments
     (cv2_major, cv2_minor, cv2_patch) = map(int,cv2.__version__.split("."))
     
-    base_path = r'C:\Users\sdtul\DataV2'
+    base_path = r'C:\Users\sdtul\DataV4'
     
     
     images_total = 0
@@ -206,15 +206,18 @@ if __name__ == "__main__":
                 #---------------------------------------------------
                 # Parse the filename to get the distance
                 end_index = elements[0].find('in')
-                start_index = end_index
+                if (end_index>0):
+                    start_index = end_index
                 
-                while (start_index>=0):
-                    if (elements[0][start_index]=='/'):
-                        break
-                    start_index -= 1
-                start_index += 1
-                temp_distance = int(elements[0][start_index:end_index])
-                
+                    while (start_index>=0):
+                        if (elements[0][start_index]=='/'):
+                           break
+                        start_index -= 1
+                    start_index += 1
+                    temp_distance = int(elements[0][start_index:end_index])
+                else:
+                    temp_distance = -1
+                    
                 # SAVE THE DISTANCE
                 control_distance.append(temp_distance)
                 
@@ -262,8 +265,8 @@ if __name__ == "__main__":
                 kernel[0][4] = 0
                 kernel[4][4] = 0
                 # Use the kernel to clean holes in blobs and smooth shape edges
-                im_dilate = cv2.dilate(color_mask,kernel,iterations=1)
-                im_erode = cv2.erode(im_dilate,kernel,iterations=1)
+                im_dilate = cv2.dilate(color_mask,kernel,iterations=2)
+                im_erode = cv2.erode(im_dilate,kernel,iterations=2)
                 
                 # Review the processing images
                 debug_input = False
@@ -335,7 +338,7 @@ if __name__ == "__main__":
                     # For now, just assume the biggest measure is width and smallest is height
                     contour_width = np.max(rect[1])
                     contour_height = np.min(rect[1])
-                    
+                    print([contour_width, contour_height, rect[0]])
                     #-------------------------------------------------------
                     # NOTICE - SIZE CHECK - Use bounds around a fit to determine acceptable sizing
                     estimate_width, estimate_wtolerance = estimate_tape_width(rect[0][1],rect[0][0])
@@ -472,6 +475,7 @@ if __name__ == "__main__":
                 if (final_contours_debug):
                     plt.figure(421)
                     plt.clf()
+                    plt.title(elements[0])
                     plt.imshow(im_erode)
                     for this_contour in truth_contours:
                         for index in range(len(this_contour)):
@@ -491,7 +495,8 @@ if __name__ == "__main__":
                         plt.plot(rect[0][0],rect[0][1],'go',markersize=10,alpha=0.5)
                     plt.draw()
                     plt.show(block=False)
-                    #plt.ginput(1,timeout=0)            
+                    #
+                    plt.ginput(1,timeout=0)            
                     foo = 0
             
                 #------------------------------------------------------------
@@ -589,20 +594,27 @@ if __name__ == "__main__":
     
     # Normal polynomial fit
 #def findDistance(row):
+ 
     
+def findDistance(row):
     
+    local_measure = []
+    local_distance = []
+    for index in range(len(control_distance)):
+        if (measure_target_row[index]>0) and \
+           ( (measure_target_col[index]>=640/2-100) and (measure_target_col[index]<=640/2+100) ):
+            local_measure.append(measure_target_row[index])
+            local_distance.append(control_distance[index])
+            
     Pxy1 = np.polyfit(local_distance,local_measure,3)
-    
-    pixel = 50
-    
     Pxy1_prime = Pxy1.copy()
-    
-    Pxy1_prime[len(Pxy1_prime)-1] -=  pixel
-    
+    Pxy1_prime[len(Pxy1_prime)-1] -= row
     distSolution = np.roots(Pxy1_prime)
     dist = distSolution.real[abs(distSolution.imag) < 1e-5][0]
     
-    print(dist)
+    return dist
+    
+    Pxy1 = np.polyfit(local_distance,local_measure,3)
     x_new1 = list(range(0,np.max(local_distance)+20))
     y_new1 = np.polyval(Pxy1,x_new1)
     # fit distance given measure
@@ -630,9 +642,9 @@ if __name__ == "__main__":
     plt.clf()
     plt.plot(local_distance,local_measure,'bo')
     plt.plot(x_new1,y_new1,'k^-')
-    #plt.plot(x_new2,y_new2,'r>-')
-    #plt.plot(x_new3,y_new3,'bv-')
-    #plt.plot(x_new4,y_new4,'g<-')
+    plt.plot(x_new2,y_new2,'r>-')
+    plt.plot(x_new3,y_new3,'bv-')
+    plt.plot(x_new4,y_new4,'g<-')
     plt.plot(y)
     plt.xlabel('(Approximate) Distance (inches from leading target edge)')
     plt.ylabel('MEASURE VALUE (Row Pixel)')

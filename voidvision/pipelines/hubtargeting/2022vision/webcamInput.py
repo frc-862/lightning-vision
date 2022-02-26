@@ -15,7 +15,7 @@ vc = cv2.VideoCapture(0)
 
 #sets the exposure
 vc.set(cv2.CAP_PROP_AUTO_EXPOSURE, 0)
-exposure = -10
+exposure = -12
 vc.set(cv2.CAP_PROP_EXPOSURE, exposure)
 
 #sets the width and height
@@ -73,7 +73,7 @@ while rval:
                 print("you saved a picture")
     
                 # Make a temp file name to see if it exists
-                imagePath = r'C:\Users\sdtul\DataV2\24In'
+                imagePath = r'C:\Users\sdtul\DataV4'
                 imageName = 'debug'+str(counter)+'_exposure'+str(exposure)+'.png'
                 tempfilename = os.path.join(imagePath,imageName)
                 # Check if this is an unused file name

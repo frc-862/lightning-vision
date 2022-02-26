@@ -52,7 +52,7 @@ def color_correlation ( image, color ):
 if __name__ == "__main__":
     
     
-    base_path = r'/home/johnwegrzyn/Desktop/FRC/2022/Vision/2022 Vision targets v5'
+    base_path = r'C:\Users\sdtul\DataV4'
     
     
     images_total = 0
