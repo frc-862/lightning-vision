@@ -7,7 +7,7 @@
 			"name": "hubcam",
 			"path": "/dev/video0",
 			"width": 640,
-			"height": 360,
+			"height": 480,
 			"pixel format": "yuyv",
 			"fps": 60,
 			"exposure": 60,
@@ -21,7 +21,7 @@
 					},
 					{
 					"name": "height",
-					"value": 360
+					"value": 480
 					},
 					{
 					"name": "fps",
@@ -34,7 +34,7 @@
 			"name": "driver",
 			"path": "/dev/video1",
 			"width": 640,
-			"height": 360,
+			"height": 480,
 			"pixel format": "yuyv",
 			"fps": 60,
 			"exposure": 60,
@@ -48,7 +48,7 @@
 					},
 					{
 					"name": "height",
-					"value": 360
+					"value": 480
 					},
 					{
 					"name": "fps",
