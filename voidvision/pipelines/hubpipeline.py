@@ -21,11 +21,14 @@ class HubPipeline(VisionPipeline):
         self.nttable = table
 
         self.exposure_entry = table.getEntry('exposure')
+        self.brightness_entry = table.getEntry('brightness')
         self.capture_entry = table.getEntry('capture frame')
         self.distance_entry = table.getEntry('distance input')
 
-        # Initialize entry as 7	(idk why, just 7)	
+        # Initialize network table entries
         self.exposure_entry.setNumber(7)
+        self.brightness_entry.setNumber(8)
+
         self.capture_entry.setBoolean(False)
         self.distance_entry.setString('42-thousand-tonnes')
 
@@ -89,6 +92,7 @@ class HubPipeline(VisionPipeline):
         # set exposure
         # TODO: not call every time process is run, only when updated
         os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=exposure_absolute=" + str(self.exposure_entry.getNumber(7)))	
+        os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=brightness=" + str(self.brightness_entry.getNumber(8)))
 
         # get frame from camera
         self.t, self.img = self.inp.grabFrame(self.img)
