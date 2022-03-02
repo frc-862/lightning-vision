@@ -8,7 +8,6 @@ import camera
 import numpy as np
 import cv2
 import sys
-from gripipeline import GripPipeline
 from time import sleep
 import time
 
@@ -33,10 +32,9 @@ class HubPipeline(VisionPipeline):
         self.fov_vert = 68.12 
 
         # start camera
-        self.inp, self.out, self.width, self.height, self.cam, self.exposure, self.cameraPath = camera.start(config, cam_num, cam_name, output_name)
+        self.inp, self.out, self.width, self.height, self.cam, self.exposure, self.brightness, self.cameraPath = camera.start(config, cam_num, cam_name, output_name)
         self.exposure_entry.setNumber(self.exposure)
-        self.brightness_entry.setNumber(8)
-
+        self.brightness_entry.setNumber(self.brightness)
 
         # TODO: Determine usefulness
         self.targetHeightRatio = 0
