@@ -10,7 +10,6 @@ import cv2
 import sys
 from gripipeline import GripPipeline
 from time import sleep
-import grip
 import time
 
 
@@ -26,9 +25,6 @@ class HubPipeline(VisionPipeline):
         self.distance_entry = table.getEntry('distance input')
 
         # Initialize network table entries
-        self.exposure_entry.setNumber(7)
-        self.brightness_entry.setNumber(8)
-
         self.capture_entry.setBoolean(False)
         self.distance_entry.setString('42-thousand-tonnes')
 
@@ -38,6 +34,9 @@ class HubPipeline(VisionPipeline):
 
         # start camera
         self.inp, self.out, self.width, self.height, self.cam, self.exposure, self.cameraPath = camera.start(config, cam_num, cam_name, output_name)
+        self.exposure_entry.setNumber(self.exposure)
+        self.brightness_entry.setNumber(8)
+
 
         # TODO: Determine usefulness
         self.targetHeightRatio = 0

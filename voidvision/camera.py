@@ -14,7 +14,6 @@ def start(config_file: str, cam_num: int, cam_name: str, output_name: str):
 	height = camera['height']
 	cameraPath = camera['path']
 	exposure = camera['exposure']
-	v4l2ctl = "v4l2-ctl"
 	cs = CameraServer.getInstance()
 
 	# Test making camera
