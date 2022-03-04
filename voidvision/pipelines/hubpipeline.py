@@ -97,7 +97,7 @@ class HubPipeline(VisionPipeline):
         if self.capture_entry.getBoolean(False):
             mills = str(int(time.time() * 1000))
             dist = self.distance_entry.getString('42-thousand-tonnes')
-            fname = str('/home/lightning/voidvision/images/frame-distance-{}-{}.jpg'.format(dist, mills))
+            fname = str('/home/lightning/voidvision/images/frame-distance-{}-{}.png'.format(dist, mills))
             cv2.imwrite(fname, self.img)
             print('FILE: {} WRITTEN ... Maybe'.format(fname))
             self.capture_entry.setBoolean(False)
