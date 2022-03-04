@@ -1,6 +1,6 @@
 {
     "team": 862,
-    "ntmode": "client",
+    "ntmode": "server",
     "debug": true,   
     "cameras": [
 		{
@@ -12,7 +12,6 @@
 			"fps": 60,
 			"exposure": 2,
 			"brightness": 1,
-			"white balance": 5,
 			"stream": {
 				"properties": [
 					{
@@ -39,7 +38,6 @@
 			"fps": 60,
 			"exposure": 50,
 			"brightness": 50,
-			"white balance": 5,
 			"stream": {
 				"properties": [
 					{

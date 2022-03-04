@@ -18,14 +18,20 @@ class HubPipeline(VisionPipeline):
 
         self.nttable = table
 
-        self.exposure_entry = table.getEntry('exposure')
-        self.brightness_entry = table.getEntry('brightness')
-        self.capture_entry = table.getEntry('capture frame')
-        self.distance_entry = table.getEntry('distance input')
+        # Set this to true for tuning
+        self.debug = True
+        if self.debug:
+            self.exposure_entry = table.getEntry('exposure')
+            self.brightness_entry = table.getEntry('brightness')
+            self.capture_entry = table.getEntry('capture frame')
+            self.distance_entry = table.getEntry('distance input')
+    
+            # Initialize network table entries
+            self.capture_entry.setBoolean(False)
+            self.distance_entry.setString('42-thousand-tonnes')
+            self.exposure_entry.setNumber(self.exposure)
+            self.brightness_entry.setNumber(self.brightness)
 
-        # Initialize network table entries
-        self.capture_entry.setBoolean(False)
-        self.distance_entry.setString('42-thousand-tonnes')
 
         # Horizontal and vertical field of view
         self.fov_horiz = 99 
@@ -33,8 +39,6 @@ class HubPipeline(VisionPipeline):
 
         # start camera
         self.inp, self.out, self.width, self.height, self.cam, self.exposure, self.brightness, self.cameraPath = camera.start(config, cam_num, cam_name, output_name)
-        self.exposure_entry.setNumber(self.exposure)
-        self.brightness_entry.setNumber(self.brightness)
 
         # TODO: Determine usefulness
         self.targetHeightRatio = 0
@@ -88,20 +92,22 @@ class HubPipeline(VisionPipeline):
         # This is to verify camera parameters we want set are set
         # set exposure
         # TODO: not call every time process is run, only when updated
-        os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=exposure_absolute=" + str(self.exposure_entry.getNumber(7)))	
-        os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=brightness=" + str(self.brightness_entry.getNumber(8)))
+        if self.debug:
+            os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=exposure_absolute=" + str(self.exposure_entry.getNumber(7)))	
+            os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=brightness=" + str(self.brightness_entry.getNumber(8)))
 
         # get frame from camera
         self.t, self.img = self.inp.grabFrame(self.img)
 
         # Debugging installed to allow us to capture raw images from robot camera
-        if self.capture_entry.getBoolean(False):
-            mills = str(int(time.time() * 1000))
-            dist = self.distance_entry.getString('42-thousand-tonnes')
-            fname = str('/home/lightning/voidvision/images/frame-distance-{}-{}.jpg'.format(dist, mills))
-            cv2.imwrite(fname, self.img)
-            print('FILE: {} WRITTEN'.format(fname))
-            self.capture_entry.setBoolean(False)
+        if self.debug:
+            if self.capture_entry.getBoolean(False):
+                mills = str(int(time.time() * 1000))
+                dist = self.distance_entry.getString('42-thousand-tonnes')
+                fname = str('/home/lightning/voidvision/images/frame-distance-{}-{}.jpg'.format(dist, mills))
+                cv2.imwrite(fname, self.img)
+                print('FILE: {} WRITTEN'.format(fname))
+                self.capture_entry.setBoolean(False)
         
         # Process input image through conditioning filters
         if (False):
