@@ -1,6 +1,6 @@
 {
     "team": 862,
-    "ntmode": "server",
+    "ntmode": "client",
     "debug": true,   
     "cameras": [
 		{

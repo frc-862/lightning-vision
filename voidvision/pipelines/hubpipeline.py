@@ -17,6 +17,9 @@ class HubPipeline(VisionPipeline):
     def __init__(self, config: str, cam_num: int, cam_name: str, output_name: str, table) -> None:
 
         self.nttable = table
+        # start camera
+        self.inp, self.out, self.width, self.height, self.cam, self.exposure, self.brightness, self.cameraPath = camera.start(config, cam_num, cam_name, output_name)
+
 
         # Set this to true for tuning
         self.debug = True
@@ -31,14 +34,12 @@ class HubPipeline(VisionPipeline):
             self.distance_entry.setString('42-thousand-tonnes')
             self.exposure_entry.setNumber(self.exposure)
             self.brightness_entry.setNumber(self.brightness)
+            # self.green_lower_threshold.setNumber(100) # 100 is default for now
 
 
         # Horizontal and vertical field of view
         self.fov_horiz = 99 
         self.fov_vert = 68.12 
-
-        # start camera
-        self.inp, self.out, self.width, self.height, self.cam, self.exposure, self.brightness, self.cameraPath = camera.start(config, cam_num, cam_name, output_name)
 
         # TODO: Determine usefulness
         self.targetHeightRatio = 0
