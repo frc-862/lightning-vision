@@ -124,7 +124,7 @@ class GripPipeline:
         elif(channels == 3):
             return cv2.cvtColor(src, cv2.COLOR_BGR2GRAY)
         elif(channels == 4):
-        	return cv2.cvtColor(src, cv2.COLOR_BGRA2GRAY)
+            return cv2.cvtColor(src, cv2.COLOR_BGRA2GRAY)
         else:
             raise Exception("Input to desaturate must have 1, 3 or 4 channels") 
 

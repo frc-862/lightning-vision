@@ -8,9 +8,7 @@ import camera
 import numpy as np
 import cv2
 import sys
-from gripipeline import GripPipeline
 from time import sleep
-import grip
 import time
 
 
@@ -19,44 +17,53 @@ class HubPipeline(VisionPipeline):
     def __init__(self, config: str, cam_num: int, cam_name: str, output_name: str, table) -> None:
 
         self.nttable = table
-
-        self.exposure_entry = table.getEntry('exposure')
-        self.capture_entry = table.getEntry('capture frame')
-        self.distance_entry = table.getEntry('distance input')
-
-        # Initialize entry as 7	(idk why, just 7)	
-        self.exposure_entry.setNumber(7)
-        self.capture_entry.setBoolean(False)
-        self.distance_entry.setString('42-thousand-tonnes')
-
-        self.pipeline = grip.GripPipeline()
-
-        self.fov_horiz = 0 # TODO Measure horizontal fov on cameras
-        self.fov_vert = 0 # TODO Measure vertical fov on cameras
-
         # start camera
-        self.inp, self.out, self.width, self.height, self.cam, self.exposure, self.cameraPath = camera.start(config, cam_num, cam_name, output_name)
+        self.inp, self.out, self.width, self.height, self.cam, self.exposure, self.brightness, self.cameraPath = camera.start(config, cam_num, cam_name, output_name)
 
+
+        # Set this to true for tuning
+        self.debug = True
+        if self.debug:
+            self.exposure_entry = table.getEntry('exposure')
+            self.brightness_entry = table.getEntry('brightness')
+            self.capture_entry = table.getEntry('capture frame')
+            self.distance_entry = table.getEntry('distance input')
+    
+            # Initialize network table entries
+            self.capture_entry.setBoolean(False)
+            self.distance_entry.setString('42-thousand-tonnes')
+            self.exposure_entry.setNumber(self.exposure)
+            self.brightness_entry.setNumber(self.brightness)
+            # self.green_lower_threshold.setNumber(100) # 100 is default for now
+
+
+        # Horizontal and vertical field of view
+        self.fov_horiz = 99 
+        self.fov_vert = 68.12 
+
+        # TODO: Determine usefulness
         self.targetHeightRatio = 0
         self.targetRatioThreshold = 0
+
         # allocate image for whenever
         self.img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
         self.output_img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
 
+    # =======================================================
+    # TODO: Determine usefulness of functions and delete?
+
     def get_angle_from_target(self, target_center_col, image_width_cols):
             return (target_center_col - (image_width_cols / 2) * (self.fov_horiz / image_width_cols))
         
-    def interpolated_dist_from_target(self, ):
-            pass
-
     def checkTargetProportion(self, targetBoxHeight, targetCenterRow):
             ratio = targetBoxHeight / targetCenterRow
             return (ratio - self.targetHeightRatio) < self.targetRatioThreshold
+     # =======================================================
 
     def estimate_tape_width(self, row, col):
     
         estimate_width = ((6-24)/(400-80))*row+28.5
-        estimate_wtolerance = (((-5.0/480.0)*row+6.0+0.6)*2)
+        estimate_wtolerance = (((-5.0/self.height)*row+6.0+0.6)*2)
     
         return estimate_width, estimate_wtolerance
     
@@ -64,23 +71,21 @@ class HubPipeline(VisionPipeline):
     
         estimate_height = ((2.3-5)/(400-50))*row+5.4
         #estimate_htolerance = 10*((-5.0/480.0)*row+8.0+0.8)
-        estimate_htolerance = (0.5*(((-5.0/480.0)*row+6.0+0.6)*2))
-    
+        estimate_htolerance = (0.5*(((-5.0/self.height)*row+6.0+0.6)*2))
+
         return estimate_height, estimate_htolerance
     
     def estimate_target_distance(self, row, col):
     
         Pyx2 = np.array([  191.51511229, -1126.75769868,  1666.51815349])
     
-        estimate_distance = np.polyval(Pyx2,np.log10(480-row))
+        estimate_distance = np.polyval(Pyx2,np.log10(self.height-row))
     
         return estimate_distance
     
     def estimate_target_angle(self, row, col):
     
-        hfov = 120.0 # Degrees
-    
-        estimate_angle = (hfov/640)*(col-640/2)
+        estimate_angle = (self.fov_horiz/self.width)*(col-self.width/2)
     
         return estimate_angle
 
@@ -88,19 +93,22 @@ class HubPipeline(VisionPipeline):
         # This is to verify camera parameters we want set are set
         # set exposure
         # TODO: not call every time process is run, only when updated
-        os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=exposure_absolute=" + str(self.exposure_entry.getNumber(7)))	
+        if self.debug:
+            os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=exposure_absolute=" + str(self.exposure_entry.getNumber(7)))	
+            os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=brightness=" + str(self.brightness_entry.getNumber(8)))
 
         # get frame from camera
         self.t, self.img = self.inp.grabFrame(self.img)
 
         # Debugging installed to allow us to capture raw images from robot camera
-        if self.capture_entry.getBoolean(False):
-            mills = str(int(time.time() * 1000))
-            dist = self.distance_entry.getString('42-thousand-tonnes')
-            fname = str('/home/lightning/voidvision/images/frame-distance-{}-{}.png'.format(dist, mills))
-            cv2.imwrite(fname, self.img)
-            print('FILE: {} WRITTEN ... Maybe'.format(fname))
-            self.capture_entry.setBoolean(False)
+        if self.debug:
+            if self.capture_entry.getBoolean(False):
+                mills = str(int(time.time() * 1000))
+                dist = self.distance_entry.getString('42-thousand-tonnes')
+                fname = str('/home/lightning/voidvision/images/frame-distance-{}-{}.jpg'.format(dist, mills))
+                cv2.imwrite(fname, self.img)
+                print('FILE: {} WRITTEN'.format(fname))
+                self.capture_entry.setBoolean(False)
         
         # Process input image through conditioning filters
         if (False):
@@ -165,9 +173,9 @@ class HubPipeline(VisionPipeline):
             # Check to see if the width and height meet our expectations
             match_size = False
             if ( (contour_width>=estimate_width-estimate_wtolerance) \
-                 and (contour_width<=estimate_width+estimate_wtolerance) \
-                 and (contour_height>=estimate_height-estimate_htolerance) \
-                 and (contour_height<=estimate_height+estimate_htolerance) ):
+                 and (contour_width <= estimate_width+estimate_wtolerance) \
+                 and (contour_height >= estimate_height-estimate_htolerance) \
+                 and (contour_height <= estimate_height+estimate_htolerance) ):
                 match_size = True
                 pass_size_contours.append(this_contour)
             else:
@@ -180,9 +188,9 @@ class HubPipeline(VisionPipeline):
         #    If there are an insane number of contours - bail!!!!!!
         #========================================================
         max_expected_size_contours = 10
-        if (len(pass_size_contours)>max_expected_size_contours):
-            print("WARNING - TOO MANY SIZE CONTOURS ("+str(len(pass_size_contours))+" VERSUS "+str(max_expected_size_contours)+")")
-            # TODO: Decide best course of action if this happens
+        if (len(pass_size_contours) > max_expected_size_contours):
+            print("WARNING - TOO MANY SIZE CONTOURS (" + str(len(pass_size_contours)) + " VERSUS " + str(max_expected_size_contours) + ")")
+            pass
         
         #============================================================
         # Add a check looking for nearby contours that also pass size check!!!
@@ -249,14 +257,6 @@ class HubPipeline(VisionPipeline):
 
         self.nttable.putNumber('Target Angle', targetAngle)
         self.nttable.putNumber('Target Distance', targetDistance)
-        try: 
-            numContours = len(self.pipeline.filter_contours_output)
-        except:
-            numContours = -1
 
-        # Puts number of contours detected in current image to the dashboard
-        self.nttable.putNumber('Contour Number', numContours)
-
-        # throw output image to dashboard
-        self.out.putFrame(self.output_img)
-
+        # TODO: Puts number of contours detected in current image to the dashboard
+        # self.nttable.putNumber('Contour Number', numContours)

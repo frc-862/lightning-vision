@@ -14,7 +14,7 @@ def start(config_file: str, cam_num: int, cam_name: str, output_name: str):
 	height = camera['height']
 	cameraPath = camera['path']
 	exposure = camera['exposure']
-	v4l2ctl = "v4l2-ctl"
+	brightness = camera['brightness']
 	cs = CameraServer.getInstance()
 
 	# Test making camera
@@ -29,7 +29,7 @@ def start(config_file: str, cam_num: int, cam_name: str, output_name: str):
 	inp = cs.getVideo(name=cam_name) # Returns `CvSink`
 	out = cs.putVideo(name=output_name, width=width, height=height)
 
-	return inp, out, width, height, cam, exposure, cameraPath
+	return inp, out, width, height, cam, exposure, brightness, cameraPath
 
 if __name__ == "__main__":
 	print('do not run this script\nsomething is wrong')

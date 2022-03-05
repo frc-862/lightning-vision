@@ -5,8 +5,8 @@
 # TODO: Once current testing Jetson is reimaged to have lightning be default user remove remote username arg
 if [ -z "$1" ] || [ -z "$2" ] ; then
     echo "No command line arguments given"
-    echo "Defaulting connection to lightning@10.8.62.10"
-    rsync -zravP ./voidvision/ lightning@10.8.62.10:/home/lightning/voidvision/
+    echo "Defaulting connection to lightning@10.8.62.3"
+    rsync -zravP ./voidvision/ lightning@10.8.62.3:/home/lightning/voidvision/
 else
     echo "Connecting to $1 at $2"
     rsync -zravP ./voidvision/ ${1}@${2}:/home/lightning/voidvision/

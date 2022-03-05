@@ -14,9 +14,10 @@ apt update
 apt install -y python3-cscore
 rm Release.key
 
-# setup /etc/hosts to connect to rio
-echo "10.8.62.10 roboRIO-862-FRC.lan" >> /etc/hosts # jetson ip on team image radio
-echo "10.8.62.10 roboRIO-862-FRC.frc-field.lan" >> /etc/hosts # jetson ip on fms image radio
+# install v4l2; what we use to set camera saturation and what not
+apt install -y v4l-utils
+
+# TODO: Assign static IP address through command line
 
 # make app environment
 mkdir -p /home/lightning/voidvision/
