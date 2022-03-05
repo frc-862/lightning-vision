@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-from re import I
-from tkinter import W
+
+from matplotlib import use
 from pipeline import VisionPipeline
 import camera
 import numpy as np
@@ -16,6 +16,7 @@ class HubPipeline(VisionPipeline):
     def __init__(self, config: str, cam_num: int, cam_name: str, output_name: str, table) -> None:
 
         self.nttable = table
+		
         # start camera
         self.inp, self.out, self.width, self.height, self.cam, self.exposure, self.brightness, self.cameraPath = camera.start(config, cam_num, cam_name, output_name)
 
@@ -39,7 +40,6 @@ class HubPipeline(VisionPipeline):
             self.intensity_thresh_entry.setNumber(self.intensity_thresh)
             # self.green_lower_threshold.setNumber(100) # 100 is default for now
 
-
         # Horizontal and vertical field of view
         self.fov_horiz = 99 
         self.fov_vert = 68.12 
@@ -47,6 +47,12 @@ class HubPipeline(VisionPipeline):
         # TODO: Determine usefulness
         self.targetHeightRatio = 0
         self.targetRatioThreshold = 0
+
+		# dashboard outputs
+        self.target_distance_entry = table.getEntry('Target Distance')
+        self.target_angle_entry = table.getEntry('Target Angle')
+        # self.target_distance_entry.setNumber(-1)
+        # self.target_angle_entry.setNumber(0)
 
         # allocate image for whenever
         self.img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
@@ -101,9 +107,9 @@ class HubPipeline(VisionPipeline):
     #=======================================================================
     def estimate_target_angle(self,row,col):
         
-        hfov = 120.0 # Degrees
+        hfov = 100.0 # Degrees
         
-        estimate_angle = (640/hfov)*(col-640/2)
+        estimate_angle = (hfov/640)*(col-640/2)
         
         return estimate_angle
 
@@ -113,8 +119,8 @@ class HubPipeline(VisionPipeline):
         # set exposure
         # TODO: not call every time process is run, only when updated
         if self.debug:
-            os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=exposure_absolute=" + str(self.exposure_entry.getNumber(7)))	
-            os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=brightness=" + str(self.brightness_entry.getNumber(8)))
+            os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=exposure_absolute=" + str(self.exposure_entry.getNumber(self.exposure)))	
+            os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=brightness=" + str(self.brightness_entry.getNumber(self.brightness)))
             self.intensity_thresh = self.intensity_thresh_entry.getNumber(self.intensity_thresh)
 
         # get frame from camera
@@ -272,45 +278,46 @@ class HubPipeline(VisionPipeline):
         # LOOK AT THE GROUPS AND PICK THE BEST
         best_group = -1
         best_group_count = -1
-        for group_number in range(1,np.max(used)+1):
-            
-            local_count = used.count(group_number)
-            if (local_count==0):
-                continue
-
-            if (True):
-                # Pull this group out of the big set
-                this_group = []
-                for index in range(len(used)):
-                    if (used[index]==group_number):
-                        this_group.append(pass_size_contours[index])
-                #print("THIS GROUP "+str(group_number)+" LEN = "+str(len(this_group)))
+        if(len(used) > 0):
+            for group_number in range(1,np.max(used)+1):
                 
-                # Check for angular validity
-                pairwise_angles = []
-                for index in range(len(this_group)):
-                    this_contour = this_group[index]
-                    this_center = np.array(cv2.minAreaRect(this_contour)[0])    
-                    for index2 in range(index+1,len(this_group)):
-                        another_contour = this_group[index2]
-                        another_center = np.array(cv2.minAreaRect(another_contour)[0])
-
-                        if (this_center[0]<=another_center[0]):
-                            pairwise_angles.append(90.0-(180.0/np.pi)*np.arctan2(another_center[1]-this_center[1],another_center[0]-this_center[0])) 
-                        else:
-                            pairwise_angles.append(90.0-(180.0/np.pi)*np.arctan2(this_center[1]-another_center[1],this_center[0]-another_center[0])) 
-                # If the variance is 'big' skip
-                if (np.std(pairwise_angles)>15.0):
-                    print("REJECT GROUP WITH STD()="+str(np.std(pairwise_angles)))
+                local_count = used.count(group_number)
+                if (local_count==0):
                     continue
-                #print(str(np.std(pairwise_angles)))
-                
-            # If we are still considering this it passed the group consistency check(s)
-            #     then pick the group with the highest content count
-            if (local_count>best_group_count):
-                best_group_count = local_count
-                best_group = group_number
-                        
+
+                if (True):
+                    # Pull this group out of the big set
+                    this_group = []
+                    for index in range(len(used)):
+                        if (used[index]==group_number):
+                            this_group.append(pass_size_contours[index])
+                    #print("THIS GROUP "+str(group_number)+" LEN = "+str(len(this_group)))
+                    
+                    # Check for angular validity
+                    pairwise_angles = []
+                    for index in range(len(this_group)):
+                        this_contour = this_group[index]
+                        this_center = np.array(cv2.minAreaRect(this_contour)[0])    
+                        for index2 in range(index+1,len(this_group)):
+                            another_contour = this_group[index2]
+                            another_center = np.array(cv2.minAreaRect(another_contour)[0])
+
+                            if (this_center[0]<=another_center[0]):
+                                pairwise_angles.append(90.0-(180.0/np.pi)*np.arctan2(another_center[1]-this_center[1],another_center[0]-this_center[0])) 
+                            else:
+                                pairwise_angles.append(90.0-(180.0/np.pi)*np.arctan2(this_center[1]-another_center[1],this_center[0]-another_center[0])) 
+                    # If the variance is 'big' skip
+                    if (np.std(pairwise_angles)>15.0):
+                        print("REJECT GROUP WITH STD()="+str(np.std(pairwise_angles)))
+                        continue
+                    #print(str(np.std(pairwise_angles)))
+                    
+                # If we are still considering this it passed the group consistency check(s)
+                #     then pick the group with the highest content count
+                if (local_count > best_group_count):
+                    best_group_count = local_count
+                    best_group = group_number
+                            
                         
                         
         # Convert the list of 'accepted' spaced/distanced contours to the output set
@@ -340,15 +347,16 @@ class HubPipeline(VisionPipeline):
                 this_row += rect[0][1]
                 count += 1
                 
-            this_col /= count
+            this_col /= count 
             this_row /= count
             
             targetDistance = self.estimate_target_distance(this_row,this_col)
             targetAngle = self.estimate_target_angle(this_row,this_col)
     
-        
-        self.nttable.putNumber('Target Angle', targetAngle)
-        self.nttable.putNumber('Target Distance', targetDistance)
+        self.target_distance_entry.setDouble(targetDistance)
+        self.target_angle_entry.setDouble(targetAngle)
+
+        print('DIST: {} | ANGLE: {}'.format(targetDistance, targetAngle))
 
         # TODO: Puts number of contours detected in current image to the dashboard
         # self.nttable.putNumber('Contour Number', numContours)
