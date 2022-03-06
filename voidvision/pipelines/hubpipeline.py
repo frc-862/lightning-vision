@@ -1,80 +1,117 @@
 #!/usr/bin/env python3
 
-import os
-
-from matplotlib import use
 from pipeline import VisionPipeline
 import camera
-import numpy as np
-import cv2
-import sys
-from time import sleep
 import time
+import cv2
+import os
+import numpy as np
+from filterimage import findCentroid, estimate_target_angle, estimate_target_distance
 
 class HubPipeline(VisionPipeline):
 
-    def __init__(self, config: str, cam_num: int, cam_name: str, output_name: str, table) -> None:
-        self.nttable = table
+	def __init__(self, config: str, cam_num: int, cam_name: str, output_name: str, table) -> None:
+
+		# Define Camera Constants
+		self.hfov = 100.0 # degrees
+		self.vfov = 68.12 # degrees
+
+		# Network Table
+		self.nttable = table
 		
-        # start camera
-        self.inp, self.out, self.width, self.height, self.cam, self.exposure, self.brightness, self.cameraPath = camera.start(config, cam_num, cam_name, output_name)
+		# Start Camera
+		self.inp, self.out, self.cam, self.debug, self.cfg = camera.start(config, cam_num, cam_name, output_name)
 
-        self.lower_green = np.array([50.179, 89.433, 34.397])
-        self.high_green = np.array([83.03, 255, 255])
-        # Set this to true for tuning
+		# Set Camera Settings
+		os.system("v4l2-ctl --device " + self.cfg.getCameraPath() + " --set-ctrl=exposure_absolute=" + str(self.cfg.getExposure()))	
+		os.system("v4l2-ctl --device " + self.cfg.getCameraPath() + " --set-ctrl=brightness=" + str(self.cfg.getBrightness()))
 
-            # self.green_lower_threshold.setNumber(100) # 100 is default for now
+		# Initialize Debug/Tune Mode
+		if self.debug:
+			self.initDebug()
 
-        # Horizontal and vertical field of view
+		# Vision HSV Threshold Limits
+		self.lower_green = np.array([50.179, 89.433, 34.397])
+		self.high_green = np.array([83.03, 255, 255])
+	   
+		self.target_distance_entry = table.getEntry('Target Distance')
+		self.target_angle_entry = table.getEntry('Target Angle')
+		self.target_distance_entry.setNumber(-1)
+		self.target_angle_entry.setNumber(0)
 
+		# Allocate Images
+		self.img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
+		self.output_img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
 
-		# dashboard outputs
-        # self.target_distance_entry.setNumber(-1)
-        # self.target_angle_entry.setNumber(0)
+	def process(self):
 
-        # allocate image for whenever
-        self.img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
-        self.output_img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
+		# Run Tuning Updates
+		if self.debug:
+			self.processDebug()
 
-    def threshold(self, img):
-        hue_lower_upper = [50.17985611510791, 83.03030303030302]
-        saturation_lower_upper = [89.43345323741008, 255.0]
-        value_lower_upper = [34.39748201438849, 255.0]
+		# Read Frame
+		self.t, self.img = self.inp.grabFrame(self.img)
+		
+		# Find Centroid
+		row, col = findCentroid(self.img)
 
-        lower_green = np.array([50.179, 89.433, 34.397])
-        high_green = np.array([83.03, 255, 255])
-        img = cv2.inRange(img, lower_green, high_green)
-        return img
+		# Extrapolate Distance From Centroid
+		targetDistance = estimate_target_distance(row, self.cfg.getHeight())
+		targetAngle =  estimate_target_angle(col, self.hfov, self.cfg.getWidth())
 
-    def process(self):
-        self.t, self.img = self.inp.grabFrame(self.img)
-        img = self.img
-        img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-        img = self.threshold(img)
-        img = cv2.erode(img, None, (-1, -1), iterations = 1, borderType = cv2.BORDER_CONSTANT, borderValue = -1)
-        img = cv2.dilate(img, None, (-1,-1), iterations = 1,borderType = cv2.BORDER_CONSTANT, borderValue = -1)
-        contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+		# Route Numbers to Dashboard
+		self.target_distance_entry.setDouble(targetDistance)
+		self.target_angle_entry.setDouble(targetAngle)
+
+	def initDebug(self):
+		"""
+		Initialize dashboard entries
+		"""
+
+		# HSV Thresholds
+		self.h_low = self.nttable.getEntry('H LOW')
+		self.s_low = self.nttable.getEntry('S LOW')
+		self.v_low = self.nttable.getEntry('V LOW')
+		self.h_high = self.nttable.getEntry('H HIGH')
+		self.s_high = self.nttable.getEntry('S HIGH')
+		self.v_high = self.nttable.getEntry('V HIGH')
+
+		self.h_low.setDouble(50.179)
+		self.s_low.setDouble(89.433)
+		self.v_low.setDouble(34.397)
+		self.h_high.setDouble(83.03)
+		self.s_high.setDouble(255)
+		self.v_high.setDouble(255)
+
+		# Camera Settings
+		self.exposure_entry = self.nttable.getEntry('Exposure')
+		self.brightness_entry = self.nttable.getEntry('Brightness')
+		self.capture_entry = self.nttable.getEntry('Capture Frame')
+		self.distance_entry = self.nttable.getEntry('Distance Input')
     
-        maxPt = [-np.inf, -np.inf]
-        minPt = [np.inf, np.inf]
-    
-        for c in contours:
-            maxc = np.max(c, axis = 0)[0]
-            minc = np.min(c, axis = 0)[0]
+		self.capture_entry.setBoolean(False)
+		self.distance_entry.setString('42-thousand-tonnes')
+		self.exposure_entry.setNumber(self.cfg.getExposure())
+		self.brightness_entry.setNumber(self.cfg.getBrightness())
 
-            if maxPt[0] < maxc[0]:
-                maxPt[0] = maxc[0]
+	def processDebug(self):
+		"""
+		Update tunable items
+		"""
 
-            if maxPt[1] < maxc[1]:
-                maxPt[1] = maxc[1]
+		# Update Thresholds From Dash
+		self.lower_green = np.array([self.h_low.getDouble(50.179), self.s_low.getDouble(89.433), self.v_low.getDouble(34.397)])
+		self.high_green = np.array([self.h_high.setDouble(83.03), self.s_high.setDouble(255), self.v_high.setDouble(255)])
 
-            if minPt[0] > minc[0]:
-                minPt[0] = minc[0]
+		# Button To Collect Data if Needed
+		if self.capture_entry.getBoolean(False):
+				mills = str(int(time.time() * 1000))
+				dist = self.distance_entry.getString('42-thousand-tonnes')
+				fname = str('/home/lightning/voidvision/images/frame-distance-{}-{}.png'.format(dist, mills))
+				cv2.imwrite(fname, self.img)
+				print('FILE: {} WRITTEN'.format(fname))
+				self.capture_entry.setBoolean(False)
 
-            if minPt[1] > minc[1]:
-                minPt[1] = minc[1]
-
-        y = (maxPt[0] + minPt[0]) / 2
-        x = (maxPt[1] + minPt[1]) / 2
-        self.nttable.putNumber('x', x)
-        self.nttable.putNumber('y', y)
+		# Sync Camera Settings From Dash
+		os.system("v4l2-ctl --device " + self.cfg.getCameraPath() + " --set-ctrl=exposure_absolute=" + str(self.exposure_entry.getNumber(self.exposure)))	
+		os.system("v4l2-ctl --device " + self.cfg.getCameraPath() + " --set-ctrl=brightness=" + str(self.brightness_entry.getNumber(self.brightness)))
