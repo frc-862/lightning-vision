@@ -18,7 +18,7 @@ vfov = 68.12
 
 def main():
 	# Gets path we're running this from, assumes images are in img dir
-	path = str(pathlib.Path(__file__).parent.absolute()) + "\img"
+	path = str(pathlib.Path(__file__).parent.absolute()) + "/img/"
 
 	# Init empty lists
 	estimated_distances = []
@@ -26,19 +26,31 @@ def main():
 	real_angles = []
 	real_distances = []
 
-	for file_name in glob.glob(path + "/*.png"):
+	for file_name in os.listdir(path):
 		if file_name.endswith('.png'):
+			print(file_name)
 			# Parse file name to get real values
-			# TODO: make parsing work with pos/neg angle files, not just 0
 			split_file_name = file_name.split("-")
-			real_distance = split_file_name[3]
+			print(split_file_name)
+			real_distance = split_file_name[2]
 			real_distance = real_distance.replace('ft', '')
 			real_distance = float(real_distance)
-			real_angle = split_file_name[5]
+			real_angle = split_file_name[4]
+
+			# Figures out if the file truth is positive or negative, adjusts angle appropriately
+			if real_angle == "neg":
+				print("This is the real angle in the if statement " + real_angle)
+				real_angle = -abs(float(split_file_name[5]))
+				
+			if real_angle == "pos":
+				print("This is the real angle in the else statement " + real_angle)
+				real_angle = float(split_file_name[5])
+			
 			real_angle = float(real_angle)
 
+
 			# Read image, run processing pipeline on it to get estimated distance and angle
-			img = cv2.imread(file_name)
+			img = cv2.imread(path + file_name)
 			row, col = findCentroid(img, thresh_lower_green, thresh_high_green)
 			est_dist = estimate_target_distance(row, height)
 			est_dist = est_dist / 12  # Output is in inches, truth is in feet so we convert
@@ -53,14 +65,15 @@ def main():
 		
 	plot(real_angles, estimated_angles, real_distances, estimated_distances)
 
+# TODO: Find a more useful way to visualize data beyond scatter plots of estimated values in relation to real
 def plot(real_angle, est_angle, real_dist, est_dist):
 	plt.subplot(211)
-	plt.xlabel("Real Distance")
-	plt.ylabel("Estimated Distance")
+	plt.xlabel("Real Distance (ft)")
+	plt.ylabel("Estimated Distance (ft)")
 	plt.scatter(real_dist, est_dist)
 	plt.subplot(212)
-	plt.xlabel("Estimated Angle")
-	plt.ylabel("Real Angle")
+	plt.xlabel("Estimated Angle (degrees)")
+	plt.ylabel("Real Angle (degrees)")
 	plt.scatter(est_angle, real_angle)
 	plt.show()
 
