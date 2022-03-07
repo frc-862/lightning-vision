@@ -11,8 +11,8 @@ import pathlib
 
 thresh_lower_green = np.array([50.179, 89.433, 34.397])
 thresh_high_green = np.array([83.03, 255, 255])
-width = 640
-height = 480
+width = 640.0
+height = 480.0
 hfov = 99.0
 vfov = 68.12
 
@@ -65,7 +65,7 @@ def main():
 			row, col = filterImage.processContours(filtered_img)
 
 			# Extrapolate distance and angle from given 
-			est_dist = filterImage.estimate_target_distance(row, height)
+			est_dist = filterImage.estimate_target_distance(row, height) / 12 # Divide by 12 to convert to feet
 			est_angle =  filterImage.estimate_target_angle(col, hfov, width)
 
 			# Add estimated values and true values to lists
