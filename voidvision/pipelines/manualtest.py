@@ -56,13 +56,13 @@ def main():
 			img = cv2.imread(path + file_name)
 
 			# Return binary image based on HSV threshold
-			img = filterImage.color_mask(img, thresh_lower_green, thresh_high_green)
+			masked_img = filterImage.color_mask(img, thresh_lower_green, thresh_high_green)
 
 			# Dilates and erodes image
-			filteredImg = filterImage.filter_noise(img)
+			filtered_img = filterImage.filter_noise(masked_img)
 
 			# Create list of contours and then process checks to see if they're the target
-			row, col = filterImage.processContours(filteredImg)
+			row, col = filterImage.processContours(filtered_img)
 
 			# Extrapolate distance and angle from given 
 			est_dist = filterImage.estimate_target_distance(row, height)

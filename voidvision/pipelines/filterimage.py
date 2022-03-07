@@ -25,7 +25,7 @@ class FilterImage():
 		
 		return img
 
-	def estimate_tape_width(self, row):
+	def estimate_tape_width(self, row, col):
 		"""
 		Estimates width of tape based on corner points, I think?
 		TODO: Figure out what this does	
@@ -40,7 +40,7 @@ class FilterImage():
 	
 		return estimate_width, estimate_wtolerance
 	
-	def estimate_tape_height(self,row):
+	def estimate_tape_height(self, row, col):
 		"""
 		Estimates height of tape based on corner points, I think?	
 		TODO: Figure out what this does
@@ -294,7 +294,7 @@ class FilterImage():
 			this_col /= count 
 			this_row /= count
 			
-			return this_row, this_col
+		return this_row, this_col
 			
 	
 	def estimate_target_distance(self, row, height):
