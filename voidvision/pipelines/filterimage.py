@@ -8,22 +8,27 @@ class FilterImage():
 	def __init__(self):
 		self.hfov = 99
 		self.vfov = 68.12
+		self.intensity_thresh = 100
 
 	def color_mask(self, img, thresh_green_low, thresh_green_high):
 		"""
 		Applies a color threshold and gives a binary img out	
 		"""
+
+		# Old HSV code
+		"""
 		# HSV Color
 		img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 	
 		# Threshold
-		img = cv2.inRange(img, thresh_green_low, thresh_green_high)
-	
-		# Remove Small Things
-		img = cv2.erode(img, None, (-1, -1), iterations = 1, borderType = cv2.BORDER_CONSTANT, borderValue = -1)
-		img = cv2.dilate(img, None, (-1,-1), iterations = 1,borderType = cv2.BORDER_CONSTANT, borderValue = -1)
-		
-		return img
+		color_mask = cv2.inRange(img, thresh_green_low, thresh_green_high)
+		"""
+
+		# The new hotness
+		sum_layer = np.array(np.sum(img,2),dtype = np.float) # Sum the layers
+		color_mask = cv2.inRange(sum_layer,self.intensity_thresh,3*256) # Just looking at mostly bright green layer
+
+		return color_mask
 
 	def estimate_tape_width(self, row, col):
 		"""
