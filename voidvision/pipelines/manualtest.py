@@ -3,7 +3,7 @@
 import cv2
 import os
 import numpy as np
-from filterimage import findCentroid, estimate_target_angle, estimate_target_distance, threshold
+from filterimage import FilterImage
 import glob
 import matplotlib.pyplot as plt
 import pathlib
@@ -13,12 +13,15 @@ thresh_lower_green = np.array([50.179, 89.433, 34.397])
 thresh_high_green = np.array([83.03, 255, 255])
 width = 640
 height = 480
-hfov = 100
+hfov = 99.0
 vfov = 68.12
 
 def main():
 	# Gets path we're running this from, assumes images are in img dir
 	path = str(pathlib.Path(__file__).parent.absolute()) + "/img/"
+
+	# Init class for image filtering
+	filterImage = FilterImage()
 
 	# Init empty lists
 	estimated_distances = []
@@ -51,11 +54,19 @@ def main():
 
 			# Read image, run processing pipeline on it to get estimated distance and angle
 			img = cv2.imread(path + file_name)
-			filtered_img = threshold(img, thresh_lower_green, thresh_high_green)
-			row, col = findCentroid(filtered_img)
-			est_dist = estimate_target_distance(row, height)
-			est_dist = est_dist / 12  # Output is in inches, truth is in feet so we convert
-			est_angle = estimate_target_angle(col, hfov, width)
+
+			# Return binary image based on HSV threshold
+			img = filterImage.color_mask(img, thresh_lower_green, thresh_high_green)
+
+			# Dilates and erodes image
+			filteredImg = filterImage.filter_noise(img)
+
+			# Create list of contours and then process checks to see if they're the target
+			row, col = filterImage.processContours(filteredImg)
+
+			# Extrapolate distance and angle from given 
+			est_dist = filterImage.estimate_target_distance(row, height)
+			est_angle =  filterImage.estimate_target_angle(col, hfov, width)
 
 			# Add estimated values and true values to lists
 			estimated_distances.append(est_dist)

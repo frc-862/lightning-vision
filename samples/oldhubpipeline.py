@@ -59,16 +59,6 @@ class HubPipeline(VisionPipeline):
         self.output_img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
 
     # =======================================================
-    # TODO: Determine usefulness of functions and delete?
-
-    def get_angle_from_target(self, target_center_col, image_width_cols):
-            return (target_center_col - (image_width_cols / 2) * (self.fov_horiz / image_width_cols))
-        
-    def checkTargetProportion(self, targetBoxHeight, targetCenterRow):
-            ratio = targetBoxHeight / targetCenterRow
-            return (ratio - self.targetHeightRatio) < self.targetRatioThreshold
-    
-    # =======================================================
     def estimate_tape_width(self,row,col):
         
         point1 = [38,26]
@@ -107,7 +97,7 @@ class HubPipeline(VisionPipeline):
     #=======================================================================
     def estimate_target_angle(self,row,col):
         
-        hfov = 100.0 # Degrees
+        hfov = 99.0 # Degrees
         
         estimate_angle = (hfov/640)*(col-640/2)
         
