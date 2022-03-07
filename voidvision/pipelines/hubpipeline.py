@@ -42,7 +42,7 @@ class HubPipeline(VisionPipeline):
             self.exposure_entry.setNumber(self.exposure)
             self.brightness_entry.setNumber(self.brightness)
             self.intensity_thresh_entry.setNumber(self.intensity_thresh)
-            self.imgs_to_capture.setNumber(1)
+            self.imgs_to_capture.setNumber(0)
             # self.green_lower_threshold.setNumber(100) # 100 is default for now
 
         # Horizontal and vertical field of view
@@ -133,15 +133,19 @@ class HubPipeline(VisionPipeline):
 
         # Debugging installed to allow us to capture raw images from robot camera
         if self.debug:
-            if self.capture_entry.getBoolean(False) or self.imgs_to_capture >= 1:
+            if self.capture_entry.getBoolean(False) or self.imgs_to_capture.getNumber(0) >= 1:
+                # Sets capture entry back to false so we don't run again
+                self.capture_entry.setBoolean(False)
+                
                 mills = str(int(time.time() * 1000))
                 dist = self.distance_entry.getString('42-thousand-tonnes')
                 fname = str('/home/lightning/voidvision/images/frame-distance-{}-{}.png'.format(dist, mills))
                 cv2.imwrite(fname, self.img)
                 print('FILE: {} WRITTEN'.format(fname))
-                self.capture_entry.setBoolean(False)
-                if self.imgs_to_capture > 1:
-                    self.imgs_to_capture -= 1
+                if self.imgs_to_capture.getNumber(0) >= 1:
+                    self.imgs_to_cap = self.imgs_to_capture.getNumber(0)
+                    self.imgs_to_cap -= 1
+                    self.imgs_to_capture.setNumber(self.imgs_to_cap)
         
         
         # GRIP-like OpenCV/cv2 pipeline of processing
