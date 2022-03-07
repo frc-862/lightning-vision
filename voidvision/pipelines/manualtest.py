@@ -3,7 +3,7 @@
 import cv2
 import os
 import numpy as np
-from filterimage import findCentroid, estimate_target_angle, estimate_target_distance
+from filterimage import findCentroid, estimate_target_angle, estimate_target_distance, threshold
 import glob
 import matplotlib.pyplot as plt
 import pathlib
@@ -51,7 +51,8 @@ def main():
 
 			# Read image, run processing pipeline on it to get estimated distance and angle
 			img = cv2.imread(path + file_name)
-			row, col = findCentroid(img, thresh_lower_green, thresh_high_green)
+			filtered_img = threshold(img, thresh_lower_green, thresh_high_green)
+			row, col = findCentroid(filtered_img)
 			est_dist = estimate_target_distance(row, height)
 			est_dist = est_dist / 12  # Output is in inches, truth is in feet so we convert
 			est_angle = estimate_target_angle(col, hfov, width)

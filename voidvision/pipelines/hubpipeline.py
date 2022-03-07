@@ -6,7 +6,7 @@ import time
 import cv2
 import os
 import numpy as np
-from filterimage import findCentroid, estimate_target_angle, estimate_target_distance
+from filterimage import findCentroid, estimate_target_angle, estimate_target_distance, threshold
 
 class HubPipeline(VisionPipeline):
 
@@ -52,6 +52,8 @@ class HubPipeline(VisionPipeline):
 		# Read Frame
 		self.t, self.img = self.inp.grabFrame(self.img)
 		
+		img = threshold(self.img, self.lower_green, self.high_green)
+
 		# Find Centroid
 		row, col = findCentroid(self.img)
 

@@ -3,10 +3,7 @@
 import cv2
 import numpy as np
 
-def findCentroid(img, thresh_green_low, thresh_green_high):
-	"""
-	Returns row, col of centroid of target
-	"""
+def threshold(img, thresh_green_low, thresh_green_high):
 	# HSV Color
 	img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
@@ -17,6 +14,12 @@ def findCentroid(img, thresh_green_low, thresh_green_high):
 	img = cv2.erode(img, None, (-1, -1), iterations = 1, borderType = cv2.BORDER_CONSTANT, borderValue = -1)
 	img = cv2.dilate(img, None, (-1,-1), iterations = 1,borderType = cv2.BORDER_CONSTANT, borderValue = -1)
 	
+	return img
+
+def findCentroid(img):
+	"""
+	Returns row, col of centroid of target
+	"""
 	# Fly Through Contours
 	contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
