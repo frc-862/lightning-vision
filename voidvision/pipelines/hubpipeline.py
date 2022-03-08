@@ -44,7 +44,7 @@ class HubPipeline(VisionPipeline):
             self.intensity_thresh_entry.setNumber(self.intensity_thresh)
             self.imgs_to_capture.setNumber(0)
             # self.green_lower_threshold.setNumber(100) # 100 is default for now
-
+            os.system("v4l2-ctl --device " + self.cameraPath +  " --set-ctrl=exposure_auto_priority=0")
         # Horizontal and vertical field of view
         self.fov_horiz = 99 
         self.fov_vert = 68.12 
