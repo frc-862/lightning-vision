@@ -193,6 +193,7 @@ class HubPipeline(VisionPipeline):
     
         # First pass through the contours checking for a valid size of the best-fit rectangle
         pass_size_contours = []                
+        pass_min_area_rects = []
         # Loop over all the contours in this image
         for this_contour in contours:
             
@@ -221,6 +222,7 @@ class HubPipeline(VisionPipeline):
                     and (contour_height<=estimate_height+estimate_htolerance) ):
                 match_size = True
                 pass_size_contours.append(this_contour)
+                pass_min_area_rects.append(rect)
             else:
                 # Add debug to explore failing this check
                 foo = 0 # Useless line as placeholder for indentation
@@ -232,6 +234,8 @@ class HubPipeline(VisionPipeline):
         max_expected_size_contours = 10
         if (len(pass_size_contours)>max_expected_size_contours):
             print("WARNING - TOO MANY SIZE CONTOURS ("+str(len(pass_size_contours))+" VERSUS "+str(max_expected_size_contours)+")")
+            self.target_distance_entry.setDouble(-1.0)
+            return
         
         #============================================================
         # Add a check looking for nearby contours that also pass size check!!!
@@ -242,7 +246,7 @@ class HubPipeline(VisionPipeline):
         for index in range(len(pass_size_contours)):
             #print("Processing contour number "+str(index)+" of "+str(len(pass_size_contours)))
             this_contour = pass_size_contours[index]
-            this_center = np.array(cv2.minAreaRect(this_contour)[0])
+            this_center = np.array(pass_min_area_rects[index][0])
             #print(this_center)
             
             # Get the estimate of the tape width
@@ -258,7 +262,7 @@ class HubPipeline(VisionPipeline):
                 
                 # Get the next/comparison contour
                 another_contour = pass_size_contours[index2]
-                another_center = np.array(cv2.minAreaRect(another_contour)[0])
+                another_center = np.array(pass_min_area_rects[index2][0])
                 # Compute distance in pixels
                 dist = np.sqrt(np.sum(np.power(this_center-another_center,2.0)))
                 #print("  Distance to "+str(index2)+" is "+str(dist)+" pixels ("+str(estimate_distance)+","+str(estimate_tolerance)+")")
@@ -297,19 +301,21 @@ class HubPipeline(VisionPipeline):
                 if (True):
                     # Pull this group out of the big set
                     this_group = []
+                    this_min_area_rects = []
                     for index in range(len(used)):
                         if (used[index]==group_number):
                             this_group.append(pass_size_contours[index])
+                            this_min_area_rects.append(pass_min_area_rects[index])
                     #print("THIS GROUP "+str(group_number)+" LEN = "+str(len(this_group)))
                     
                     # Check for angular validity
                     pairwise_angles = []
                     for index in range(len(this_group)):
                         this_contour = this_group[index]
-                        this_center = np.array(cv2.minAreaRect(this_contour)[0])    
+                        this_center = np.array(this_min_area_rects[index][0])
                         for index2 in range(index+1,len(this_group)):
                             another_contour = this_group[index2]
-                            another_center = np.array(cv2.minAreaRect(another_contour)[0])
+                            another_center = np.array(this_min_area_rects[index2][0])
 
                             if (this_center[0]<=another_center[0]):
                                 pairwise_angles.append(90.0-(180.0/np.pi)*np.arctan2(another_center[1]-this_center[1],another_center[0]-this_center[0])) 
@@ -331,9 +337,11 @@ class HubPipeline(VisionPipeline):
                         
         # Convert the list of 'accepted' spaced/distanced contours to the output set
         final_contours = []
+        final_min_area_rects = []
         for index in range(len(pass_size_contours)):
             if (used[index]==best_group):
                 final_contours.append(pass_size_contours[index])
+                final_min_area_rects.append(pass_min_area_rects[index])
         # print("PASSED "+str(len(final_contours))+" CONTOURS")
         
         #------------------------------------------------------------
@@ -350,8 +358,7 @@ class HubPipeline(VisionPipeline):
             count = 0
             this_col = 0
             this_row = 0
-            for this_contour in final_contours:
-                rect = cv2.minAreaRect(this_contour)
+            for this_contour,rect in zip(final_contours, final_min_area_rects):
                 this_col += rect[0][0]
                 this_row += rect[0][1]
                 count += 1
