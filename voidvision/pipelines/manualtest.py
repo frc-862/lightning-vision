@@ -8,7 +8,6 @@ import glob
 import matplotlib.pyplot as plt
 import pathlib
 
-
 thresh_lower_green = np.array([50.179, 89.433, 34.397])
 thresh_high_green = np.array([83.03, 255, 255])
 width = 640.0
