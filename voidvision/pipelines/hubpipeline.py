@@ -74,6 +74,7 @@ class HubPipeline(VisionPipeline):
 
         self.sum_layer = np.zeros(shape=(self.height, self.width), dtype=np.int32)
         self.im_dialate = np.zeros(shape=(self.height, self.width), dtype=np.uint8)
+        self.color_mask = np.zeros(shape=(self.height, self.width), dtype=np.uint8)
         self.im_dilate = np.zeros(shape=(self.height, self.width), dtype=np.uint8)
         self.im_erode = np.zeros(shape=(self.height, self.width), dtype=np.uint8)
 
