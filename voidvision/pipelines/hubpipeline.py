@@ -58,6 +58,20 @@ class HubPipeline(VisionPipeline):
         self.img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
         self.output_img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
 
+        # Define a dilate/erode kernel
+        self.kernel = np.ones((5,5), np.uint8)
+
+        # 'round' the kernel a little
+        self.kernel[0][0] = 0
+        self.kernel[4][0] = 0
+        self.kernel[0][4] = 0
+        self.kernel[4][4] = 0
+
+        self.sum_layer = np.zeros(shape=(self.height, self.width), dtype=np.int32)
+        self.im_dialate = np.zeros(shape=(self.height, self.width), dtype=np.uint8)
+        self.im_dilate = np.zeros(shape=(self.height, self.width), dtype=np.uint8)
+        self.im_erode = np.zeros(shape=(self.height, self.width), dtype=np.uint8)
+
     # =======================================================
     # TODO: Determine usefulness of functions and delete?
 
@@ -147,23 +161,16 @@ class HubPipeline(VisionPipeline):
             green_layer = self.img[:,:,1] # Pull out just the green layer
             color_mask = cv2.inRange(green_layer,100,256) # Just looking at mostly bright green layer
         else:
-            sum_layer = np.array(np.sum(self.img,2),dtype = np.float) # Sum the layers
-            color_mask = cv2.inRange(sum_layer,self.intensity_thresh,3*256) # Just looking at mostly bright green layer
+            np.sum(self.img,2, out=self.sum_layer) # Sum the layers
+            cv2.inRange(self.sum_layer,self.intensity_thresh,3*256, dst=self.color_mask) # Just looking bright pixels
     
-        # Define a dilate/erode kernel
-        kernel = np.ones((5,5), np.uint8)
-        # 'round' the kernel a little
-        kernel[0][0] = 0
-        kernel[4][0] = 0
-        kernel[0][4] = 0
-        kernel[4][4] = 0
         # Use the kernel to clean holes in blobs and smooth shape edges
-        im_dilate = cv2.dilate(color_mask,kernel,iterations=1)
-        im_erode = cv2.erode(im_dilate,kernel,iterations=1)
+        cv2.dilate(self.color_mask, self.kernel,iterations=1, dst=self.im_dilate)
+        cv2.erode(self.im_dilate, self.kernel,iterations=1, dst=self.im_erode)
         
         #------------------------------------------------------
         # On the "best processed output mask", find all the contours
-        contours, hierarchy = cv2.findContours(im_erode, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours, hierarchy = cv2.findContours(self.im_erode, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
             
         #========================================================
         # ADD A SANITY CHECK
@@ -172,6 +179,8 @@ class HubPipeline(VisionPipeline):
         max_expected_contours = 30
         if (len(contours)>max_expected_contours):
             print("WARNING - TOO MANY CONTOURS ("+str(len(contours))+" VERSUS "+str(max_expected_contours)+")")
+            self.target_distance_entry.setDouble(-1.0)
+            return
         
         # EXAMINE THE POSSIBILITIES FOR CONTOUR PROCESSING:
         # https://docs.opencv.org/3.4/dd/d49/tutorial_py_contour_features.html
