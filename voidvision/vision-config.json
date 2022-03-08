@@ -1,6 +1,6 @@
 {
     "team": 862,
-    "ntmode": "server",
+    "ntmode": "client",
     "debug": true,   
     "cameras": [
 		{
@@ -9,7 +9,7 @@
 			"width": 640,
 			"height": 480,
 			"pixel format": "yuyv",
-			"fps": 60,
+			"fps": 130,
 			"exposure": 2,
 			"brightness": 1,
 			"stream": {
@@ -24,7 +24,7 @@
 					},
 					{
 					"name": "fps",
-					"value": 60
+					"value": 130
 					}
 				]
 			}
