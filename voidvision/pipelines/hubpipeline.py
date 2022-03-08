@@ -23,6 +23,9 @@ class HubPipeline(VisionPipeline):
         # initial intensity threshold
         self.intensity_thresh = 100
 
+        # Decides how many images to capture and write to jetson, writes are sequential with processed output
+        self.imgs_to_capture = 1
+
         # Set this to true for tuning
         self.debug = True
         if self.debug:
@@ -31,6 +34,7 @@ class HubPipeline(VisionPipeline):
             self.capture_entry = table.getEntry('capture frame')
             self.distance_entry = table.getEntry('distance input')
             self.intensity_thresh_entry = table.getEntry('Intensity Threshold')
+            self.imgs_to_capture = table.getEntry('Images to capture')
     
             # Initialize network table entries
             self.capture_entry.setBoolean(False)
@@ -38,8 +42,9 @@ class HubPipeline(VisionPipeline):
             self.exposure_entry.setNumber(self.exposure)
             self.brightness_entry.setNumber(self.brightness)
             self.intensity_thresh_entry.setNumber(self.intensity_thresh)
+            self.imgs_to_capture.setNumber(0)
             # self.green_lower_threshold.setNumber(100) # 100 is default for now
-
+            os.system("v4l2-ctl --device " + self.cameraPath +  " --set-ctrl=exposure_auto_priority=0")
         # Horizontal and vertical field of view
         self.fov_horiz = 99 
         self.fov_vert = 68.12 
@@ -142,13 +147,19 @@ class HubPipeline(VisionPipeline):
 
         # Debugging installed to allow us to capture raw images from robot camera
         if self.debug:
-            if self.capture_entry.getBoolean(False):
+            if self.capture_entry.getBoolean(False) or self.imgs_to_capture.getNumber(0) >= 1:
+                # Sets capture entry back to false so we don't run again
+                self.capture_entry.setBoolean(False)
+                
                 mills = str(int(time.time() * 1000))
                 dist = self.distance_entry.getString('42-thousand-tonnes')
                 fname = str('/home/lightning/voidvision/images/frame-distance-{}-{}.png'.format(dist, mills))
                 cv2.imwrite(fname, self.img)
                 print('FILE: {} WRITTEN'.format(fname))
-                self.capture_entry.setBoolean(False)
+                if self.imgs_to_capture.getNumber(0) >= 1:
+                    self.imgs_to_cap = self.imgs_to_capture.getNumber(0)
+                    self.imgs_to_cap -= 1
+                    self.imgs_to_capture.setNumber(self.imgs_to_cap)
         
         
         # GRIP-like OpenCV/cv2 pipeline of processing
