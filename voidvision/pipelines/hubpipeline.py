@@ -27,7 +27,7 @@ class HubPipeline(VisionPipeline):
         self.imgs_to_capture = 1
 
         # Set this to true for tuning
-        self.debug = True
+        self.debug = False
         if self.debug:
             self.exposure_entry = table.getEntry('exposure')
             self.brightness_entry = table.getEntry('brightness')
@@ -162,7 +162,6 @@ class HubPipeline(VisionPipeline):
                     self.imgs_to_cap -= 1
                     self.imgs_to_capture.setNumber(self.imgs_to_cap)
         
-        
         # GRIP-like OpenCV/cv2 pipeline of processing
         
         if (False):
@@ -171,19 +170,18 @@ class HubPipeline(VisionPipeline):
             color_mask = cv2.inRange(self.img,(0,96,0),(255,255,255))
         elif (False):
             green_layer = self.img[:,:,1] # Pull out just the green layer
-            color_mask = cv2.inRange(green_layer,100,256) # Just looking at mostly bright green layer
+            cv2.inRange(green_layer,100,256,dst=self.color_mask) # Just looking at mostly bright green layer
         else:
-            np.sum(self.img,2, out=self.sum_layer) # Sum the layers
-            cv2.inRange(self.sum_layer,self.intensity_thresh,3*256, dst=self.color_mask) # Just looking bright pixels
-    
+            # np.sum(self.img,2, out=self.sum_layer) # Sum the layers
+            self.sum_layer = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
+            cv2.inRange(self.sum_layer,self.intensity_thresh, 3*256, dst=self.color_mask) # Just looking bright pixels
         # Use the kernel to clean holes in blobs and smooth shape edges
         cv2.dilate(self.color_mask, self.kernel,iterations=1, dst=self.im_dilate)
         cv2.erode(self.im_dilate, self.kernel,iterations=1, dst=self.im_erode)
-        
         #------------------------------------------------------
         # On the "best processed output mask", find all the contours
         contours, hierarchy = cv2.findContours(self.im_erode, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-            
+
         #========================================================
         # ADD A SANITY CHECK
         #    If there are an insane number of contours - bail!!!!!!
@@ -384,7 +382,7 @@ class HubPipeline(VisionPipeline):
         self.target_distance_entry.setDouble(targetDistance)
         self.target_angle_entry.setDouble(targetAngle)
 
-        print('DIST: {} | ANGLE: {}'.format(targetDistance, targetAngle))
+        # print('DIST: {} | ANGLE: {}'.format(targetDistance, targetAngle))
 
         # TODO: Puts number of contours detected in current image to the dashboard
         # self.nttable.putNumber('Contour Number', numContours)
