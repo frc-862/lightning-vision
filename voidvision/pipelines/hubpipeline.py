@@ -66,6 +66,9 @@ class HubPipeline(VisionPipeline):
         # Define a dilate/erode kernel
         self.kernel = np.ones((5,5), np.uint8)
 
+        os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=exposure_absolute=" + str(self.exposure))	
+        os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=brightness=" + str(self.brightness))
+
         # 'round' the kernel a little
         self.kernel[0][0] = 0
         self.kernel[4][0] = 0
@@ -139,8 +142,17 @@ class HubPipeline(VisionPipeline):
         # set exposure
         # TODO: not call every time process is run, only when updated
         if self.debug:
-            os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=exposure_absolute=" + str(self.exposure_entry.getNumber(self.exposure)))	
-            os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=brightness=" + str(self.brightness_entry.getNumber(self.brightness)))
+            print("we're in debug")
+            new_exposure = self.exposure_entry.getNumber(self.exposure)
+            if (new_exposure != self.exposure):
+                self.exposure = new_exposure
+                os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=exposure_absolute=" + str(self.exposure))
+            
+            new_brightness = self.brightness_entry.getNumber(self.brightness)
+            if new_brightness != self.brightness:
+                self.brightness = new_brightness
+                os.system("v4l2-ctl --device " + self.cameraPath + " --set-ctrl=brightness=" + str(self.brightness))
+
             self.intensity_thresh = self.intensity_thresh_entry.getNumber(self.intensity_thresh)
 
         # get frame from camera
