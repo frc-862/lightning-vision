@@ -1,7 +1,7 @@
 {
     "team": 862,
     "ntmode": "client",
-    "debug": true,   
+    "debug": false,   
     "cameras": [
 		{
 			"name": "hubcam",

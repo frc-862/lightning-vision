@@ -18,7 +18,7 @@ class HubPipeline(VisionPipeline):
         self.nttable = table
 		
         # start camera
-        self.inp, self.out, self.width, self.height, self.cam, self.exposure, self.brightness, self.cameraPath = camera.start(config, cam_num, cam_name, output_name)
+        self.inp, self.out, self.width, self.height, self.cam, self.exposure, self.brightness, self.cameraPath = camera.start(config, cam_num, cam_name, None)
 
         # initial intensity threshold
         self.intensity_thresh = 100
@@ -56,6 +56,8 @@ class HubPipeline(VisionPipeline):
 		# dashboard outputs
         self.target_distance_entry = table.getEntry('Target Distance')
         self.target_angle_entry = table.getEntry('Target Angle')
+        self.target_time_entry = table.getEntry('Target Time')
+
         # self.target_distance_entry.setNumber(-1)
         # self.target_angle_entry.setNumber(0)
 
@@ -383,8 +385,9 @@ class HubPipeline(VisionPipeline):
     
         self.target_distance_entry.setDouble(targetDistance)
         self.target_angle_entry.setDouble(targetAngle)
+        self.target_time_entry.setDouble(self.t)
 
-        print('DIST: {} | ANGLE: {}'.format(targetDistance, targetAngle))
+        # print('DIST: {} | ANGLE: {}'.format(targetDistance, targetAngle))
 
         # TODO: Puts number of contours detected in current image to the dashboard
         # self.nttable.putNumber('Contour Number', numContours)
