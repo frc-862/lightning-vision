@@ -10,7 +10,7 @@
 			"height": 480,
 			"pixel format": "yuyv",
 			"fps": 60,
-			"exposure": 2,
+			"exposure": 8,
 			"brightness": 1,
 			"stream": {
 				"properties": [

@@ -51,6 +51,7 @@ class HubPipeline(VisionPipeline):
 		# dashboard outputs
         self.target_distance_entry = table.getEntry('Target Distance')
         self.target_angle_entry = table.getEntry('Target Angle')
+        self.target_time_entry = table.getEntry('Target Time')
         # self.target_distance_entry.setNumber(-1)
         # self.target_angle_entry.setNumber(0)
 
@@ -77,19 +78,21 @@ class HubPipeline(VisionPipeline):
         
         estimate_width = ((point2[1]-point1[1])/(point2[0]-point1[0]))*row \
                         + (point1[1]-((point2[1]-point1[1])/(point2[0]-point1[0]))*point1[0])
-        estimate_wtolerance = 1.1*((-5.0/480.0)*row+6.6)
+        estimate_wtolerance = 1.3*((-5.0/480.0)*row+6.6)
 
         return estimate_width, estimate_wtolerance
 
     #=======================================================================
     def estimate_tape_height(self,row,col):
         
-        point1 = [37,7]
-        point2 = [312,2]
+        # point1 = [37,7]
+        # point2 = [312,2]
+        point1 = [1.5, 9.36]
+        point2 = [338.5, 1.85]
         
         estimate_height = ((point2[1]-point1[1])/(point2[0]-point1[0]))*row \
                         + (point1[1]-((point2[1]-point1[1])/(point2[0]-point1[0]))*point1[0])
-        estimate_htolerance = 0.6*((-5.0/480.0)*row+6.6)
+        estimate_htolerance = 0.7*((-5.0/480.0)*row+6.6)
 
         return estimate_height, estimate_htolerance
 
@@ -352,9 +355,11 @@ class HubPipeline(VisionPipeline):
             
             targetDistance = self.estimate_target_distance(this_row,this_col)
             targetAngle = self.estimate_target_angle(this_row,this_col)
-    
+
+         
         self.target_distance_entry.setDouble(targetDistance)
         self.target_angle_entry.setDouble(targetAngle)
+        self.target_time_entry.setDouble(self.t)
 
         print('DIST: {} | ANGLE: {}'.format(targetDistance, targetAngle))
 
