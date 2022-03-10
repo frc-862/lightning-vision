@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+from re import A, I
 
 from matplotlib import use
 from pipeline import VisionPipeline
@@ -9,6 +10,7 @@ import numpy as np
 import cv2
 import sys
 from time import sleep
+import threading
 import time
 
 class HubPipeline(VisionPipeline):
@@ -25,6 +27,8 @@ class HubPipeline(VisionPipeline):
 
         # Decides how many images to capture and write to jetson, writes are sequential with processed output
         self.imgs_to_capture = 1
+        self.last_save_time = time.clock()
+        self.img_capture_interval = table.getEntry('Image capture interval (seconds)')
 
         # Set this to true for tuning
         self.debug = False
@@ -80,6 +84,11 @@ class HubPipeline(VisionPipeline):
         self.color_mask = np.zeros(shape=(self.height, self.width), dtype=np.uint8)
         self.im_dilate = np.zeros(shape=(self.height, self.width), dtype=np.uint8)
         self.im_erode = np.zeros(shape=(self.height, self.width), dtype=np.uint8)
+
+    def save_image(self):
+        fname = str('/home/lightning/voidvision/images/frame-{}.png'.format(self.t))
+        cv2.imwrite(fname, self.img)
+
 
     # =======================================================
     # TODO: Determine usefulness of functions and delete?
@@ -141,6 +150,9 @@ class HubPipeline(VisionPipeline):
         # This is to verify camera parameters we want set are set
         # set exposure
         # TODO: not call every time process is run, only when updated
+
+
+
         if self.debug:
             print("we're in debug")
             new_exposure = self.exposure_entry.getNumber(self.exposure)
@@ -155,11 +167,7 @@ class HubPipeline(VisionPipeline):
 
             self.intensity_thresh = self.intensity_thresh_entry.getNumber(self.intensity_thresh)
 
-        # get frame from camera
-        self.t, self.img = self.inp.grabFrame(self.img)
-
-        # Debugging installed to allow us to capture raw images from robot camera
-        if self.debug:
+            # Writes camera to Jetson if we press button on dashboard, or if number of frames to capture is specified on dashboard
             if self.capture_entry.getBoolean(False) or self.imgs_to_capture.getNumber(0) >= 1:
                 # Sets capture entry back to false so we don't run again
                 self.capture_entry.setBoolean(False)
@@ -173,7 +181,19 @@ class HubPipeline(VisionPipeline):
                     self.imgs_to_cap = self.imgs_to_capture.getNumber(0)
                     self.imgs_to_cap -= 1
                     self.imgs_to_capture.setNumber(self.imgs_to_cap)
-        
+ 
+
+        # get frame from camera
+        self.t, self.img = self.inp.grabFrame(self.img)
+
+        # Saves the time every 5 seconds, time.clock is in seconds
+        now = time.process_time()
+        if now - self.last_save_time > 60:
+            threading.Thread(target=self.save_image).start()
+            self.last_save_time = now
+
+        # Debugging installed to allow us to capture raw images from robot camera
+       
         # GRIP-like OpenCV/cv2 pipeline of processing
         
         if (False):
