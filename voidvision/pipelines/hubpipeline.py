@@ -28,7 +28,8 @@ class HubPipeline(VisionPipeline):
         # Decides how many images to capture and write to jetson, writes are sequential with processed output
         self.imgs_to_capture = 1
         self.last_save_time = time.clock()
-        self.img_capture_interval = table.getEntry('Image capture interval (seconds)')
+        # self.img_capture_interval = table.getEntry('Image capture interval (seconds)')
+        # self.img_capture_interval.setNumber()
 
         # Set this to true for tuning
         self.debug = False
@@ -86,7 +87,7 @@ class HubPipeline(VisionPipeline):
         self.im_erode = np.zeros(shape=(self.height, self.width), dtype=np.uint8)
 
     def save_image(self):
-        fname = str('/home/lightning/voidvision/images/frame-{}.png'.format(self.t))
+        fname = str('/tmp/{}.png'.format(self.t))
         cv2.imwrite(fname, self.img)
 
 
@@ -188,7 +189,7 @@ class HubPipeline(VisionPipeline):
 
         # Saves the time every 5 seconds, time.clock is in seconds
         now = time.process_time()
-        if now - self.last_save_time > 60:
+        if now - self.last_save_time > 5:
             threading.Thread(target=self.save_image).start()
             self.last_save_time = now
 
