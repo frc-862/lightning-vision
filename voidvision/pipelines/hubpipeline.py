@@ -27,7 +27,7 @@ class HubPipeline(VisionPipeline):
         self.imgs_to_capture = 1
 
         # Set this to true for tuning
-        self.debug = False
+        self.debug = True
         if self.debug:
             self.exposure_entry = table.getEntry('exposure')
             self.brightness_entry = table.getEntry('brightness')
