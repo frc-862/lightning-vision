@@ -1,7 +1,7 @@
 {
     "team": 862,
     "ntmode": "client",
-    "debug": true,   
+    "debug": false,   
     "cameras": [
 		{
 			"name": "hubcam",
@@ -24,7 +24,7 @@
 					},
 					{
 					"name": "fps",
-					"value": 130
+					"value": 10
 					}
 				]
 			}
@@ -42,11 +42,11 @@
 				"properties": [
 					{
 					"name": "width",
-					"value": 640
+					"value": 320
 					},
 					{
 					"name": "height",
-					"value": 480
+					"value": 240
 					},
 					{
 					"name": "fps",
