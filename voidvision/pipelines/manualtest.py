@@ -30,31 +30,9 @@ def main():
 
     for file_name in os.listdir(path):
         if file_name.endswith('.png'):
-            print(file_name)
-            if not(file_name.find('42-thousand')>=0):
-                # Parse file name to get real values
-                split_file_name = file_name.split("-")
-                print(split_file_name)
-                real_distance = split_file_name[2]
-                real_distance = real_distance.replace('ft', '')
-                real_distance = float(real_distance)
-                real_angle = split_file_name[4]
-
-                # Figures out if the file truth is positive or negative, adjusts angle appropriately
-                if real_angle == "neg":
-                    print("This is the real angle in the if statement " + real_angle)
-                    real_angle = -abs(float(split_file_name[5]))
-
-                if real_angle == "pos":
-                    print("This is the real angle in the else statement " + real_angle)
-                    real_angle = float(split_file_name[5])
-
-                real_angle = float(real_angle)
+        
 
 
-            else:
-                real_distance = -1
-                real_angle = 0
 
             # Read image, run processing pipeline on it to get estimated distance and angle
             img = cv2.imread(path + file_name)
@@ -67,17 +45,19 @@ def main():
 
             # Create list of contours and then process checks to see if they're the target
             est_dist, est_angle = filterImage.processContours(filtered_img)
+            if est_dist == -1 and est_angle == 0:
+                os.rename(path + file_name, path + "no_target/" + file_name)
+
+
 
             # Add estimated values and true values to lists
             estimated_distances.append(est_dist)
             estimated_angles.append(est_angle)
-            real_angles.append(real_angle)
-            real_distances.append(real_distance)
             print('FILE: {} | EST-DIST: {} | EST-ANG: {}'.format(file_name, est_dist, est_angle))
         
-    plot(real_angles, estimated_angles, real_distances, estimated_distances)
 
 # TODO: Find a more useful way to visualize data beyond scatter plots of estimated values in relation to real
+"""
 def plot(real_angle, est_angle, real_dist, est_dist):
     plt.subplot(211)
     plt.xlabel("Real Distance (ft)")
@@ -88,7 +68,7 @@ def plot(real_angle, est_angle, real_dist, est_dist):
     plt.ylabel("Real Angle (degrees)")
     plt.scatter(est_angle, real_angle)
     plt.show()
-
+"""
 
 if __name__ == "__main__":
     main()

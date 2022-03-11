@@ -25,9 +25,10 @@ class FilterImage():
         """
 
         # The new hotness
-        sum_layer = np.array(np.sum(img,2),dtype = np.float) # Sum the layers
-        color_mask = cv2.inRange(sum_layer,self.intensity_thresh,3*256) # Just looking at mostly bright green layer
-
+        # sum_layer = np.array(np.sum(img,2),dtype = np.float) # Sum the layers
+        # color_mask = cv2.inRange(sum_layer,self.intensity_thresh,3*256) # Just looking at mostly bright green layer
+        self.sum_layer = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        color_mask = cv2.inRange(self.sum_layer,self.intensity_thresh, 3*256) # Just looking bright pixels
         return color_mask
 
     def estimate_tape_width(self, row, col):
