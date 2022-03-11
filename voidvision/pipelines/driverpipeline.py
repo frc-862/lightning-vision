@@ -17,10 +17,10 @@ class DriverPipeline(VisionPipeline):
 		# allocate image for whenever
 		self.img = np.zeros(shape=(self.height, self.width, 3), dtype=np.uint8)
 
-	def process(self):
 
+	def process(self):
 		# get frame from camera
 		self.t, self.img = self.inp.grabFrame(self.img)
-
-		# throw output image to dashboard
-		self.out.putFrame(self.img)
+		return
+	    # throw output image to dashboard
+		# self.out.putFrame(self.img)
