@@ -155,7 +155,7 @@ class HubPipeline(VisionPipeline):
 
 
         if self.debug:
-            print("we're in debug")
+            # print("we're in debug")
             new_exposure = self.exposure_entry.getNumber(self.exposure)
             if (new_exposure != self.exposure):
                 self.exposure = new_exposure

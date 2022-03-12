@@ -9,7 +9,7 @@
 			"width": 640,
 			"height": 480,
 			"pixel format": "yuyv",
-			"fps": 130,
+			"fps": 10,
 			"exposure": 7,
 			"brightness": 1,
 			"stream": {
@@ -32,25 +32,25 @@
 		{
 			"name": "driver",
 			"path": "/dev/video1",
-			"width": 640,
-			"height": 480,
+			"width": 160,
+			"height": 120,
 			"pixel format": "yuyv",
-			"fps": 60,
+			"fps": 30,
 			"exposure": 50,
 			"brightness": 50,
 			"stream": {
 				"properties": [
 					{
 					"name": "width",
-					"value": 320
+					"value": 160
 					},
 					{
 					"name": "height",
-					"value": 240
+					"value": 120
 					},
 					{
 					"name": "fps",
-					"value": 60
+					"value": 30
 					}
 				]
 			}
